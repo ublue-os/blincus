@@ -5,6 +5,7 @@ import starlight from '@astrojs/starlight';
 export default defineConfig({
 	integrations: [
 		starlight({
+			site: 'https://blincus.dev',
 			title: 'Blincus',
 			social: {
 				github: 'https://github.com/ublue-os/blincus',
