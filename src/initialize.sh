@@ -6,5 +6,5 @@ if ! test -f "${CONFIG_FILE:-}"; then
 fi
 cfgdir=$(dirname "${CONFIG_FILE}")
 [[ -d "$cfgdir" ]] || mkdir -p "$cfgdir"
-
+sanity
 personalize
