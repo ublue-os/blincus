@@ -1,38 +1,42 @@
 ---
 title: "Rapid Development Environments in Incus"
-description: Get started building your docs site with Starlight.
+description: Create isolated development environments for your projects quickly.
 template: splash
 hero:
   tagline: Congrats on setting up a new Starlight project!
   image:
     file: ../../assets/houston.webp
   actions:
+    - text: Why Blincus?
+      link: /reference/why/
+      icon: right-arrow
+      variant: primary
     - text: Getting Started
       link: /guides/getting-started/
       icon: right-arrow
-      variant: primary
+      variant: secondary
     - text: CLI Reference
       link: /cli
-      icon: external
+      icon: right-arrow
 ---
 
 import { Card, CardGrid, LinkCard} from '@astrojs/starlight/components';
+
+Blincus does some stuff for you.
 
 ## Learn More
 
 <CardGrid stagger>
 	<Card title="Learn About Blincus" icon="document">
-		Edit `src/content/docs/index.mdx` to see this page change.
+		  <LinkCard title="Features" href="/reference/features/" />
+		  <LinkCard title="How Blincus Works" href="/reference/how-blincus-works/" />
 	</Card>
-	<Card title="Add new content" icon="add-document">
-	  <LinkCard title="Authoring Markdown" href="/guides/authoring-content/" />
+	<Card title="Make It Yours" icon="add-document">
+	  <LinkCard title="Customizing Blincus" href="/guides/customizing/" />
+	  <LinkCard title="Tips & Tricks" href="/guides/tips-tricks/" />
 	</Card>
-	<Card title="Configure your site" icon="setting">
-		Edit your `sidebar` and other config in `astro.config.mjs`.
+	<Card title="Reference" icon="setting">
+	  <LinkCard title="CLI Reference" href="/cli/" />
 	</Card>
-	<Card title="Read the docs" icon="open-book">
-		Learn more in [the Starlight Docs](https://starlight.astro.build/).
-	</Card>
-	  <LinkCard title="Authoring Markdown" href="/guides/authoring-content/" />
-  <LinkCard title="Components" href="/guides/components/" />
+
 </CardGrid>

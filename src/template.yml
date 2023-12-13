@@ -15,19 +15,6 @@ commands:
   examples:
   - blincus template edit ubuntu
 
-- name: restore
-  alias: r
-  help: Restore a template
-
-  args:
-  - name: name
-    required: true
-    help: Template name
-
-
-  examples:
-  - blincus template restore ubuntu
-
 - name: list
   alias: l
   help: List all templates

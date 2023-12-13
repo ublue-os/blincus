@@ -26,6 +26,7 @@ export default defineConfig({
 						{ label: 'Getting Started', link: '/guides/getting-started/' },
 						{ label: 'Installing Blincus', link: '/guides/installing/' },
 						{ label: 'Customizing Blincus', link: '/guides/customizing/' },
+						{ label: 'Tips & Tricks', link: '/guides/tips-tricks/' },
 					],
 				},
 				{

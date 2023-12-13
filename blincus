@@ -318,7 +318,6 @@ blincus_template_usage() {
 
   printf "%s\n" "$(bold "Commands:")"
   printf "  %s   Edit a template\n" "$(green "edit")       "
-  printf "  %s   Restore a template\n" "$(green "restore")    "
   printf "  %s   List all templates\n" "$(green "list")       "
   printf "  %s   Personalize default templates\n" "$(green "personalize")"
   echo
@@ -367,45 +366,6 @@ blincus_template_edit_usage() {
 
     printf "%s\n" "$(bold "Examples:")"
     printf "  blincus template edit ubuntu\n"
-    echo
-
-  fi
-}
-
-blincus_template_restore_usage() {
-  if [[ -n $long_usage ]]; then
-    printf "blincus template restore - Restore a template\n"
-    echo
-
-  else
-    printf "blincus template restore - Restore a template\n"
-    echo
-
-  fi
-
-  printf "Alias: r\n"
-  echo
-
-  printf "%s\n" "$(bold "Usage:")"
-  printf "  blincus template restore NAME\n"
-  printf "  blincus template restore --help | -h\n"
-  echo
-
-  if [[ -n $long_usage ]]; then
-    printf "%s\n" "$(bold "Options:")"
-
-    printf "  %s\n" "$(magenta "--help, -h")"
-    printf "    Show this help\n"
-    echo
-
-    printf "%s\n" "$(bold "Arguments:")"
-
-    printf "  %s\n" "$(blue "NAME")"
-    printf "    Template name\n"
-    echo
-
-    printf "%s\n" "$(bold "Examples:")"
-    printf "  blincus template restore ubuntu\n"
     echo
 
   fi
@@ -820,14 +780,6 @@ blincus_template_edit_command() {
 
   template_path="${cfgdir}/templates"
   $EDITOR ${template_path}/${args[name]}.config.yaml
-}
-
-blincus_template_restore_command() {
-  echo "# this file is located in 'src/template_restore_command.sh'"
-  echo "# code for 'blincus template restore' goes here"
-  echo "# you can edit it freely and regenerate (it will not be overwritten)"
-  inspect_args
-
 }
 
 blincus_template_list_command() {
@@ -1330,13 +1282,6 @@ blincus_template_parse_requirements() {
       shift $#
       ;;
 
-    restore | r)
-      action="restore"
-      shift
-      blincus_template_restore_parse_requirements "$@"
-      shift $#
-      ;;
-
     list | l)
       action="list"
       shift
@@ -1430,57 +1375,6 @@ blincus_template_edit_parse_requirements() {
 
   if [[ -z ${args['name']+x} ]]; then
     printf "missing required argument: NAME\nusage: blincus template edit NAME\n" >&2
-    exit 1
-  fi
-
-}
-
-blincus_template_restore_parse_requirements() {
-
-  while [[ $# -gt 0 ]]; do
-    case "${1:-}" in
-      --help | -h)
-        long_usage=yes
-        blincus_template_restore_usage
-        exit
-        ;;
-
-      *)
-        break
-        ;;
-
-    esac
-  done
-
-  action="template restore"
-
-  while [[ $# -gt 0 ]]; do
-    key="$1"
-    case "$key" in
-
-      -?*)
-        printf "invalid option: %s\n" "$key" >&2
-        exit 1
-        ;;
-
-      *)
-
-        if [[ -z ${args['name']+x} ]]; then
-
-          args['name']=$1
-          shift
-        else
-          printf "invalid argument: %s\n" "$key" >&2
-          exit 1
-        fi
-
-        ;;
-
-    esac
-  done
-
-  if [[ -z ${args['name']+x} ]]; then
-    printf "missing required argument: NAME\nusage: blincus template restore NAME\n" >&2
     exit 1
   fi
 
@@ -1602,7 +1496,6 @@ run() {
     "shell") blincus_shell_command ;;
     "template") blincus_template_command ;;
     "template edit") blincus_template_edit_command ;;
-    "template restore") blincus_template_restore_command ;;
     "template list") blincus_template_list_command ;;
     "template personalize") blincus_template_personalize_command ;;
   esac
