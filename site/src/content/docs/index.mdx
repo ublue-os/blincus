@@ -1,0 +1,38 @@
+---
+title: "Rapid Development Environments in Incus"
+description: Get started building your docs site with Starlight.
+template: splash
+hero:
+  tagline: Congrats on setting up a new Starlight project!
+  image:
+    file: ../../assets/houston.webp
+  actions:
+    - text: Getting Started
+      link: /guides/getting-started/
+      icon: right-arrow
+      variant: primary
+    - text: CLI Reference
+      link: /cli
+      icon: external
+---
+
+import { Card, CardGrid, LinkCard} from '@astrojs/starlight/components';
+
+## Learn More
+
+<CardGrid stagger>
+	<Card title="Learn About Blincus" icon="document">
+		Edit `src/content/docs/index.mdx` to see this page change.
+	</Card>
+	<Card title="Add new content" icon="add-document">
+	  <LinkCard title="Authoring Markdown" href="/guides/authoring-content/" />
+	</Card>
+	<Card title="Configure your site" icon="setting">
+		Edit your `sidebar` and other config in `astro.config.mjs`.
+	</Card>
+	<Card title="Read the docs" icon="open-book">
+		Learn more in [the Starlight Docs](https://starlight.astro.build/).
+	</Card>
+	  <LinkCard title="Authoring Markdown" href="/guides/authoring-content/" />
+  <LinkCard title="Components" href="/guides/components/" />
+</CardGrid>

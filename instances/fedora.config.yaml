@@ -1,0 +1,36 @@
+architecture: x86_64
+config:
+  raw.idmap: both 1000 1000
+  security.nesting: "true"
+  user.user-data: |-
+    #cloud-config
+    packages:
+      - curl
+      - wget
+      - openssh-server
+    users:
+      - name: BLINCUSUSER
+        plain_text_passwd: 'BLINCUSUSER'
+        home: /home/BLINCUSUSER
+        shell: /bin/bash
+        lock_passwd: True
+        gecos: BLINCUSFULLNAME
+        groups: [adm, wheel]
+        sudo: ALL=(ALL) NOPASSWD:ALL
+        ssh_authorized_keys:
+          - SSHKEY
+devices:
+  eth0:
+    name: eth0
+    nictype: bridged
+    parent: br0
+    type: nic
+  root:
+    path: /
+    pool: default
+    type: disk
+ephemeral: false
+profiles:
+- default
+stateful: false
+description: "Fedora"

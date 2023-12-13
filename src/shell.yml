@@ -1,0 +1,23 @@
+name: shell
+alias: s
+help: Open a shell in an instance
+
+args:
+- name: name
+  required: true
+  help: Instance name
+
+flags:
+- long: --root
+  short: -r
+  help: Root shell
+- long: --no-login
+  short: -n
+  help: Don't use a login shell
+
+
+
+examples:
+- blincus shell mydevctr --login
+- blincus shell mydevctr --root --no-login
+- blincus shell mydevctr

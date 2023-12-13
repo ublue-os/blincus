@@ -1,0 +1,19 @@
+name: blincus
+help: |
+  Manage development containers with Incus
+  
+  Wraps the `incus` command, so commands not implemented 
+  in blincus will pass through to `incus`.
+version: 0.1.0
+extensible: incus
+
+environment_variables:
+- name: config_file
+  help: Location of blincus config.ini
+  default: $HOME/.config/blincus/config.ini
+
+commands:
+- import: src/config.yml
+- import: src/launch.yml
+- import: src/shell.yml
+- import: src/template.yml
