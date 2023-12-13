@@ -3,9 +3,9 @@ import starlight from '@astrojs/starlight';
 
 // https://astro.build/config
 export default defineConfig({
+	site: 'https://blincus.dev',
 	integrations: [
 		starlight({
-			site: 'https://blincus.dev',
 			title: 'Blincus',
 			social: {
 				github: 'https://github.com/ublue-os/blincus',
