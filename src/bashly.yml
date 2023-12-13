@@ -6,7 +6,12 @@ help: |
   in blincus will pass through to `incus`.
 version: 0.1.0
 extensible: incus
-
+footer: |
+  View documentation online at https://blincus.dev
+dependencies:
+  incus:
+    command: [incus]
+    help: incus is required to use blincus.
 environment_variables:
 - name: config_file
   help: Location of blincus config.ini

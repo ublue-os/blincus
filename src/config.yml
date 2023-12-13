@@ -1,5 +1,7 @@
 name: config
 help: Manage blincus config
+footer: |
+  View documentation online at https://blincus.dev
 
 commands:
 - name: set

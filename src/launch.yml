@@ -3,6 +3,8 @@ alias: l
 help: |
   Launch a new instance
   Use `blincus template list` to see a list of available templates.
+footer: |
+  View documentation online at https://blincus.dev
 
 args:
 - name: name

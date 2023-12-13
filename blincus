@@ -55,6 +55,9 @@ blincus_usage() {
     printf "    Default: $HOME/.config/blincus/config.ini\n"
     echo
 
+    printf "View documentation online at https://blincus.dev\n\n"
+    echo
+
   fi
 }
 
@@ -85,6 +88,9 @@ blincus_config_usage() {
 
     printf "  %s\n" "$(magenta "--help, -h")"
     printf "    Show this help\n"
+    echo
+
+    printf "View documentation online at https://blincus.dev\n\n"
     echo
 
   fi
@@ -248,6 +254,9 @@ blincus_launch_usage() {
     printf "  blincus launch -t fedora mydevmachine\n"
     echo
 
+    printf "View documentation online at https://blincus.dev\n\n"
+    echo
+
   fi
 }
 
@@ -297,6 +306,9 @@ blincus_shell_usage() {
     printf "  blincus shell mydevctr\n"
     echo
 
+    printf "View documentation online at https://blincus.dev\n\n"
+    echo
+
   fi
 }
 
@@ -327,6 +339,9 @@ blincus_template_usage() {
 
     printf "  %s\n" "$(magenta "--help, -h")"
     printf "    Show this help\n"
+    echo
+
+    printf "View documentation online at https://blincus.dev\n\n"
     echo
 
   fi
@@ -824,6 +839,14 @@ parse_requirements() {
   done
 
   export CONFIG_FILE="${CONFIG_FILE:-$HOME/.config/blincus/config.ini}"
+
+  if command -v incus >/dev/null 2>&1; then
+    deps['incus']="$(command -v incus | head -n1)"
+  else
+    printf "missing dependency: incus\n" >&2
+    printf "%s\n" "incus is required to use blincus." >&2
+    exit 1
+  fi
 
   action=${1:-}
 

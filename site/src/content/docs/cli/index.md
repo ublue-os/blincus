@@ -24,6 +24,12 @@ in blincus will pass through to `incus`.
 blincus COMMAND
 ```
 
+## Dependencies
+
+#### *incus*
+
+incus is required to use blincus.
+
 ## Environment Variables
 
 #### *CONFIG_FILE*

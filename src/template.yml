@@ -1,5 +1,7 @@
 name: template
 help: Manage blincus templates
+footer: |
+  View documentation online at https://blincus.dev
 
 commands:
 - name: edit
