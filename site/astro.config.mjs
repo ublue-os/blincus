@@ -6,6 +6,17 @@ export default defineConfig({
 	site: 'https://blincus.dev',
 	integrations: [
 		starlight({
+			head: [
+				{
+				  tag: 'script',
+				  attrs: {
+					src: 'https://a.ketelsen.cloud/script.js',
+					'data-website-id': '95dd1266-3403-4efa-8d9f-c5e0988493b6',
+					defer: true,
+					async: true,
+				  },
+				},
+			  ],
 			title: 'Blincus',
 			social: {
 				github: 'https://github.com/ublue-os/blincus',
