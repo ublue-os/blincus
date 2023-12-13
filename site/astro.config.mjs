@@ -47,7 +47,14 @@ export default defineConfig({
 				{
 					label: 'CLI Reference',
 					autogenerate: { directory: 'cli' },
+				},				{
+					label: 'Get Help',
+					items: [
+						{ label: 'Github', link: 'https://github.com/ublue-os/blincus' },
+						{ label: 'Discourse', link: 'https://universal-blue.discourse.group/' },
+					],
 				},
+
 			],
 		}),
 	],
