@@ -5,3 +5,7 @@ generate:
 
 install: generate
     ./install
+
+build: generate
+    docker build -t bketelsen/blincus:latest .
+    docker push bketelsen/blincus:latest
