@@ -6,6 +6,9 @@ export default defineConfig({
 	site: 'https://blincus.dev',
 	integrations: [
 		starlight({
+			logo: {
+				src: './src/assets/blincus-black.svg',
+			  },
 			head: [
 				{
 				  tag: 'script',

@@ -1,5 +1,5 @@
 #!/bin/env bash
-create ~/bin
+#create ~/bin
 mkdir -p ~/bin
 
 # download and extract just to ~/bin/just
