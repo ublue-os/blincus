@@ -41,4 +41,4 @@ wget -qO- https://raw.githubusercontent.com/ublue-os/blincus/main/install | sh -
 
 ## Further reading
 
-- Read [about how-to guides](https://diataxis.fr/how-to-guides/) in the Diátaxis framework
+- Read [Incus Installation](/guides/incus-installation/) for tips on completing your Incus installation.
