@@ -1,0 +1,66 @@
+architecture: x86_64
+config:
+  raw.idmap: both 1000 1000
+  security.nesting: "true"
+  user.user-data: |-
+    #cloud-config
+    packages:
+      - pulseaudio-utils
+      - curl
+      - wget
+      - openssh-server
+    users:
+      - name: BLINCUSUSER
+        plain_text_passwd: 'BLINCUSUSER'
+        home: /home/BLINCUSUSER
+        shell: /bin/bash
+        lock_passwd: True
+        gecos: BLINCUSFULLNAME
+        groups: [adm, wheel]
+        sudo: ALL=(ALL) NOPASSWD:ALL
+        ssh_authorized_keys:
+          - SSHKEY
+    write_files:
+    - path: /usr/local/bin/mystartup.sh
+      permissions: 0755
+      content: |
+        #!/bin/sh
+        uid=$(id -u)
+        run_dir=/run/user/$uid
+        mkdir -p $run_dir && chmod 700 $run_dir && chown $uid:$uid $run_dir
+        mkdir -p $run_dir/pulse && chmod 700 $run_dir/pulse && chown $uid:$uid $run_dir/pulse
+        ln -sf /mnt/.container_pulseaudio_socket $run_dir/pulse/native
+        tmp_dir=/tmp/.X11-unix
+        mkdir -p $tmp_dir
+        ln -sf /mnt/.container_x11_socket $tmp_dir/X0
+    - path: /usr/local/etc/mystartup.service
+      content: |
+        [Unit]
+        After=local-fs.target
+        [Service]
+        Type=oneshot
+        ExecStart=/usr/local/bin/mystartup.sh
+        [Install]
+        WantedBy=default.target
+    runcmd:
+    - mkdir -p /home/BLINCUSUSER/.config/systemd/user/default.target.wants
+    - ln -s /usr/local/etc/mystartup.service /home/BLINCUSUSER/.config/systemd/user/default.target.wants/mystartup.service
+    - ln -s /usr/local/etc/mystartup.service /home/BLINCUSUSER/.config/systemd/user/mystartup.service
+    - chown -R BLINCUSUSER:BLINCUSUSER /home/BLINCUSUSER/.config
+    - echo 'export DISPLAY=:0' >> /home/BLINCUSUSER/.bash_profile
+    - chown BLINCUSUSER:BLINCUSUSER /home/BLINCUSUSER/.bash_profile
+devices:
+  eth0:
+    name: eth0
+    nictype: bridged
+    parent: br0
+    type: nic
+  root:
+    path: /
+    pool: default
+    type: disk
+ephemeral: false
+profiles:
+- default
+stateful: false
+description: "Fedora with X Sharing"

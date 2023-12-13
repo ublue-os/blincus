@@ -1,0 +1,48 @@
+architecture: x86_64
+config:
+  raw.idmap: both 1000 1000
+  security.nesting: "true"
+  user.user-data: |-
+    #cloud-config
+    packages:
+      - curl
+      - wget
+      - openssh-server
+    users:
+      - name: BLINCUSUSER
+        plain_text_passwd: 'BLINCUSUSER'
+        home: /home/BLINCUSUSER
+        shell: /bin/bash
+        lock_passwd: True
+        gecos: BLINCUSFULLNAME
+        groups: [adm, cdrom, dip, sudo]
+        sudo: ALL=(ALL) NOPASSWD:ALL
+        ssh_authorized_keys:
+          - SSHKEY
+devices:
+  eth0:
+    name: eth0
+    nictype: bridged
+    parent: br0
+    type: nic
+  mygpu:
+    gid: "44"
+    type: gpu
+
+  pulseaudio-socket:
+    path: /mnt/.container_pulseaudio_socket
+    source: /run/user/1000/pulse/native
+    type: disk
+  root:
+    path: /
+    pool: default
+    type: disk
+  x11-socket:
+    path: /mnt/.container_x11_socket
+    source: /tmp/.X11-unix/X0
+    type: disk
+ephemeral: false
+profiles:
+- default
+stateful: false
+description: "Debian"

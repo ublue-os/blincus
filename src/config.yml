@@ -1,0 +1,36 @@
+name: config
+help: Manage blincus config
+
+commands:
+- name: set
+  alias: s
+  help: Save a value in the config file
+
+  args:
+  - name: key
+    required: true
+    help: Config key
+  - name: value
+    required: true
+    help: Config value
+
+  examples:
+  - blincus set engine lxd
+  - blincus set fedora.latest 40
+
+- name: get
+  alias: g
+  help: Read a value from the config file
+
+  args:
+  - name: key
+    required: true
+    help: Config key
+
+  examples:
+  - blincus get engine
+  - blincus get default_release
+
+- name: list
+  alias: l
+  help: Show all values

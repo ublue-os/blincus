@@ -1,0 +1,24 @@
+name: launch
+alias: l
+help: |
+  Launch a new instance
+  Use `blincus template list` to see a list of available templates.
+
+args:
+- name: name
+  required: true
+  help: Instance name
+
+flags:
+- long: --template
+  short: -t
+  arg: template
+  help: |
+    Blincus template name 
+    Use `blincus template list` to see available templates
+  required: true
+
+examples:
+- blincus launch -t ubuntu mydevctr
+- blincus launch -t ubuntux mydevctr
+- blincus launch -t fedora mydevmachine 
