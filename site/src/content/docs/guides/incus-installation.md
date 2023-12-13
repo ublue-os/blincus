@@ -1,6 +1,6 @@
 ---
-title: Installing Blincus
-description: Make incus based development environments.
+title: Incus Installation
+description: Notes about installing Incus
 ---
 
 Guides lead a user through a specific task they want to accomplish, often with a sequence of steps.
