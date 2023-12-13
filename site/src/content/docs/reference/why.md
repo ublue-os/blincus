@@ -1,5 +1,5 @@
 ---
-title: Example Reference
+title: Why Blincus?
 description: A reference page in my new Starlight docs site.
 ---
 
