@@ -88,7 +88,6 @@ if [ -e "${curr_dir}/blincus" ]; then
 		fi
 	done
 	if [ -e "man" ]; then
-		echo "${man_dest_path}"
 		mkdir -p "${man_dest_path}"
 		for file in man/man1/*; do
 			install -D -m 0644 -t "${man_dest_path}" "${file}"
@@ -138,10 +137,10 @@ else
 
 	printf >&2 "\033[1;31m Downloading...\n\033[0m"
 	if [ "${next}" -eq 0 ]; then
-		release_ver="89luca89/distrobox/archive/refs/tags/${version}.tar.gz"
+		release_ver="ublue-os/blincus/archive/refs/tags/${version}.tar.gz"
 		release_name=$(basename "${release_ver}")
 	else
-		release_ver="89luca89/distrobox/archive/refs/heads/main.tar.gz"
+		release_ver="ublue-os/blincus/archive/refs/heads/main.tar.gz"
 		release_name="main"
 	fi
 	# go in tmp
@@ -157,26 +156,43 @@ else
 		tar xf "${release_name}"
 	fi
 	# deploy our files
-	for file in "distrobox-$(echo "${release_name}" | sed 's/.tar.gz//g')"/distrobox*; do
+	for file in "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')"/blincus*; do
 		if ! install -D -m 0755 -t "${dest_path}" "${file}"; then
 			printf >&2 "Do you have permission to write to %s?\n" "${dest_path}"
 			exit 1
 		fi
 	done
-	if [ -e "distrobox-$(echo "${release_name}" | sed 's/.tar.gz//g')/man/" ]; then
-		for file in "distrobox-$(echo "${release_name}" | sed 's/.tar.gz//g')"/man/man1/*; do
+	if [ -e "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')/man/" ]; then
+		for file in "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')"/man/man1/*; do
 			install -D -m 0644 -t "${man_dest_path}" "${file}"
 		done
 	fi
-	if [ -e "distrobox-$(echo "${release_name}" | sed 's/.tar.gz//g')/completions/" ]; then
-		for file in "distrobox-$(echo "${release_name}" | sed 's/.tar.gz//g')"/completions/*; do
+	if [ -e "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')/completions/" ]; then
+		for file in "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')"/completions/*; do
 			install -D -m 0644 -t "${completion_dest_path}" "${file}"
 		done
 	fi
-	if [ -e "distrobox-$(echo "${release_name}" | sed 's/.tar.gz//g')"/terminal-distrobox-icon.svg ]; then
-		install -D -m 0644 -t "${icon_dest_path}" \
-			"distrobox-$(echo "${release_name}" | sed 's/.tar.gz//g')"/terminal-distrobox-icon.svg
+	if [ -e "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')/scripts/" ]; then
+		mkdir -p "${script_dest_path}"
+		mkdir -p "${script_config_dest_path}"
+		for d in "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')"/scripts/*; do
+			install -d -m 0755  "${script_dest_path}/${d}"
+			install -d -m 0755  "${script_config_dest_path}/${d}"
+			for file in "${d}"/* ; do
+				install -D -m 0755  -t "${script_dest_path}/${d}" "${file}"
+				install -D -m 0755 -t "${script_config_dest_path}/${d}" "${file}"
+			done
+		done
 	fi
+	if [ -e "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')/instances/" ]; then
+		mkdir -p "${template_dest_path}"
+		mkdir -p "${template_config_dest_path}"
+		for file in "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')"/instances/*; do
+			install -D -m 0644 -t "${template_dest_path}" "${file}"
+			install -D -m 0644 -t "${template_config_dest_path}" "${file}"
+		done
+	fi
+
 
 	# securely delete unneeded files
 	cd
