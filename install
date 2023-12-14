@@ -102,15 +102,14 @@ if [ -e "${curr_dir}/blincus" ]; then
 	if [ -e "scripts" ]; then
 		mkdir -p "${script_dest_path}"
 		mkdir -p "${script_config_dest_path}"
-		for d in scripts/* ; do
-			if [ ! "$d" = "scripts" ]; then
+		for d in `find scripts/* -maxdepth 1 -type d`
+		do
 			install -d -m 0755  "${script_dest_path}/${d}"
 			install -d -m 0755  "${script_config_dest_path}/${d}"
 			for file in "${d}"/* ; do
 				install -D -m 0755  -t "${script_dest_path}/${d}" "${file}"
 				install -D -m 0755 -t "${script_config_dest_path}/${d}" "${file}"
 			done
-			fi
 		done
 
 	fi
@@ -177,7 +176,8 @@ else
 	if [ -e "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')/scripts/" ]; then
 		mkdir -p "${script_dest_path}"
 		mkdir -p "${script_config_dest_path}"
-		for d in "blincus-$(echo "${release_name}" | sed 's/blincus-$(echo "${release_name}.tar.gz//g')"/scripts/*; do
+		for d in `find "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')"/scripts/* -maxdepth 1 -type d`
+		do
 			install -d -m 0755  "${script_dest_path}/${d}"
 			install -d -m 0755  "${script_config_dest_path}/${d}"
 			for file in "${d}"/* ; do
