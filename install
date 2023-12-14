@@ -198,9 +198,9 @@ else
 
 	# securely delete unneeded files
 	cd
-	if [ -n "${tmp_dir}" ] && [ -e "${tmp_dir}" ]; then
-		rm -rf "${tmp_dir}"
-	fi
+	#if [ -n "${tmp_dir}" ] && [ -e "${tmp_dir}" ]; then
+	#	rm -rf "${tmp_dir}"
+	#fi
 fi
 
 [ ! -w "${dest_path}" ] && printf >&2 "Cannot write into %s, permission denied.\n" "${dest_path}" && exit 1
