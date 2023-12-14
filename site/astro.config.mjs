@@ -29,9 +29,9 @@ export default defineConfig({
 					label: 'About Blincus',
 					items: [
 						// Each item here is one entry in the navigation menu.
-						{ label: 'Why?', link: '/reference/why/' },
-						{ label: 'Features', link: '/reference/features/' },
-						{ label: 'How Blincus Works', link: '/reference/how-blincus-works/' },
+						{ label: 'Why?', link: '/about/why/' },
+						{ label: 'Features', link: '/about/features/' },
+						{ label: 'How Blincus Works', link: '/about/how-blincus-works/' },
 					],
 				},
 				{

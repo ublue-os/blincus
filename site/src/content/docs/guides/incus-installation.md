@@ -3,8 +3,34 @@ title: Incus Installation
 description: Notes about installing Incus
 ---
 
-Guides lead a user through a specific task they want to accomplish, often with a sequence of steps.
-Writing a good guide requires thinking about what your users are trying to do.
+## Post-Install
+
+### Incus Admin Group
+
+Make sure to add your user to the `incus-admin` group:
+
+```bash
+usermod -aG incus-admin `whoami`
+```
+
+Logout or reboot for the group membership to take effect.
+
+### Sub UID and Sub GID
+
+You also need to edit `/etc/subuid` and `/etc/subgid` to add two sets of ID maps.
+
+The first set allows Incus to create unprivileged containers as `root`:
+
+```bash
+echo "root:1000000:1000000000" | sudo tee -a /etc/subuid /etc/subgid
+```
+
+The second set allows Incus to map your user ID on to host to your user in the container to allow for seamless file sharing.
+
+```bash
+echo "root:1000:1" | sudo tee -a /etc/subuid /etc/subgid
+```
+
 
 ## Further reading
 
