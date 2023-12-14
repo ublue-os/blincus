@@ -12,6 +12,14 @@ incus init "${image}" "${args[name]}" < "${config}.config.yaml"
 
 
 echo "$(yellow Starting instance $name)"
+# add our useful scripts
+# mount or copy scripts
+scripts=$(config_get ${template}.scripts)
+scriptdir="${cfgdir}/scripts/${scripts}"
+
+
+incus file push -r -p "$scriptdir"/* "$name"/opt/scripts/
+
 # now start it
 incus start "${args[name]}"
 
@@ -22,13 +30,8 @@ echo "$(yellow Waiting for cloud init...)"
 incus exec "${args[name]}" -- cloud-init status --wait
 
 ## TODO
-# mount or copy scripts
-scripts=$(config_get ${template}.scripts)
-scriptdir="${cfgdir}/scripts/${scripts}"
 
 
-# add our useful scripts
-incus file push -r -p "$scriptdir"/* "$name"/opt/scripts/
 # mount $HOME at $HOME/host
 
 if [[ ! $nomount ]]; then

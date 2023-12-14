@@ -19,7 +19,8 @@ config:
         sudo: ALL=(ALL) NOPASSWD:ALL
         ssh_authorized_keys:
           - SSHKEY
-
+    runcmd:
+    - [ sh, -c, "[ -x /opt/scripts/init.sh ] && /opt/scripts/init.sh"]
 ephemeral: false
 profiles:
 - default

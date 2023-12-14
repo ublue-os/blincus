@@ -49,6 +49,7 @@ config:
     - chown -R BLINCUSUSER:BLINCUSUSER /home/BLINCUSUSER/.config
     - echo 'export DISPLAY=:0' >> /home/BLINCUSUSER/.profile
     - chown BLINCUSUSER:BLINCUSUSER /home/BLINCUSUSER/.profile
+    - [ sh, -c, "[ -x /opt/scripts/init.sh ] && /opt/scripts/init.sh"]
 devices:
   mygpu:
     gid: "44"
