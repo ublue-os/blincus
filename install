@@ -176,15 +176,9 @@ else
 	if [ -e "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')/scripts/" ]; then
 		mkdir -p "${script_dest_path}"
 		mkdir -p "${script_config_dest_path}"
-		cd "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')"/scripts
-		echo `pwd`
-		for d in `find ./* -maxdepth 1 -type d`
-		do
+		cp -R "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')"/scripts "${script_dest_path}"
+		cp -R "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')"/scripts "${script_config_dest_path}"
 
-				install -D -m 0755  -t "${script_dest_path}/${d}" "${d}/*"
-				install -D -m 0755 -t "${script_config_dest_path}/${d}" "${d}/*"
-		done
-		cd -
 	fi
 	if [ -e "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')/instances/" ]; then
 		mkdir -p "${template_dest_path}"
