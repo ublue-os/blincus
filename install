@@ -176,7 +176,7 @@ else
 	if [ -e "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')/scripts/" ]; then
 		mkdir -p "${script_dest_path}"
 		mkdir -p "${script_config_dest_path}"
-		pushd "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')"/scripts
+		cd "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')"/scripts
 		for d in `find . -maxdepth 1 -type d`
 		do
 			install -d -m 0755  "${script_dest_path}/${d}"
@@ -186,7 +186,7 @@ else
 				install -D -m 0755 -t "${script_config_dest_path}/${d}" "${file}"
 			done
 		done
-		popd
+		cd -
 	fi
 	if [ -e "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')/instances/" ]; then
 		mkdir -p "${template_dest_path}"
