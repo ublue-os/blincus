@@ -28,7 +28,7 @@ scriptdir="${cfgdir}/scripts/${scripts}"
 
 
 # add our useful scripts
-incus file push -r -p "$scriptdir" "$name"/opt/scripts
+incus file push -r -p "$scriptdir"/* "$name"/opt/scripts/
 # mount $HOME at $HOME/host
 
 if [[ ! $nomount ]]; then
