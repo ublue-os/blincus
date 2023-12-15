@@ -608,6 +608,11 @@ write_defaults() {
 
   config_set "fedorax.image" "images:fedora/39/cloud"
   config_set "fedorax.scripts" "fedora"
+
+  # nix defaults
+
+  config_set "nix.image" "images:ubuntu/jammy/cloud"
+  config_set "nix.scripts" "ubuntu"
   # todo: flag or JIT set this
   xhost +
 }
@@ -1524,14 +1529,14 @@ initialize() {
 
   export CONFIG_FILE="${CONFIG_FILE:-$HOME/.config/blincus/config.ini}"
 
+  cfgdir=$(dirname "${CONFIG_FILE}")
+  [[ -d "$cfgdir" ]] || mkdir -p "$cfgdir"
   if ! test -f "${CONFIG_FILE:-}"; then
     echo "$(yellow_bold Config file does not exist. Creating it with defaults.)"
     echo "$(yellow_bold Disabling XAuth controls.)"
     write_defaults
     echo "--> Config file created at ${CONFIG_FILE}."
   fi
-  cfgdir=$(dirname "${CONFIG_FILE}")
-  [[ -d "$cfgdir" ]] || mkdir -p "$cfgdir"
   sanity
   personalize
 }

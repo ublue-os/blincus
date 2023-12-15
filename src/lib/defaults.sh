@@ -25,6 +25,11 @@ write_defaults() {
   
   config_set "fedorax.image" "images:fedora/39/cloud"
   config_set "fedorax.scripts" "fedora"
+
+  # nix defaults
+
+  config_set "nix.image" "images:ubuntu/jammy/cloud"
+  config_set "nix.scripts" "ubuntu"
   # todo: flag or JIT set this
   xhost +
 }
