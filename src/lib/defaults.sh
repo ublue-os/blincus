@@ -29,7 +29,7 @@ write_defaults() {
   # nix defaults
 
   config_set "nix.image" "images:ubuntu/jammy/cloud"
-  config_set "nix.scripts" "ubuntu"
+  config_set "nix.scripts" "nix"
   # todo: flag or JIT set this
   xhost +
 }
