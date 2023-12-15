@@ -15,7 +15,13 @@ List all templates
 ## Usage
 
 ```bash
-blincus template list
+blincus template list [OPTIONS]
 ```
+
+## Options
+
+#### *--completions, -c*
+
+output as list for completions
 
 

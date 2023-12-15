@@ -21,6 +21,12 @@ commands:
   alias: l
   help: List all templates
 
+  flags:
+  - long: --completions
+    short: -c
+    help: output as list for completions
+
+
 - name: personalize 
   alias: p
   help: Personalize default templates

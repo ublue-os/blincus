@@ -20,6 +20,7 @@ flags:
     Use `blincus template list` to see available templates
   required: true
 
+
 examples:
 - blincus launch -t ubuntu mydevctr
 - blincus launch -t ubuntux mydevctr
