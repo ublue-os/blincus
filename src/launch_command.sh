@@ -38,5 +38,10 @@ if [[ ! $nomount ]]; then
     echo "$(yellow Mounting home directory)"
     incus config device add "${args[name]}" myhomedir disk source="$HOME" path=/home/"${USER}"/host/
 fi
+if [[ ! -z "${DISPLAY}" ]]; then
+    echo "$(yellow_bold Allowing X sharing:)"
+    xhost +
+fi
 echo "$(green_bold Instance $name ready)"
 echo "Run $(magenta_bold blincus shell $name) to enter"
+

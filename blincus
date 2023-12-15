@@ -618,7 +618,7 @@ write_defaults() {
   config_set "nix.image" "images:ubuntu/jammy/cloud"
   config_set "nix.scripts" "nix"
   # todo: flag or JIT set this
-  xhost +
+  # xhost +
 }
 
 ini_load() {
@@ -812,6 +812,12 @@ blincus_launch_command() {
   fi
   echo "$(green_bold Instance $name ready)"
   echo "Run $(magenta_bold blincus shell $name) to enter"
+  if [[ ! -z "${DISPLAY}" ]]; then
+
+      echo "$(yellow_bold Allowing X sharing)"
+      xhost +
+  fi
+
 }
 
 blincus_shell_command() {
