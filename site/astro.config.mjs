@@ -40,6 +40,7 @@ export default defineConfig({
 						// Each item here is one entry in the navigation menu.
 						{ label: 'Getting Started', link: '/guides/getting-started/' },
 						{ label: 'Installing Blincus', link: '/guides/installing/' },
+						{ label: 'Your First Instance', link: '/guides/first-instance/' },
 						{ label: 'Customizing Blincus', link: '/guides/customizing/' },
 						{ label: 'Tips & Tricks', link: '/guides/tips-tricks/' },
 					],
@@ -50,6 +51,7 @@ export default defineConfig({
 				},				{
 					label: 'Get Help',
 					items: [
+						{ label: 'Troubleshooting', link: '/guides/troubleshooting/' },
 						{ label: 'Github', link: 'https://github.com/ublue-os/blincus' },
 						{ label: 'Discourse', link: 'https://universal-blue.discourse.group/' },
 					],

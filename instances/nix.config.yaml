@@ -26,4 +26,4 @@ ephemeral: false
 profiles:
 - default
 stateful: false
-description: "Ubuntu"
+description: "Nix on Ubuntu"
