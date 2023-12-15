@@ -9,9 +9,9 @@ If you like to live your life dangerously, or you want the latest release,
 you can trust me and simply run this in your terminal:
 
 ```sh
-curl -s https://raw.githubusercontent.com/ublue-os/blincus/main/install | sudo sh
+curl -s https://raw.githubusercontent.com/ublue-os/blincus/main/install | sh
 # or using wget
-wget -qO- https://raw.githubusercontent.com/ublue-os/blincus/main/install | sudo sh
+wget -qO- https://raw.githubusercontent.com/ublue-os/blincus/main/install | sh
 ```
 
 or if you want to select a custom directory to install without sudo:
@@ -25,9 +25,9 @@ wget -qO- https://raw.githubusercontent.com/ublue-os/blincus/main/install | sh -
 If you want to install the last development version, directly from last commit on git, you can use:
 
 ```sh
-curl -s https://raw.githubusercontent.com/ublue-os/blincus/main/install | sudo sh -s -- --next
+curl -s https://raw.githubusercontent.com/ublue-os/blincus/main/install | sh -s -- --next
 # or using wget
-wget -qO- https://raw.githubusercontent.com/ublue-os/blincus/main/install | sudo sh -s -- --next
+wget -qO- https://raw.githubusercontent.com/ublue-os/blincus/main/install | sh -s -- --next
 ```
 
 or:
