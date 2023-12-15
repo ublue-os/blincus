@@ -21,6 +21,7 @@ config:
           - SSHKEY
     runcmd:
     - curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install --no-confirm
+    - export FORCE=1; curl -fsSL https://get.jetpack.io/devbox | bash
     - [ sh, -c, "[ -x /opt/scripts/init.sh ] && /opt/scripts/init.sh"]
 ephemeral: false
 profiles:
