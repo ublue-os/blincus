@@ -75,6 +75,10 @@ The `scripts` value tells Blincus which directory to mount in the instance for c
 
 As an added bonus, if there is an `init.sh` script in that folder, the pre-built templates are [configured to execute it](https://github.com/ublue-os/blincus/blob/main/instances/ubuntux.config.yaml#L52) when the container launches.
 
+## Convention: Template Names ending in 'x' pass through host X and audio
+
+Template names that end in `x` like `ubuntux` or `fedorax` will pass through the X and pulseaudio sockets from the host.
+
 ## Configs and Directories
 
 Blincus stores user configurations at `~/.config/blincus`.
