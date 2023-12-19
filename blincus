@@ -803,6 +803,18 @@ blincus_launch_command() {
   # otherwise the home mount will prevent /etc/skel from being applied
   incus exec "${args[name]}" -- cloud-init status --wait
 
+  TMPFILE=$(mktemp)
+  echo " * Blincus instance: $(red $name)" > $TMPFILE
+  echo " * Template: $(red $template)" >> $TMPFILE
+  echo " * Image: $(red $image)" >> $TMPFILE
+  echo " * Helper Scripts: $(red /opt/scripts)" >> $TMPFILE
+  echo " " >> $TMPFILE
+
+  incus file push $TMPFILE "$name"/etc/blincus
+  MOTDPROFILE=$(mktemp)
+  echo "cat /etc/blincus" > $MOTDPROFILE
+
+  incus file push $MOTDPROFILE "$name"/etc/profile.d/02-blincus.sh
 
   # mount $HOME at $HOME/host
 
@@ -873,6 +885,8 @@ blincus_template_list_command() {
 blincus_template_personalize_command() {
 
   personalize
+  echo "$(green Template personalization complete.)"
+
 }
 
 parse_requirements() {
