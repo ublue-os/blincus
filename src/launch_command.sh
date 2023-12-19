@@ -29,7 +29,19 @@ echo "$(yellow Waiting for cloud init...)"
 # otherwise the home mount will prevent /etc/skel from being applied
 incus exec "${args[name]}" -- cloud-init status --wait
 
-## TODO
+## MOTD
+TMPFILE=$(mktemp)
+echo " * Blincus instance: $(red $name)" > $TMPFILE
+echo " * Template: $(red $template)" >> $TMPFILE
+echo " * Image: $(red $image)" >> $TMPFILE
+echo " * Helper Scripts: $(red /opt/scripts)" >> $TMPFILE
+echo " " >> $TMPFILE
+
+incus file push $TMPFILE "$name"/etc/blincus
+MOTDPROFILE=$(mktemp)
+echo "cat /etc/blincus" > $MOTDPROFILE
+
+incus file push $MOTDPROFILE "$name"/etc/profile.d/02-blincus.sh
 
 
 # mount $HOME at $HOME/host
