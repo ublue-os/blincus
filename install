@@ -3,7 +3,7 @@
 
 next=0
 verbose=0
-version=0.1.0
+version=0.1.6
 
 # Print usage to stdout.
 # Arguments:
