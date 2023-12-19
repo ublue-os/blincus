@@ -19,4 +19,5 @@ for file in $template_path/*.config.yaml; do
 
     done
 done
+echo "$(green Template personalization complete.)"
 }
