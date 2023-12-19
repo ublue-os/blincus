@@ -1563,7 +1563,7 @@ blincus_template_personalize_parse_requirements() {
 }
 
 initialize() {
-  version="0.1.4"
+  version="0.1.5"
   long_usage=''
   set -e
 
