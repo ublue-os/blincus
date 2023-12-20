@@ -62,6 +62,7 @@ fi
 dest_path="${prefix}/bin"
 template_dest_path="${prefix}/share/blincus/templates"
 template_config_dest_path="${HOME}/.config/blincus/templates"
+build_dest_path="${prefix}/share/blincus/build"
 script_dest_path="${prefix}/share/blincus"
 script_config_dest_path="${HOME}/.config/blincus"
 man_dest_path="${prefix}/share/man/man1"
@@ -88,7 +89,8 @@ for file in "${completion_dest_path}/blincus"*; do
 	[ -e "${file}" ] && rm "${file}"
 done
 [ -d "${script_dest_path}" ] && rm -rf "${script_dest_path}"
-[ -d "${script_config_dest_path}" ] && rm -rf "${script_dest_path}"
+[ -d "${build_dest_path}" ] && rm -rf "${build_dest_path}"
+[ -d "${script_config_dest_path}" ] && rm -rf "${script_config_dest_path}"
 
 
 printf >&2 "\033[1;32m Thank you for using Blincus. Uninstall complete.\n\033[0m"

@@ -60,6 +60,8 @@ fi
 dest_path="${prefix}/bin"
 template_dest_path="${prefix}/share/blincus/templates"
 template_config_dest_path="${HOME}/.config/blincus/templates"
+build_dest_path="${prefix}/share/blincus/build"
+build_config_dest_path="${HOME}/.config/blincus/build"
 script_dest_path="${prefix}/share/blincus"
 script_config_dest_path="${HOME}/.config/blincus"
 man_dest_path="${prefix}/share/man/man1"
@@ -121,12 +123,30 @@ if [ -e "${curr_dir}/blincus" ]; then
 		done
 		if [ -d $template_config_dest_path ]; then
 			printf >&2 "\033[0m Refusing to overwrite user templates at \033[1;31m%s\n\033[0m" "${template_config_dest_path}"
-			printf >&2 "\033[0m\033[1;31m   Updated templates available at %s\n\033[0m" "${template_dest_path}/scripts"
+			printf >&2 "\033[0m\033[1;31m   Updated templates available at %s\n\033[0m" "${template_dest_path}"
 
 		else
 			mkdir -p "${template_config_dest_path}"
 			for file in instances/*; do
 				install -D -m 0644 -t "${template_config_dest_path}" "${file}"
+			done
+		fi
+
+	fi
+
+	if [ -e "build" ]; then
+		mkdir -p "${build_dest_path}"
+		for file in build/*; do
+			install -D -m 0644 -t "${build_dest_path}" "${file}"
+		done
+		if [ -d $build_config_dest_path ]; then
+			printf >&2 "\033[0m Refusing to overwrite user build templates at \033[1;31m%s\n\033[0m" "${build_config_dest_path}"
+			printf >&2 "\033[0m\033[1;31m   Updated build templates available at %s\n\033[0m" "${build_dest_path}"
+
+		else
+			mkdir -p "${build_config_dest_path}"
+			for file in build/*; do
+				install -D -m 0644 -t "${build_config_dest_path}" "${file}"
 			done
 		fi
 
@@ -203,7 +223,7 @@ else
 
 		if [ -d $template_config_dest_path ]; then
 			printf >&2 "\033[0m Refusing to overwrite user templates at \033[1;31m%s\n\033[0m" "${template_config_dest_path}"
-			printf >&2 "\033[0m\033[1;31m   Updated templates available at %s\n\033[0m" "${template_dest_path}/scripts"
+			printf >&2 "\033[0m\033[1;31m   Updated templates available at %s\n\033[0m" "${template_dest_path}"
 
 		else
 			mkdir -p "${template_config_dest_path}"
@@ -214,6 +234,24 @@ else
 
 	fi
 
+	if [ -e "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')/build/" ]; then
+		mkdir -p "${build_dest_path}"
+		for file in "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')"/build/*; do
+			install -D -m 0644 -t "${build_dest_path}" "${file}"
+		done
+
+		if [ -d $build_config_dest_path ]; then
+			printf >&2 "\033[0m Refusing to overwrite user build templates at \033[1;31m%s\n\033[0m" "${build_config_dest_path}"
+			printf >&2 "\033[0m\033[1;31m   Updated build templates available at %s\n\033[0m" "${template_dest_path}"
+
+		else
+			mkdir -p "${build_config_dest_path}"
+			for file in "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')"/build/*; do
+				install -D -m 0644 -t "${build_config_dest_path}" "${file}"
+			done
+		fi
+
+	fi
 
 	# securely delete unneeded files
 	cd
