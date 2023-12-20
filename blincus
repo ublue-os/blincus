@@ -2070,7 +2070,7 @@ blincus_custom_image_list_parse_requirements() {
 }
 
 initialize() {
-  version="0.1.6"
+  version="0.2.0"
   long_usage=''
   set -e
 
