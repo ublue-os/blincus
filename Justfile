@@ -9,3 +9,7 @@ install: generate
 build: generate
     docker build -t bketelsen/blincus:latest .
     docker push bketelsen/blincus:latest
+
+docs: generate
+    distrobox enter universal
+   

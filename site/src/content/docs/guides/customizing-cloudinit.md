@@ -1,17 +1,9 @@
 ---
-title: Customizing Blincus
-description: Make incus based development environments.
+title: Custom Images - cloud-config
+description: Create custom images using Distrobuilder with cloud-init.
 ---
 
-If you find yourself using the same images with the same packages/tools frequently you can use the `blincus custom-image` set of commands to create a custom image locally.
-
-__* This step is entirely optional__
-
-Custom images are a way for you to move the time cost of installing frequently used packages and tools from "every time you launch an instance" to "whenever you want to refresh your custom image".
-
-Custom images are built using [distrobuilder](https://linuxcontainers.org/distrobuilder/introduction/), so you'll need to have `distrobuilder` installed on your Incus server.  Many of the `distrobuilder` recipes will use [debootstrap](https://wiki.debian.org/Debootstrap) if they're Debian or Ubuntu based recipes. So you'll probably want that installed as well.
-
-## How It Works
+## Tutorial
 
 You will create a build recipe in `$HOME/.config/blincus/build`. The recipe must be a valid distrobuilder template.
 

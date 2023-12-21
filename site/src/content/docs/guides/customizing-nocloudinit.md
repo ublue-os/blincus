@@ -1,5 +1,5 @@
 ---
-title: Customizing Blincus
+title: Custom Images - No cloud-config
 description: Make incus based development environments.
 ---
 
