@@ -952,7 +952,7 @@ blincus_launch_command() {
 
   # wait for cloud-init to create the user
   # otherwise the home mount will prevent /etc/skel from being applied
-  incus exec "${args[name]}" -- cloud-init status --wait
+  incus exec "${args[name]}" -- bash -c "command -v cloud-init && cloud-init status --wait || echo No cloud-init"
 
   TMPFILE=$(mktemp)
   echo " * Blincus instance: $(red $name)" > $TMPFILE
