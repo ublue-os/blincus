@@ -148,6 +148,10 @@ if [ -e "${curr_dir}/blincus" ]; then
 			for file in build/*; do
 				install -D -m 0644 -t "${build_config_dest_path}" "${file}"
 			done
+			mkdir -p "${build_config_dest_path}"/sources
+			touch "${build_config_dest_path}"/sources/tailscale
+			
+
 		fi
 
 	fi

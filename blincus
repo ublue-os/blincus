@@ -1102,7 +1102,7 @@ blincus_custom_image_create_command() {
   fi
 
   # ensure recipe exists
-   touch "${recipe}"
+  touch "${recipe}"
 
   # ensure scriptdir exists
   if [ ! -e "${cfgdir}/scripts/${scriptdir}" ]; then
@@ -1121,6 +1121,7 @@ blincus_custom_image_create_command() {
   echo "Created $(blue ${cfgdir}/templates/builder-${name}.config.yaml) template"
   echo "$(yellow Next Steps:)"
   echo " * Edit $(blue ${recipe}) with a valid Distrobuilder recipe"
+  echo " * See examples in $(blue ${cfgdir}/build) for inspiration"
   echo " * Run $(magenta_bold blincus custom-image build ${name}) to build the image"
 }
 
