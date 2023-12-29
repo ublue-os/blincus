@@ -333,6 +333,7 @@ blincus_template_usage() {
   printf "  %s   Edit a template\n" "$(green "edit")       "
   printf "  %s   List all templates\n" "$(green "list")       "
   printf "  %s   Personalize default templates\n" "$(green "personalize")"
+  printf "  %s   Restore default templates\n" "$(green "restore")    "
   echo
 
   if [[ -n $long_usage ]]; then
@@ -437,6 +438,35 @@ blincus_template_personalize_usage() {
   printf "%s\n" "$(bold "Usage:")"
   printf "  blincus template personalize\n"
   printf "  blincus template personalize --help | -h\n"
+  echo
+
+  if [[ -n $long_usage ]]; then
+    printf "%s\n" "$(bold "Options:")"
+
+    printf "  %s\n" "$(magenta "--help, -h")"
+    printf "    Show this help\n"
+    echo
+
+  fi
+}
+
+blincus_template_restore_usage() {
+  if [[ -n $long_usage ]]; then
+    printf "blincus template restore - Restore default templates\n"
+    echo
+
+  else
+    printf "blincus template restore - Restore default templates\n"
+    echo
+
+  fi
+
+  printf "Alias: r\n"
+  echo
+
+  printf "%s\n" "$(bold "Usage:")"
+  printf "  blincus template restore\n"
+  printf "  blincus template restore --help | -h\n"
   echo
 
   if [[ -n $long_usage ]]; then
@@ -876,6 +906,15 @@ for file in $template_path/*.config.yaml; do
 done
 }
 
+prefix() {
+    # find the path where `blincus` is located and use that as the prefix
+    # default to /usr/local if not found
+    local prefix
+    prefix=$(dirname "$(dirname "$(command -v blincus)")")
+    [ -z "${prefix}" ] && prefix="/usr/local"
+    echo "${prefix}"
+}
+
 sanity() {
     local errors;
 
@@ -1044,6 +1083,18 @@ blincus_template_personalize_command() {
   personalize
   echo "$(green Template personalization complete.)"
 
+}
+
+blincus_template_restore_command() {
+  cfgdir=$(dirname "${CONFIG_FILE}")
+
+  template_path="${cfgdir}/templates"
+
+  templateDir="$(prefix)/share/blincus/templates"
+  echo "$(blue Installer template directory:) $templateDir"
+  echo "$(blue User template directory:) $template_path"
+  echo ""
+  echo "$(red To restore a template copy the template from the installer directory to the user directory)"
 }
 
 blincus_custom_image_build_command() {
@@ -1653,6 +1704,13 @@ blincus_template_parse_requirements() {
       shift $#
       ;;
 
+    restore | r)
+      action="restore"
+      shift
+      blincus_template_restore_parse_requirements "$@"
+      shift $#
+      ;;
+
     "")
       blincus_template_usage >&2
       exit 1
@@ -1801,6 +1859,46 @@ blincus_template_personalize_parse_requirements() {
   done
 
   action="template personalize"
+
+  while [[ $# -gt 0 ]]; do
+    key="$1"
+    case "$key" in
+
+      -?*)
+        printf "invalid option: %s\n" "$key" >&2
+        exit 1
+        ;;
+
+      *)
+
+        printf "invalid argument: %s\n" "$key" >&2
+        exit 1
+
+        ;;
+
+    esac
+  done
+
+}
+
+blincus_template_restore_parse_requirements() {
+
+  while [[ $# -gt 0 ]]; do
+    case "${1:-}" in
+      --help | -h)
+        long_usage=yes
+        blincus_template_restore_usage
+        exit
+        ;;
+
+      *)
+        break
+        ;;
+
+    esac
+  done
+
+  action="template restore"
 
   while [[ $# -gt 0 ]]; do
     key="$1"
@@ -2114,6 +2212,7 @@ run() {
     "template edit") blincus_template_edit_command ;;
     "template list") blincus_template_list_command ;;
     "template personalize") blincus_template_personalize_command ;;
+    "template restore") blincus_template_restore_command ;;
     "custom-image") blincus_custom_image_command ;;
     "custom-image build") blincus_custom_image_build_command ;;
     "custom-image create") blincus_custom_image_create_command ;;
