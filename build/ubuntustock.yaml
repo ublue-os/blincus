@@ -1,0 +1,213 @@
+image:
+  name: ubuntu-disco-x86_64
+  distribution: ubuntu
+  release: jammy
+  variant: cloud
+  description: |-
+    Blincus custom build Ubuntu {{ image.release }}
+  architecture: x86_64
+
+source:
+  downloader: debootstrap
+  same_as: gutsy
+  url: http://archive.ubuntu.com/ubuntu
+  keyserver: keyserver.ubuntu.com
+  keys:
+  - 0x790BC7277767219C42C86F933B4FE6ACC0B21F32
+  - 0xf6ecb3762474eda9d21b7022871920d1991bc93c
+
+targets:
+  lxc:
+    create_message: |-
+      You just created an {{ image.description }} container.
+
+      To enable SSH, run: apt install openssh-server
+      No default root or user password are set by LXC.
+    config:
+    - type: all
+      before: 5
+      content: |-
+        lxc.include = LXC_TEMPLATE_CONFIG/ubuntu.common.conf
+
+    - type: user
+      before: 5
+      content: |-
+        lxc.include = LXC_TEMPLATE_CONFIG/ubuntu.userns.conf
+
+    - type: all
+      after: 4
+      content: |-
+        lxc.include = LXC_TEMPLATE_CONFIG/common.conf
+
+    - type: user
+      after: 4
+      content: |-
+        lxc.include = LXC_TEMPLATE_CONFIG/userns.conf
+
+    - type: all
+      content: |-
+        lxc.arch = {{ image.architecture_personality }}
+
+files:
+- path: /etc/hostname
+  generator: hostname
+
+- path: /etc/hosts
+  generator: hosts
+
+- path: /etc/resolvconf/resolv.conf.d/original
+  generator: remove
+
+- path: /etc/resolvconf/resolv.conf.d/tail
+  generator: remove
+
+- path: /etc/machine-id
+  generator: dump
+
+- path: /etc/user/profile
+  generator: copy
+  source: /etc/profile
+
+- path: /var/lib/dbus/machine-id
+  generator: remove
+
+- path: /etc/netplan/10-lxc.yaml
+  generator: dump
+  content: |-
+    network:
+      version: 2
+      ethernets:
+        eth0:
+          dhcp4: true
+          dhcp-identifier: mac
+  releases:
+  - bionic
+  - eoan
+  - focal
+  - groovy
+  - hirsute
+  - impish
+  - jammy
+  types:
+  - container
+  variants:
+  - default
+
+- name: meta-data
+  generator: cloud-init
+  variants:
+  - cloud
+
+- name: network-config
+  generator: cloud-init
+  variants:
+  - cloud
+
+- name: user-data
+  generator: cloud-init
+  variants:
+  - cloud
+
+- name: vendor-data
+  generator: cloud-init
+  variants:
+  - cloud
+
+- path: /etc/sudoers.d/90-incus
+  generator: dump
+  mode: 0440
+  content: |-
+    # User rules for ubuntu
+    ubuntu ALL=(ALL) NOPASSWD:ALL
+  variants:
+    - default
+
+packages:
+  manager: apt
+  update: true
+  cleanup: true
+  sets:
+  - packages:
+    - fuse
+    - language-pack-en
+    - openssh-client
+    - vim
+    action: install
+
+  - packages:
+    - cloud-init
+    action: install
+    variants:
+    - cloud
+
+
+  repositories:
+  - name: sources.list
+    url: |-
+      deb http://archive.ubuntu.com/ubuntu {{ image.release }} main restricted universe multiverse
+      deb http://archive.ubuntu.com/ubuntu {{ image.release }}-updates main restricted universe multiverse
+      deb http://security.ubuntu.com/ubuntu {{ image.release }}-security main restricted universe multiverse
+    architectures:
+    - amd64
+    - i386
+
+  - name: sources.list
+    url: |-
+      deb http://ports.ubuntu.com/ubuntu-ports {{ image.release }} main restricted universe multiverse
+      deb http://ports.ubuntu.com/ubuntu-ports {{ image.release }}-updates main restricted universe multiverse
+      deb http://ports.ubuntu.com/ubuntu-ports {{ image.release }}-security main restricted universe multiverse
+    architectures:
+    - armhf
+    - arm64
+    - powerpc
+    - powerpc64
+    - ppc64el
+    - riscv64
+
+actions:
+- trigger: post-update
+  action: |-
+    #!/bin/sh
+    set -eux
+
+    # Create the ubuntu user account
+    getent group sudo >/dev/null 2>&1 || groupadd --system sudo
+    useradd --create-home -s /bin/bash -G sudo -U ubuntu
+  variants:
+  - default
+
+- trigger: post-packages
+  action: |-
+    #!/bin/sh
+    set -eux
+
+    # Enable systemd-networkd
+    systemctl enable systemd-networkd
+  releases:
+  - bionic
+  - eoan
+  - focal
+  - groovy
+  - hirsute
+  - impish
+  - jammy
+
+- trigger: post-packages
+  action: |-
+    #!/bin/sh
+    set -eux
+
+    # Make sure the locale is built and functional
+    locale-gen en_US.UTF-8
+    update-locale LANG=en_US.UTF-8
+
+    # Cleanup underlying /run
+    mount -o bind / /mnt
+    rm -rf /mnt/run/*
+    umount /mnt
+
+    # Cleanup temporary shadow paths
+    rm /etc/*-
+
+mappings:
+  architecture_map: debian

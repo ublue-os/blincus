@@ -31,3 +31,7 @@ commands:
   alias: p
   help: Personalize default templates
 
+- name: restore
+  alias: r
+  help: Restore default templates
+

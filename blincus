@@ -32,10 +32,11 @@ blincus_usage() {
   echo
 
   printf "%s\n" "$(bold "Commands:")"
-  printf "  %s   Manage blincus config\n" "$(green "config")  "
-  printf "  %s   Launch a new instance\n" "$(green "launch")  "
-  printf "  %s   Open a shell in an instance\n" "$(green "shell")   "
-  printf "  %s   Manage blincus templates\n" "$(green "template")"
+  printf "  %s   Manage blincus config\n" "$(green "config")      "
+  printf "  %s   Launch a new instance\n" "$(green "launch")      "
+  printf "  %s   Open a shell in an instance\n" "$(green "shell")       "
+  printf "  %s   Manage blincus templates\n" "$(green "template")    "
+  printf "  %s   Build custom images with distrobuilder\n" "$(green "custom-image")"
   echo
 
   if [[ -n $long_usage ]]; then
@@ -332,6 +333,7 @@ blincus_template_usage() {
   printf "  %s   Edit a template\n" "$(green "edit")       "
   printf "  %s   List all templates\n" "$(green "list")       "
   printf "  %s   Personalize default templates\n" "$(green "personalize")"
+  printf "  %s   Restore default templates\n" "$(green "restore")    "
   echo
 
   if [[ -n $long_usage ]]; then
@@ -436,6 +438,185 @@ blincus_template_personalize_usage() {
   printf "%s\n" "$(bold "Usage:")"
   printf "  blincus template personalize\n"
   printf "  blincus template personalize --help | -h\n"
+  echo
+
+  if [[ -n $long_usage ]]; then
+    printf "%s\n" "$(bold "Options:")"
+
+    printf "  %s\n" "$(magenta "--help, -h")"
+    printf "    Show this help\n"
+    echo
+
+  fi
+}
+
+blincus_template_restore_usage() {
+  if [[ -n $long_usage ]]; then
+    printf "blincus template restore - Restore default templates\n"
+    echo
+
+  else
+    printf "blincus template restore - Restore default templates\n"
+    echo
+
+  fi
+
+  printf "Alias: r\n"
+  echo
+
+  printf "%s\n" "$(bold "Usage:")"
+  printf "  blincus template restore\n"
+  printf "  blincus template restore --help | -h\n"
+  echo
+
+  if [[ -n $long_usage ]]; then
+    printf "%s\n" "$(bold "Options:")"
+
+    printf "  %s\n" "$(magenta "--help, -h")"
+    printf "    Show this help\n"
+    echo
+
+  fi
+}
+
+blincus_custom_image_usage() {
+  if [[ -n $long_usage ]]; then
+    printf "blincus custom-image - Build custom images with distrobuilder\n"
+    echo
+
+  else
+    printf "blincus custom-image - Build custom images with distrobuilder\n"
+    echo
+
+  fi
+
+  printf "%s\n" "$(bold "Usage:")"
+  printf "  blincus custom-image COMMAND\n"
+  printf "  blincus custom-image [COMMAND] --help | -h\n"
+  echo
+
+  printf "%s\n" "$(bold "Commands:")"
+  printf "  %s   Build an image, requires \`distrobuilder\`\n" "$(green "build") "
+  printf "  %s   Create custom image recipe and template\n" "$(green "create")"
+  printf "  %s   List all image templates\n" "$(green "list")  "
+  echo
+
+  if [[ -n $long_usage ]]; then
+    printf "%s\n" "$(bold "Options:")"
+
+    printf "  %s\n" "$(magenta "--help, -h")"
+    printf "    Show this help\n"
+    echo
+
+    printf "View documentation online at https://blincus.dev\n\n"
+    echo
+
+  fi
+}
+
+blincus_custom_image_build_usage() {
+  if [[ -n $long_usage ]]; then
+    printf "blincus custom-image build - Build an image, requires \`distrobuilder\`\n"
+    echo
+
+  else
+    printf "blincus custom-image build - Build an image, requires \`distrobuilder\`\n"
+    echo
+
+  fi
+
+  printf "Alias: b\n"
+  echo
+
+  printf "%s\n" "$(bold "Usage:")"
+  printf "  blincus custom-image build NAME\n"
+  printf "  blincus custom-image build --help | -h\n"
+  echo
+
+  if [[ -n $long_usage ]]; then
+    printf "%s\n" "$(bold "Options:")"
+
+    printf "  %s\n" "$(magenta "--help, -h")"
+    printf "    Show this help\n"
+    echo
+
+    printf "%s\n" "$(bold "Arguments:")"
+
+    printf "  %s\n" "$(blue "NAME")"
+    printf "    Template name\n"
+    echo
+
+    printf "%s\n" "$(bold "Examples:")"
+    printf "  blincus custom-image build ubuntu\n"
+    echo
+
+  fi
+}
+
+blincus_custom_image_create_usage() {
+  if [[ -n $long_usage ]]; then
+    printf "blincus custom-image create - Create custom image recipe and template\n"
+    echo
+
+  else
+    printf "blincus custom-image create - Create custom image recipe and template\n"
+    echo
+
+  fi
+
+  printf "Alias: c\n"
+  echo
+
+  printf "%s\n" "$(bold "Usage:")"
+  printf "  blincus custom-image create NAME [OPTIONS]\n"
+  printf "  blincus custom-image create --help | -h\n"
+  echo
+
+  if [[ -n $long_usage ]]; then
+    printf "%s\n" "$(bold "Options:")"
+
+    printf "  %s\n" "$(magenta "--template, -t TEMPLATE (required)")"
+    printf "    Template to copy \n    Use \`blincus template list\` to see available templates\n"
+    echo
+
+    printf "  %s\n" "$(magenta "--scripts, -s SCRIPTS (required)")"
+    printf "    Scripts directory to use\n"
+    echo
+
+    printf "  %s\n" "$(magenta "--help, -h")"
+    printf "    Show this help\n"
+    echo
+
+    printf "%s\n" "$(bold "Arguments:")"
+
+    printf "  %s\n" "$(blue "NAME")"
+    printf "    Template name\n"
+    echo
+
+    printf "%s\n" "$(bold "Examples:")"
+    printf "  blincus custom-image create ubuntu -t ubuntu -s ubuntu\n"
+    echo
+
+  fi
+}
+
+blincus_custom_image_list_usage() {
+  if [[ -n $long_usage ]]; then
+    printf "blincus custom-image list - List all image templates\n"
+    echo
+
+  else
+    printf "blincus custom-image list - List all image templates\n"
+    echo
+
+  fi
+
+  printf "Alias: l\n"
+  echo
+
+  printf "%s\n" "$(bold "Usage:")"
+  printf "  blincus custom-image list\n"
+  printf "  blincus custom-image list --help | -h\n"
   echo
 
   if [[ -n $long_usage ]]; then
@@ -725,6 +906,15 @@ for file in $template_path/*.config.yaml; do
 done
 }
 
+prefix() {
+    # find the path where `blincus` is located and use that as the prefix
+    # default to /usr/local if not found
+    local prefix
+    prefix=$(dirname "$(dirname "$(command -v blincus)")")
+    [ -z "${prefix}" ] && prefix="/usr/local"
+    echo "${prefix}"
+}
+
 sanity() {
     local errors;
 
@@ -807,7 +997,7 @@ blincus_launch_command() {
 
   # wait for cloud-init to create the user
   # otherwise the home mount will prevent /etc/skel from being applied
-  incus exec "${args[name]}" -- cloud-init status --wait
+  incus exec "${args[name]}" -- bash -c "command -v cloud-init && cloud-init status --wait || echo No cloud-init"
 
   TMPFILE=$(mktemp)
   echo " * Blincus instance: $(red $name)" > $TMPFILE
@@ -895,6 +1085,115 @@ blincus_template_personalize_command() {
 
 }
 
+blincus_template_restore_command() {
+  cfgdir=$(dirname "${CONFIG_FILE}")
+
+  template_path="${cfgdir}/templates"
+
+  templateDir="$(prefix)/share/blincus/templates"
+  echo "$(blue Installer template directory:) $templateDir"
+  echo "$(blue User template directory:) $template_path"
+  echo ""
+  echo "$(red To restore a template copy the template from the installer directory to the user directory)"
+}
+
+blincus_custom_image_build_command() {
+
+  cfgdir=$(dirname "${CONFIG_FILE}")
+  name=${args[name]}
+  scriptdir=${args[--scripts]}
+  sourcetemplate=${args[--template]}
+
+  recipe="${cfgdir}/build/${name}.yaml"
+
+  # ensure distrobuilder is installed
+  if ! command -v distrobuilder >/dev/null; then
+      echo "$(red distrobuilder) is not installed, or is not in your PATH. Please install it and try again."
+      exit 1
+  fi
+
+  if ! command -v debootstrap >/dev/null; then
+      echo "$(yellow debootstrap) is not installed, or is not in your PATH. Many recipes require it."
+  fi
+  # create build directory
+  builddir="${cfgdir}/build/${name}"
+  mkdir -p "${builddir}"
+
+  # ensure recipe exists
+  if [ ! -e "${recipe}" ]; then
+      echo "Build recipe $(red ${recipe}) does not exist"
+      exit 1
+  fi
+
+  echo "Using $(blue ${recipe}) recipe"
+
+  sudo distrobuilder build-incus "${recipe}" ${builddir}
+
+  # now import it
+  echo "Importing image"
+  sudo incus image import "${builddir}/incus.tar.xz" "${builddir}/rootfs.squashfs" builder=blincus --alias "builder-${name}"
+
+  echo "Image $(blue builder-${name}) imported"
+
+}
+
+blincus_custom_image_create_command() {
+
+  cfgdir=$(dirname "${CONFIG_FILE}")
+  name=${args[name]}
+  scriptdir=${args[--scripts]}
+  sourcetemplate=${args[--template]}
+
+  recipe="${cfgdir}/build/${name}.yaml"
+
+  # ensure sourcetemplate exists
+  if [ ! -e "${cfgdir}/templates/${sourcetemplate}.config.yaml" ]; then
+      echo "Source template $(red ${sourcetemplate}) does not exist"
+      exit 1
+  fi
+
+  # ensure recipe exists
+  touch "${recipe}"
+
+  # ensure scriptdir exists
+  if [ ! -e "${cfgdir}/scripts/${scriptdir}" ]; then
+      echo "Script directory $(red ${scriptdir}) does not exist"
+      exit 1
+  fi
+
+  # Create config values for this image
+  config_set "builder-${name}.image" "builder-${name}"
+  config_set "builder-${name}.scripts" "${scriptdir}"
+
+  # copy image template
+  cp "${cfgdir}/templates/${sourcetemplate}.config.yaml" "${cfgdir}/templates/builder-${name}.config.yaml"
+
+  echo "Created $(blue ${recipe}) recipe"
+  echo "Created $(blue ${cfgdir}/templates/builder-${name}.config.yaml) template"
+  echo "$(yellow Next Steps:)"
+  echo " * Edit $(blue ${recipe}) with a valid Distrobuilder recipe"
+  echo " * See examples in $(blue ${cfgdir}/build) for inspiration"
+  echo " * Run $(magenta_bold blincus custom-image build ${name}) to build the image"
+}
+
+blincus_custom_image_list_command() {
+  cfgdir=$(dirname "${CONFIG_FILE}")
+
+  recipedir="${cfgdir}/build/"
+
+  echo "$(red Custom) image build recipes:"
+  for t in ${recipedir}*.yaml; do
+      template=$(basename "${t}" .yaml)
+      echo "  $(blue $template)" "- ${t}"
+  done
+
+  echo "$(red Custom) images (built):"
+  for image in $(incus image list --format json | jq -r '.[] | select(.properties.builder == "blincus") | select(.aliases !=[]) | .aliases[0].name '); do
+      echo "  $(blue $image)"
+  done
+
+}
+
 parse_requirements() {
 
   while [[ $# -gt 0 ]]; do
@@ -957,6 +1256,13 @@ parse_requirements() {
       action="template"
       shift
       blincus_template_parse_requirements "$@"
+      shift $#
+      ;;
+
+    custom-image)
+      action="custom-image"
+      shift
+      blincus_custom_image_parse_requirements "$@"
       shift $#
       ;;
 
@@ -1398,6 +1704,13 @@ blincus_template_parse_requirements() {
       shift $#
       ;;
 
+    restore | r)
+      action="restore"
+      shift
+      blincus_template_restore_parse_requirements "$@"
+      shift $#
+      ;;
+
     "")
       blincus_template_usage >&2
       exit 1
@@ -1568,8 +1881,301 @@ blincus_template_personalize_parse_requirements() {
 
 }
 
+blincus_template_restore_parse_requirements() {
+
+  while [[ $# -gt 0 ]]; do
+    case "${1:-}" in
+      --help | -h)
+        long_usage=yes
+        blincus_template_restore_usage
+        exit
+        ;;
+
+      *)
+        break
+        ;;
+
+    esac
+  done
+
+  action="template restore"
+
+  while [[ $# -gt 0 ]]; do
+    key="$1"
+    case "$key" in
+
+      -?*)
+        printf "invalid option: %s\n" "$key" >&2
+        exit 1
+        ;;
+
+      *)
+
+        printf "invalid argument: %s\n" "$key" >&2
+        exit 1
+
+        ;;
+
+    esac
+  done
+
+}
+
+blincus_custom_image_parse_requirements() {
+
+  while [[ $# -gt 0 ]]; do
+    case "${1:-}" in
+      --help | -h)
+        long_usage=yes
+        blincus_custom_image_usage
+        exit
+        ;;
+
+      *)
+        break
+        ;;
+
+    esac
+  done
+
+  action=${1:-}
+
+  case $action in
+    -*) ;;
+
+    build | b)
+      action="build"
+      shift
+      blincus_custom_image_build_parse_requirements "$@"
+      shift $#
+      ;;
+
+    create | c)
+      action="create"
+      shift
+      blincus_custom_image_create_parse_requirements "$@"
+      shift $#
+      ;;
+
+    list | l)
+      action="list"
+      shift
+      blincus_custom_image_list_parse_requirements "$@"
+      shift $#
+      ;;
+
+    "")
+      blincus_custom_image_usage >&2
+      exit 1
+      ;;
+
+    *)
+      printf "invalid command: %s\n" "$action" >&2
+      exit 1
+      ;;
+
+  esac
+
+  while [[ $# -gt 0 ]]; do
+    key="$1"
+    case "$key" in
+
+      -?*)
+        printf "invalid option: %s\n" "$key" >&2
+        exit 1
+        ;;
+
+      *)
+
+        printf "invalid argument: %s\n" "$key" >&2
+        exit 1
+
+        ;;
+
+    esac
+  done
+
+}
+
+blincus_custom_image_build_parse_requirements() {
+
+  while [[ $# -gt 0 ]]; do
+    case "${1:-}" in
+      --help | -h)
+        long_usage=yes
+        blincus_custom_image_build_usage
+        exit
+        ;;
+
+      *)
+        break
+        ;;
+
+    esac
+  done
+
+  action="custom-image build"
+
+  while [[ $# -gt 0 ]]; do
+    key="$1"
+    case "$key" in
+
+      -?*)
+        printf "invalid option: %s\n" "$key" >&2
+        exit 1
+        ;;
+
+      *)
+
+        if [[ -z ${args['name']+x} ]]; then
+
+          args['name']=$1
+          shift
+        else
+          printf "invalid argument: %s\n" "$key" >&2
+          exit 1
+        fi
+
+        ;;
+
+    esac
+  done
+
+  if [[ -z ${args['name']+x} ]]; then
+    printf "missing required argument: NAME\nusage: blincus custom-image build NAME\n" >&2
+    exit 1
+  fi
+
+}
+
+blincus_custom_image_create_parse_requirements() {
+
+  while [[ $# -gt 0 ]]; do
+    case "${1:-}" in
+      --help | -h)
+        long_usage=yes
+        blincus_custom_image_create_usage
+        exit
+        ;;
+
+      *)
+        break
+        ;;
+
+    esac
+  done
+
+  action="custom-image create"
+
+  while [[ $# -gt 0 ]]; do
+    key="$1"
+    case "$key" in
+
+      --template | -t)
+
+        if [[ -n ${2+x} ]]; then
+
+          args['--template']="$2"
+          shift
+          shift
+        else
+          printf "%s\n" "--template requires an argument: --template, -t TEMPLATE" >&2
+          exit 1
+        fi
+        ;;
+
+      --scripts | -s)
+
+        if [[ -n ${2+x} ]]; then
+
+          args['--scripts']="$2"
+          shift
+          shift
+        else
+          printf "%s\n" "--scripts requires an argument: --scripts, -s SCRIPTS" >&2
+          exit 1
+        fi
+        ;;
+
+      -?*)
+        printf "invalid option: %s\n" "$key" >&2
+        exit 1
+        ;;
+
+      *)
+
+        if [[ -z ${args['name']+x} ]]; then
+
+          args['name']=$1
+          shift
+        else
+          printf "invalid argument: %s\n" "$key" >&2
+          exit 1
+        fi
+
+        ;;
+
+    esac
+  done
+
+  if [[ -z ${args['name']+x} ]]; then
+    printf "missing required argument: NAME\nusage: blincus custom-image create NAME [OPTIONS]\n" >&2
+    exit 1
+  fi
+
+  if [[ -z ${args['--template']+x} ]]; then
+    printf "missing required flag: --template, -t TEMPLATE\n" >&2
+    exit 1
+  fi
+  if [[ -z ${args['--scripts']+x} ]]; then
+    printf "missing required flag: --scripts, -s SCRIPTS\n" >&2
+    exit 1
+  fi
+
+}
+
+blincus_custom_image_list_parse_requirements() {
+
+  while [[ $# -gt 0 ]]; do
+    case "${1:-}" in
+      --help | -h)
+        long_usage=yes
+        blincus_custom_image_list_usage
+        exit
+        ;;
+
+      *)
+        break
+        ;;
+
+    esac
+  done
+
+  action="custom-image list"
+
+  while [[ $# -gt 0 ]]; do
+    key="$1"
+    case "$key" in
+
+      -?*)
+        printf "invalid option: %s\n" "$key" >&2
+        exit 1
+        ;;
+
+      *)
+
+        printf "invalid argument: %s\n" "$key" >&2
+        exit 1
+
+        ;;
+
+    esac
+  done
+
+}
+
 initialize() {
-  version="0.1.6"
+  version="0.2.0"
   long_usage=''
   set -e
 
@@ -1606,6 +2212,11 @@ run() {
     "template edit") blincus_template_edit_command ;;
     "template list") blincus_template_list_command ;;
     "template personalize") blincus_template_personalize_command ;;
+    "template restore") blincus_template_restore_command ;;
+    "custom-image") blincus_custom_image_command ;;
+    "custom-image build") blincus_custom_image_build_command ;;
+    "custom-image create") blincus_custom_image_create_command ;;
+    "custom-image list") blincus_custom_image_list_command ;;
   esac
 }
 

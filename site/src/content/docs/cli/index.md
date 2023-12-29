@@ -15,7 +15,7 @@ in blincus will pass through to `incus`.
 
 | Attributes       | &nbsp;
 |------------------|-------------
-| Version:         | 0.1.6
+| Version:         | 0.2.0
 | Extensible:      | incus
 
 ## Usage
@@ -46,5 +46,6 @@ Location of blincus config.ini
 - [blincus launch](/cli/blincus/launch) - Launch a new instance
 - [blincus shell](/cli/blincus/shell) - Open a shell in an instance
 - [blincus template](/cli/blincus/template) - Manage blincus templates
+- [blincus custom-image](/cli/blincus/custom-image) - Build custom images with distrobuilder
 
 

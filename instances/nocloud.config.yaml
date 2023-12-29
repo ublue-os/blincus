@@ -1,0 +1,13 @@
+architecture: x86_64
+config:
+  raw.idmap: both 1000 1000
+  security.nesting: "true"
+devices:
+  keys:
+    path: /home/bjk/.ssh
+    source: /home/bjk/.ssh
+    type: disk
+profiles:
+- default
+stateful: false
+description: "Ubuntu"
