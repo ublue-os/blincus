@@ -1,4 +1,4 @@
-image:
+ image:
   name: ubuntu-disco-x86_64
   distribution: ubuntu
   release: jammy
@@ -255,24 +255,24 @@ actions:
     # Cleanup temporary shadow paths
     rm /etc/*-
 
-  - trigger: post-packages
-    action: |-
-      #!/bin/sh
-      set -eux
-      # auto join tailscale network
-      (
-      cat << EOF
-      [Unit]
-      Description=Tailscale Join
+- trigger: post-packages
+  action: |-
+    #!/bin/sh
+    set -eux
+    # auto join tailscale network
+    (
+    cat << EOF
+    [Unit]
+    Description=Tailscale Join
 
-      [Service]
-      Type=oneshot
-      ExecStart=/usr/bin/tailscale up --authkey=file:/etc/tailscale/pat
+    [Service]
+    Type=oneshot
+    ExecStart=/usr/bin/tailscale up --authkey=file:/etc/tailscale/pat
 
-      [Install]
-      WantedBy=default.target
-      EOF
-      ) > /etc/systemd/system/join-tailscale.service
-      systemctl enable join-tailscale.service
+    [Install]
+    WantedBy=default.target
+    EOF
+    ) > /etc/systemd/system/join-tailscale.service
+    systemctl enable join-tailscale.service
 mappings:
   architecture_map: debian

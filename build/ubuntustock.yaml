@@ -93,28 +93,6 @@ files:
   variants:
   - default
 
-- path: /etc/netplan/10-lxc.yaml
-  generator: dump
-  content: |-
-    network:
-      version: 2
-      ethernets:
-        enp5s0:
-          dhcp4: true
-          dhcp-identifier: mac
-  releases:
-  - bionic
-  - eoan
-  - focal
-  - groovy
-  - hirsute
-  - impish
-  - jammy
-  types:
-  - vm
-  variants:
-  - default
-
 - name: meta-data
   generator: cloud-init
   variants:
@@ -134,26 +112,6 @@ files:
   generator: cloud-init
   variants:
   - cloud
-
-- name: ext4
-  generator: fstab
-  types:
-  - vm
-
-- name: incus-agent
-  generator: incus-agent
-  types:
-  - vm
-
-- path: /etc/default/grub.d/50-incus.cfg
-  generator: dump
-  content: |-
-    GRUB_RECORDFAIL_TIMEOUT=0
-    GRUB_TIMEOUT=0
-    GRUB_CMDLINE_LINUX_DEFAULT="${GRUB_CMDLINE_LINUX_DEFAULT} console=tty1 console=ttyS0"
-    GRUB_TERMINAL=console
-  types:
-  - vm
 
 - path: /etc/sudoers.d/90-incus
   generator: dump
@@ -182,67 +140,6 @@ packages:
     variants:
     - cloud
 
-  - packages:
-    - acpid
-    action: install
-    architectures:
-    - amd64
-    - arm64
-    types:
-    - vm
-
-  - packages:
-    - grub-efi-amd64-signed
-    - shim-signed
-    action: install
-    architectures:
-    - amd64
-    types:
-    - vm
-
-  - packages:
-    - grub-efi-arm64-signed
-    action: install
-    architectures:
-    - arm64
-    types:
-    - vm
-
-  - packages:
-    - shim-signed
-    action: install
-    architectures:
-    - arm64
-    releases:
-    - disco
-    - eoan
-    - focal
-    - groovy
-    - hirsute
-    - impish
-    - jammy
-    types:
-    - vm
-
-  - packages:
-    - linux-virtual
-    action: install
-    releases:
-    - bionic
-    - eoan
-    - focal
-    - groovy
-    - hirsute
-    - impish
-    - jammy
-    types:
-    - vm
-
-  - packages:
-    - os-prober
-    action: remove
-    types:
-    - vm
 
   repositories:
   - name: sources.list
@@ -311,21 +208,6 @@ actions:
 
     # Cleanup temporary shadow paths
     rm /etc/*-
-
-- trigger: post-files
-  action: |-
-    #!/bin/sh
-    set -eux
-
-    TARGET="x86_64"
-    [ "$(uname -m)" = "aarch64" ] && TARGET="arm64"
-
-    update-grub
-    grub-install --uefi-secure-boot --target="${TARGET}-efi" --no-nvram --removable
-    update-grub
-    sed -i "s#root=[^ ]*#root=/dev/sda2#g" /boot/grub/grub.cfg
-  types:
-  - vm
 
 mappings:
   architecture_map: debian

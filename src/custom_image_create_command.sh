@@ -14,7 +14,7 @@ if [ ! -e "${cfgdir}/templates/${sourcetemplate}.config.yaml" ]; then
 fi
 
 # ensure recipe exists
- touch "${recipe}" 
+touch "${recipe}" 
 
 
 # ensure scriptdir exists
@@ -35,4 +35,5 @@ echo "Created $(blue ${recipe}) recipe"
 echo "Created $(blue ${cfgdir}/templates/builder-${name}.config.yaml) template"
 echo "$(yellow Next Steps:)"
 echo " * Edit $(blue ${recipe}) with a valid Distrobuilder recipe"
+echo " * See examples in $(blue ${cfgdir}/build) for inspiration"
 echo " * Run $(magenta_bold blincus custom-image build ${name}) to build the image"
