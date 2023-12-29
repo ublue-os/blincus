@@ -76,7 +76,7 @@ if [ "${verbose}" -ne 0 ]; then
 fi
 
 [ ! -w "${dest_path}" ] && printf >&2 "Cannot write into %s, permission denied.\n" "${dest_path}" && exit 1
-[ ! -w "${man_dest_path}" ] && printf >&2 "Cannot write into %s, permission denied.\n" "${man_dest_path}" && exit 1
+#[ ! -w "${man_dest_path}" ] && printf >&2 "Cannot write into %s, permission denied.\n" "${man_dest_path}" && exit 1
 
 # uninstall
 for file in "${dest_path}/blincus"*; do
@@ -95,5 +95,5 @@ done
 
 printf >&2 "\033[1;32m Thank you for using Blincus. Uninstall complete.\n\033[0m"
 printf >&2 "\033[0m Removed shell scripts located in \033[1;31m%s\n\033[0m" "${dest_path}"
-printf >&2 "\033[0m Removed manpages located in \033[1;31m%s\n\033[0m" "${man_dest_path}"
+#printf >&2 "\033[0m Removed manpages located in \033[1;31m%s\n\033[0m" "${man_dest_path}"
 printf >&2 "\033[0m Removed configuration directory located in \033[1;31m%s\n\033[0m" "${script_config_dest_path}"

@@ -12,4 +12,7 @@ build: generate
 
 docs: generate
     distrobox enter universal
-   
+
+uninstall:
+    ./uninstall
+    

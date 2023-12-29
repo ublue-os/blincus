@@ -110,8 +110,8 @@ if [ -e "${curr_dir}/blincus" ]; then
 			printf >&2 "\033[0m\033[1;31m   Updated scripts available at %s\n\033[0m" "${script_dest_path}/scripts"
 
 		else
-			cp -R scripts "${script_config_dest_path}"
 			mkdir -p "${script_config_dest_path}"
+			cp -R scripts "${script_config_dest_path}"
 		fi
 
 
