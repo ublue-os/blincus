@@ -42,7 +42,11 @@ MOTDPROFILE=$(mktemp)
 echo "cat /etc/blincus" > $MOTDPROFILE
 
 incus file push $MOTDPROFILE "$name"/etc/profile.d/02-blincus.sh
+guid=$(uuid)
+echo "Blincus ID: $(yellow $guid)"
+incus config set "$name"  user.blincusuid=$guid
 
+prompt_create_profile "$guid" "$name"
 
 # mount $HOME at $HOME/host
 
