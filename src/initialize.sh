@@ -9,3 +9,4 @@ if ! test -f "${CONFIG_FILE:-}"; then
 fi
 sanity
 personalize
+prompt_reconcile

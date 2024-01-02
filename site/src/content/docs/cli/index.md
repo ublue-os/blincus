@@ -15,7 +15,7 @@ in blincus will pass through to `incus`.
 
 | Attributes       | &nbsp;
 |------------------|-------------
-| Version:         | 0.2.0
+| Version:         | 0.2.1
 | Extensible:      | incus
 
 ## Usage
