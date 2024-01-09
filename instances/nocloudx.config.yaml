@@ -1,0 +1,24 @@
+architecture: x86_64
+config:
+  raw.idmap: both 1000 1000
+  security.nesting: "true"
+devices:
+  keys:
+    path: /home/BLINCUSUSER/.ssh
+    source: /home/BLINCUSUSER/.ssh
+    type: disk
+  mygpu:
+    gid: "44"
+    type: gpu
+  pulseaudio-socket:
+    path: /mnt/.container_pulseaudio_socket
+    source: /run/user/1000/pulse/native
+    type: disk
+  x11-socket:
+    path: /mnt/.container_x11_socket
+    source: /tmp/.X11-unix/X0
+    type: disk
+profiles:
+- default
+stateful: false
+description: "No Cloud-init with GPU and X11"

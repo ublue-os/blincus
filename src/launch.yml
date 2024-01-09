@@ -19,8 +19,12 @@ flags:
     Blincus template name 
     Use `blincus template list` to see available templates
   required: true
-
-
+- long: --persist
+  short: -p
+  arg: location
+  help: |
+    Persist instance $HOME to location on the host
+    
 examples:
 - blincus launch -t ubuntu mydevctr
 - blincus launch -t ubuntux mydevctr

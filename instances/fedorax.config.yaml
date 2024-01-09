@@ -66,4 +66,4 @@ ephemeral: false
 profiles:
 - default
 stateful: false
-description: "Fedora with X Sharing"
+description: "Fedora with with cloud-init and X Sharing"

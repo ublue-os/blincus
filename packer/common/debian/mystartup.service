@@ -1,0 +1,7 @@
+[Unit]
+After=local-fs.target
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/mystartup.sh
+[Install]
+WantedBy=default.target

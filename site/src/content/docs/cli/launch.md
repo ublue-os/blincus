@@ -57,4 +57,9 @@ Use `blincus template list` to see available templates
 |-----------------|-------------
 | Required:       | ✓ Yes
 
+#### *--persist, -p LOCATION*
+
+Persist instance $HOME to location on the host  
+
+
 

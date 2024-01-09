@@ -7,6 +7,7 @@ if ! test -f "${CONFIG_FILE:-}"; then
   write_defaults
   echo "--> Config file created at ${CONFIG_FILE}."
 fi
+
 sanity
-personalize
+#personalize
 prompt_reconcile

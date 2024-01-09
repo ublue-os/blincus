@@ -26,11 +26,6 @@ commands:
     short: -c
     help: output as list for completions
 
-
-- name: personalize 
-  alias: p
-  help: Personalize default templates
-
 - name: restore
   alias: r
   help: Restore default templates

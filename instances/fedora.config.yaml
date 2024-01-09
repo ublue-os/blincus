@@ -25,4 +25,4 @@ ephemeral: false
 profiles:
 - default
 stateful: false
-description: "Fedora"
+description: "Fedora with cloud-init"
