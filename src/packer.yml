@@ -1,0 +1,43 @@
+name: packer
+help: Build custom images with packer
+footer: |
+  View documentation online at https://blincus.dev
+
+commands:
+- name: build
+  alias: b
+  help: Build an image, requires `packer` and `packer-plugin-incus`
+
+  dependencies:
+    packer:
+      command: [packer]
+      help: Install packer to use this command. https://developer.hashicorp.com/packer/install
+
+  args:
+  - name: name
+    required: true
+    help: Template name
+
+  examples:
+  - blincus packer build jammy
+
+- name: buildall
+  alias: a
+  help: Build all defined packer images, requires `packer` and `packer-plugin-incus`
+
+  dependencies:
+    packer:
+      command: [packer]
+      help: Install packer to use this command. https://developer.hashicorp.com/packer/install
+
+  examples:
+  - blincus packer buildall
+
+- name: list
+  alias: l
+  help: List all packer recipes 
+
+  flags:
+  - long: --completions
+    short: -c
+    help: output as list for completions

@@ -1,0 +1,9 @@
+name: personalize
+alias: p
+help: Personalize included templates
+footer: |
+  View documentation online at https://blincus.dev
+
+
+examples:
+- blincus personalize

@@ -18,7 +18,6 @@ blincus template COMMAND
 
 - [blincus template edit](/cli/template/edit) - Edit a template
 - [blincus template list](/cli/template/list) - List all templates
-- [blincus template personalize](/cli/template/personalize) - Personalize default templates
 - [blincus template restore](/cli/template/restore) - Restore default templates
 
 

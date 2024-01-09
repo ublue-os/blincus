@@ -4,10 +4,10 @@ config:
   security.nesting: "true"
 devices:
   keys:
-    path: /home/bjk/.ssh
-    source: /home/bjk/.ssh
+    path: /home/BLINCUSUSER/.ssh
+    source: /home/BLINCUSUSER/.ssh
     type: disk
 profiles:
 - default
 stateful: false
-description: "Ubuntu"
+description: "No cloud-init"

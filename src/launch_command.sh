@@ -3,6 +3,7 @@ nomount=${args[--no-mount]}
 cfgdir=$(dirname "${CONFIG_FILE}")
 name=${args[name]}
 template=${args[--template]}
+persist=${args[--persist]}
 
 image=$(config_get ${template}.image)
 
@@ -10,6 +11,11 @@ config="${cfgdir}/templates/${template}"
 echo "Using $(blue ${template}) template"
 incus init "${image}" "${args[name]}" < "${config}.config.yaml"
 
+if [[ ! -z "${persist}" ]]; then
+    echo "$(yellow_bold Persisting home directories for $name at $persist)"
+    mkdir -p "$persist"
+    incus config device add "${args[name]}" persistdir disk source="$persist" path=/home
+fi
 
 echo "$(yellow Starting instance $name)"
 # add our useful scripts

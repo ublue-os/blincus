@@ -66,4 +66,4 @@ ephemeral: false
 profiles:
 - default
 stateful: false
-description: "Ubuntu with X sharing"
+description: "Ubuntu with cloud-init and X sharing"
