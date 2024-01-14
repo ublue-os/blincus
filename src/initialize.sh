@@ -8,6 +8,9 @@ if ! test -f "${CONFIG_FILE:-}"; then
   echo "--> Config file created at ${CONFIG_FILE}."
 fi
 
-sanity
+
+if [ "$BLINCUS_SKIP_SANITY" != 1 ] ; then
+  sanity
+fi
 #personalize
 prompt_reconcile
