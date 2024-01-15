@@ -31,7 +31,7 @@
           default = self.packages.${system}.blincus;
           ${pname} = generateRunnablePackage { 
             name = "${pname}";
-            dependencies = (with pkgs; [incus packer jq xorg.xhost coreutils gnugrep gnused getent util-linux dconf jq coreutils-full]);
+            dependencies = (with pkgs; [incus packer jq xorg.xhost coreutils gnugrep gnused getent util-linux dconf coreutils-full]);
           };
           install = generateRunnablePackage {
             name = "install";
