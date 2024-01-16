@@ -5,107 +5,107 @@
 # Modifying it manually is not recommended
 
 _blincus_completions_filter() {
-  local words="$1"
-  local cur=${COMP_WORDS[COMP_CWORD]}
-  local result=()
+	local words="$1"
+	local cur=${COMP_WORDS[COMP_CWORD]}
+	local result=()
 
-  if [[ "${cur:0:1}" == "-" ]]; then
-    echo "$words"
-  
-  else
-    for word in $words; do
-      [[ "${word:0:1}" != "-" ]] && result+=("$word")
-    done
+	if [[ "${cur:0:1}" == "-" ]]; then
+		echo "$words"
 
-    echo "${result[*]}"
+	else
+		for word in $words; do
+			[[ "${word:0:1}" != "-" ]] && result+=("$word")
+		done
 
-  fi
+		echo "${result[*]}"
+
+	fi
 }
 
 _blincus_completions() {
-  local cur=${COMP_WORDS[COMP_CWORD]}
-  local compwords=("${COMP_WORDS[@]:1:$COMP_CWORD-1}")
-  local compline="${compwords[*]}"
+	local cur=${COMP_WORDS[COMP_CWORD]}
+	local compwords=("${COMP_WORDS[@]:1:$COMP_CWORD-1}")
+	local compline="${compwords[*]}"
 
-  case "$compline" in
-    'template personalize'*)
-      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_blincus_completions_filter "--help -h")" -- "$cur" )
-      ;;
+	case "$compline" in
+	'template personalize'*)
+		while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_blincus_completions_filter "--help -h")" -- "$cur")
+		;;
 
-    'template list'*)
-      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_blincus_completions_filter "--help -h")" -- "$cur" )
-      ;;
+	'template list'*)
+		while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_blincus_completions_filter "--help -h")" -- "$cur")
+		;;
 
-    'template edit'*)
-      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_blincus_completions_filter "--help -h")" -- "$cur" )
-      ;;
+	'template edit'*)
+		while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_blincus_completions_filter "--help -h")" -- "$cur")
+		;;
 
-    'config list'*)
-      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_blincus_completions_filter "--help -h")" -- "$cur" )
-      ;;
+	'config list'*)
+		while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_blincus_completions_filter "--help -h")" -- "$cur")
+		;;
 
-    'template l'*)
-      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_blincus_completions_filter "--help -h")" -- "$cur" )
-      ;;
+	'template l'*)
+		while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_blincus_completions_filter "--help -h")" -- "$cur")
+		;;
 
-    'config get'*)
-      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_blincus_completions_filter "--help -h")" -- "$cur" )
-      ;;
+	'config get'*)
+		while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_blincus_completions_filter "--help -h")" -- "$cur")
+		;;
 
-    'config set'*)
-      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_blincus_completions_filter "--help -h")" -- "$cur" )
-      ;;
+	'config set'*)
+		while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_blincus_completions_filter "--help -h")" -- "$cur")
+		;;
 
-    'template e'*)
-      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_blincus_completions_filter "--help -h")" -- "$cur" )
-      ;;
+	'template e'*)
+		while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_blincus_completions_filter "--help -h")" -- "$cur")
+		;;
 
-    'template p'*)
-      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_blincus_completions_filter "--help -h")" -- "$cur" )
-      ;;
+	'template p'*)
+		while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_blincus_completions_filter "--help -h")" -- "$cur")
+		;;
 
-    'config g'*)
-      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_blincus_completions_filter "--help -h")" -- "$cur" )
-      ;;
+	'config g'*)
+		while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_blincus_completions_filter "--help -h")" -- "$cur")
+		;;
 
-    'config l'*)
-      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_blincus_completions_filter "--help -h")" -- "$cur" )
-      ;;
+	'config l'*)
+		while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_blincus_completions_filter "--help -h")" -- "$cur")
+		;;
 
-    'config s'*)
-      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_blincus_completions_filter "--help -h")" -- "$cur" )
-      ;;
+	'config s'*)
+		while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_blincus_completions_filter "--help -h")" -- "$cur")
+		;;
 
-    'template'*)
-      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_blincus_completions_filter "--help -h e edit l list p personalize")" -- "$cur" )
-      ;;
+	'template'*)
+		while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_blincus_completions_filter "--help -h e edit l list p personalize")" -- "$cur")
+		;;
 
-    'config'*)
-      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_blincus_completions_filter "--help -h g get l list s set")" -- "$cur" )
-      ;;
+	'config'*)
+		while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_blincus_completions_filter "--help -h g get l list s set")" -- "$cur")
+		;;
 
-    'launch'*)
-      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_blincus_completions_filter "--help --template -h -t")" -- "$cur" )
-      ;;
+	'launch'*)
+		while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_blincus_completions_filter "--help --template -h -t")" -- "$cur")
+		;;
 
-    'shell'*)
-      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_blincus_completions_filter "--help --no-login --root -h -n -r")" -- "$cur" )
-      ;;
+	'shell'*)
+		while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_blincus_completions_filter "--help --no-login --root -h -n -r")" -- "$cur")
+		;;
 
-    'l'*)
-      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_blincus_completions_filter "--help --template -h -t")" -- "$cur" )
-      ;;
+	'l'*)
+		while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_blincus_completions_filter "--help --template -h -t")" -- "$cur")
+		;;
 
-    's'*)
-      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_blincus_completions_filter "--help --no-login --root -h -n -r")" -- "$cur" )
-      ;;
+	's'*)
+		while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_blincus_completions_filter "--help --no-login --root -h -n -r")" -- "$cur")
+		;;
 
-    *)
-      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_blincus_completions_filter "--help --version -h -v config l launch s shell template")" -- "$cur" )
-      ;;
+	*)
+		while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_blincus_completions_filter "--help --version -h -v config l launch s shell template")" -- "$cur")
+		;;
 
-  esac
+	esac
 } &&
-complete -F _blincus_completions blincus
+	complete -F _blincus_completions blincus
 
 # ex: filetype=sh

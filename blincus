@@ -771,201 +771,194 @@ config_save() {
 }
 
 prompt_create_profile() {
-    # create a Prompt profile using dconf given the guid of the instance
-    # $1 = guid
-    # $2 = name
+	# create a Prompt profile using dconf given the guid of the instance
+	# $1 = guid
+	# $2 = name
 
-    # dconf read /org/gnome/Prompt/Profiles/d092b3519698570a3252762c658f7629/
-    # /org/gnome/Prompt/Profiles/d092b3519698570a3252762c658f7629/custom-command
+	# dconf read /org/gnome/Prompt/Profiles/d092b3519698570a3252762c658f7629/
+	# /org/gnome/Prompt/Profiles/d092b3519698570a3252762c658f7629/custom-command
+	#   'blincus shell myubuntu'
+	# /org/gnome/Prompt/Profiles/d092b3519698570a3252762c658f7629/label
+	#   'myubuntu'
+	# /org/gnome/Prompt/Profiles/d092b3519698570a3252762c658f7629/login-shell
+	#   true
+	# /org/gnome/Prompt/Profiles/d092b3519698570a3252762c658f7629/use-custom-command
+	#   true
 
-    #   'blincus shell myubuntu'
-    # /org/gnome/Prompt/Profiles/d092b3519698570a3252762c658f7629/label
+	# if dconf doesn't exist, just return
+	if ! command -v dconf >/dev/null; then
+		return
+	fi
 
-    #   'myubuntu'
-    # /org/gnome/Prompt/Profiles/d092b3519698570a3252762c658f7629/login-shell
+	local guid=$1
+	local name=$2
 
-    #   true
-    # /org/gnome/Prompt/Profiles/d092b3519698570a3252762c658f7629/use-custom-command
+	local profile="/org/gnome/Prompt/Profiles/${guid}/"
 
-    #   true
+	dconf write "${profile}custom-command" "'blincus shell ${name}'"
+	dconf write "${profile}label" "'${name}'"
+	dconf write "${profile}login-shell" "true"
+	dconf write "${profile}use-custom-command" "true"
 
-    # if dconf doesn't exist, just return
-    if ! command -v dconf >/dev/null; then
-        return
-    fi
-
-    local guid=$1
-    local name=$2
-
-    local profile="/org/gnome/Prompt/Profiles/${guid}/"
-
-    dconf write "${profile}custom-command" "'blincus shell ${name}'"
-    dconf write "${profile}label" "'${name}'"
-    dconf write "${profile}login-shell" "true"
-    dconf write "${profile}use-custom-command" "true"
-
-    prompt_add_profile "$guid"
+	prompt_add_profile "$guid"
 
 }
 
-prompt_add_profile(){
-    # Read the current value of the array
-    CURRENT_VALUE=$(dconf read /org/gnome/Prompt/profile-uuids)
-    local guid=$1
+prompt_add_profile() {
+	# Read the current value of the array
+	CURRENT_VALUE=$(dconf read /org/gnome/Prompt/profile-uuids)
+	local guid=$1
 
-    # remove the leading and trailing brackets
-    CURRENT_VALUE=${CURRENT_VALUE:1:-1}
+	# remove the leading and trailing brackets
+	CURRENT_VALUE=${CURRENT_VALUE:1:-1}
 
-    # remove any spaces
+	# remove any spaces
+	CURRENT_VALUE=${CURRENT_VALUE// /}
 
-    CURRENT_VALUE=${CURRENT_VALUE// /}
+	# split the string into an array
+	IFS=',' read -r -a array <<<"$CURRENT_VALUE"
 
-    # split the string into an array
-    IFS=',' read -r -a array <<< "$CURRENT_VALUE"
+	# add the new value
+	array+=("'$guid'")
 
-    # add the new value
-    array+=("'$guid'")
+	# join the array back into a string
+	UPDATED_VALUE=$(printf "%s," "${array[@]}")
 
-    # join the array back into a string
-    UPDATED_VALUE=$(printf "%s," "${array[@]}")
+	# remove the trailing comma
+	UPDATED_VALUE=${UPDATED_VALUE%?}
 
-    # remove the trailing comma
-    UPDATED_VALUE=${UPDATED_VALUE%?}
+	# add the leading and trailing brackets
+	UPDATED_VALUE="[$UPDATED_VALUE]"
 
-    # add the leading and trailing brackets
-    UPDATED_VALUE="[$UPDATED_VALUE]"
-
-    # Write the updated array back to dconf
-    dconf write /org/gnome/Prompt/profile-uuids "$UPDATED_VALUE"
+	# Write the updated array back to dconf
+	dconf write /org/gnome/Prompt/profile-uuids "$UPDATED_VALUE"
 
 }
 
 prompt_reconcile() {
-    # ensure that the prompt profiles for deleted instances are removed
+	# ensure that the prompt profiles for deleted instances are removed
 
-    # if dconf doesn't exist, just return
-    if ! command -v dconf >/dev/null; then
-        return
-    fi
+	# if dconf doesn't exist, just return
+	if ! command -v dconf >/dev/null; then
+		return
+	fi
 
-    # Read the current value of the array
-    CURRENT_VALUE=$(dconf read /org/gnome/Prompt/profile-uuids)
+	# Read the current value of the array
+	CURRENT_VALUE=$(dconf read /org/gnome/Prompt/profile-uuids)
 
-    # remove the leading and trailing brackets
-    CURRENT_VALUE=${CURRENT_VALUE:1:-1}
+	# remove the leading and trailing brackets
+	CURRENT_VALUE=${CURRENT_VALUE:1:-1}
 
-    # remove any spaces
-    CURRENT_VALUE=${CURRENT_VALUE// /}
+	# remove any spaces
+	CURRENT_VALUE=${CURRENT_VALUE// /}
 
-    # split the string into an array
-    IFS=',' read -r -a array <<< "$CURRENT_VALUE"
+	# split the string into an array
+	IFS=',' read -r -a array <<<"$CURRENT_VALUE"
 
-    # loop through the array and remove any that don't exist
-    for i in "${!array[@]}"; do
-        guid=${array[i]}
+	# loop through the array and remove any that don't exist
+	for i in "${!array[@]}"; do
+		guid=${array[i]}
 
-        # remove single quotes from guid
+		# remove single quotes from guid
 
-        guid=${guid//\'/}
+		guid=${guid//\'/}
 
-        #echo "Checking profile for $(red $guid)"
-        local profile="/org/gnome/Prompt/Profiles/${guid}/"
+		#echo "Checking profile for $(red $guid)"
+		local profile="/org/gnome/Prompt/Profiles/${guid}/"
 
-        custom_shell=$(dconf read "${profile}custom-command")
+		custom_shell=$(dconf read "${profile}custom-command")
 
-        if [[ $custom_shell == *"blincus"* ]]; then
-            #echo "Profile $(red $guid) is a Blincus profile"
-            #echo "Custom shell: $custom_shell"
+		if [[ $custom_shell == *"blincus"* ]]; then
+			#echo "Profile $(red $guid) is a Blincus profile"
+			#echo "Custom shell: $custom_shell"
 
-            # check if the instance exists
-            local name=$(dconf read "${profile}label")
-            name=${name//\'/}
-            #echo --"$name"--
-            #echo "Profile $(red $guid) is for instance $(red $name)"
-            if ! incus list | grep -qw "$name"; then
-                #echo "Instance $(red $name) does not exist. Removing profile $(red $guid)"
-                # remove the profile
-                dconf reset -f "${profile}"
-                # remove the guid from the array
-                unset 'array[i]'
-                    # join the array back into a string
-                UPDATED_VALUE=$(printf "%s," "${array[@]}")
+			# check if the instance exists
+			local name=$(dconf read "${profile}label")
+			name=${name//\'/}
+			#echo --"$name"--
+			#echo "Profile $(red $guid) is for instance $(red $name)"
+			if ! incus list | grep -qw "$name"; then
+				#echo "Instance $(red $name) does not exist. Removing profile $(red $guid)"
+				# remove the profile
+				dconf reset -f "${profile}"
+				# remove the guid from the array
+				unset 'array[i]'
+				# join the array back into a string
+				UPDATED_VALUE=$(printf "%s," "${array[@]}")
 
-                # remove the trailing comma
-                UPDATED_VALUE=${UPDATED_VALUE%?}
+				# remove the trailing comma
+				UPDATED_VALUE=${UPDATED_VALUE%?}
 
-                # add the leading and trailing brackets
-                UPDATED_VALUE="[$UPDATED_VALUE]"
+				# add the leading and trailing brackets
+				UPDATED_VALUE="[$UPDATED_VALUE]"
 
-                #echo "UPDATED_VALUE: $UPDATED_VALUE"
+				#echo "UPDATED_VALUE: $UPDATED_VALUE"
 
-                # Write the updated array back to dconf
-                dconf write /org/gnome/Prompt/profile-uuids "$UPDATED_VALUE"
-            fi
+				# Write the updated array back to dconf
+				dconf write /org/gnome/Prompt/profile-uuids "$UPDATED_VALUE"
+			fi
 
-        fi
+		fi
 
-    done
+	done
 
-    for image in $(blincus_instances); do
-            local iprofile="/org/gnome/Prompt/Profiles/${image}/"
-            icustom_shell=$(dconf read "${iprofile}custom-command")
-            if [ -z "$icustom_shell" ]
-            then
+	for image in $(blincus_instances); do
+		local iprofile="/org/gnome/Prompt/Profiles/${image}/"
+		icustom_shell=$(dconf read "${iprofile}custom-command")
+		if [ -z "$icustom_shell" ]; then
+			prompt_create_profile "$image" "$(blincus_instance_name "$image")"
+		fi
 
-                prompt_create_profile "$image" "$(blincus_instance_name "$image")"
-            fi
-
-    done
+	done
 
 }
 
 write_defaults() {
 
-  # default container engine
-  config_set "engine" "incus"
+	# default container engine
+	config_set "engine" "incus"
 
-  # ubuntu defaults
-  config_set "ubuntu.image" "images:ubuntu/jammy/cloud"
-  config_set "ubuntu.scripts" "ubuntu"
+	# ubuntu defaults
+	config_set "ubuntu.image" "images:ubuntu/jammy/cloud"
+	config_set "ubuntu.scripts" "ubuntu"
 
-  config_set "ubuntux.image" "images:ubuntu/jammy/cloud"
-  config_set "ubuntux.scripts" "ubuntu"
-  # debian defaults
-  config_set "debian.image" "images:debian/bookworm/cloud"
-  config_set "debian.scripts" "debian"
+	config_set "ubuntux.image" "images:ubuntu/jammy/cloud"
+	config_set "ubuntux.scripts" "ubuntu"
+	# debian defaults
+	config_set "debian.image" "images:debian/bookworm/cloud"
+	config_set "debian.scripts" "debian"
 
-  config_set "debianx.image" "images:debian/bookworm/cloud"
-  config_set "debianx.scripts" "debian"
+	config_set "debianx.image" "images:debian/bookworm/cloud"
+	config_set "debianx.scripts" "debian"
 
-  #fedora defaults
-  config_set "fedora.image" "images:fedora/39/cloud"
-  config_set "fedora.scripts" "fedora"
+	#fedora defaults
+	config_set "fedora.image" "images:fedora/39/cloud"
+	config_set "fedora.scripts" "fedora"
 
-  config_set "fedorax.image" "images:fedora/39/cloud"
-  config_set "fedorax.scripts" "fedora"
+	config_set "fedorax.image" "images:fedora/39/cloud"
+	config_set "fedorax.scripts" "fedora"
 
-  # nix defaults
+	# nix defaults
 
-  config_set "nix.image" "images:ubuntu/jammy/cloud"
-  config_set "nix.scripts" "nix"
-  # todo: flag or JIT set this
-  # xhost +
+	config_set "nix.image" "images:ubuntu/jammy/cloud"
+	config_set "nix.scripts" "nix"
+	# todo: flag or JIT set this
+	# xhost +
 }
 
 blincus_instances() {
-    incus ls --format json |  jq -r '.[] | select(.config."user.blincusuid" != null) | .config."user.blincusuid"'
+	incus ls --format json | jq -r '.[] | select(.config."user.blincusuid" != null) | .config."user.blincusuid"'
 }
 
 blincus_instance_name() {
-    local guid=$1
-    incus ls --format json |  jq -r '.[] | select(.config."user.blincusuid" == "'"$guid"'") | .name'
+	local guid=$1
+	incus ls --format json | jq -r '.[] | select(.config."user.blincusuid" == "'"$guid"'") | .name'
 }
 
 blincus_get_property() {
-    local image=$1
-    local property=$2
-    incus image get-property "$1" "$2"
+	local image=$1
+	local property=$2
+	incus image get-property "$1" "$2"
 }
 
 ini_load() {
@@ -1044,204 +1037,202 @@ ini_keys() {
 }
 
 image_id() {
-    local build=$1
-    local manifest=$2
-    #echo "build: $build"
-    cfgdir=$(dirname "${CONFIG_FILE}")
-    workdir="${cfgdir}/packer"
-    img_id=$(jq -r '.builds[] | select(.name=="'"$build"'") | .artifact_id' "$workdir/$manifest.json")
-    echo "$img_id"
+	local build=$1
+	local manifest=$2
+	#echo "build: $build"
+	cfgdir=$(dirname "${CONFIG_FILE}")
+	workdir="${cfgdir}/packer"
+	img_id=$(jq -r '.builds[] | select(.name=="'"$build"'") | .artifact_id' "$workdir/$manifest.json")
+	echo "$img_id"
 
 }
 
 image_alias() {
-    local build=$1
-    local manifest=$2
-    #echo "build: $build"
-    cfgdir=$(dirname "${CONFIG_FILE}")
-    workdir="${cfgdir}/packer"
-    img_id=$(jq -r '.builds[] | select(.name=="'"$build"'") | .custom_data.alias' "$workdir/$manifest.json")
-    echo "$img_id"
+	local build=$1
+	local manifest=$2
+	#echo "build: $build"
+	cfgdir=$(dirname "${CONFIG_FILE}")
+	workdir="${cfgdir}/packer"
+	img_id=$(jq -r '.builds[] | select(.name=="'"$build"'") | .custom_data.alias' "$workdir/$manifest.json")
+	echo "$img_id"
 
 }
 
 unique_builds() {
-    local build=$1
-    cfgdir=$(dirname "${CONFIG_FILE}")
-    workdir="${cfgdir}/packer"
-    builds=$(jq -r '.builds| group_by(.name) | .[][-1] | .name' "$workdir/$1.json")
-    # return builds as an array
-    echo "$builds"
+	local build=$1
+	cfgdir=$(dirname "${CONFIG_FILE}")
+	workdir="${cfgdir}/packer"
+	builds=$(jq -r '.builds| group_by(.name) | .[][-1] | .name' "$workdir/$1.json")
+	# return builds as an array
+	echo "$builds"
 }
 
 plugin() {
-    # check for packer plugin
-    found=$(packer plugins installed | grep -q "incus" && echo "true" || echo "false")
+	# check for packer plugin
+	found=$(packer plugins installed | grep -q "incus" && echo "true" || echo "false")
 
-    if [ "$found" == "false" ]; then
-        echo "Installing packer plugin"
-        packer plugins install github.com/bketelsen/incus
-    fi
+	if [ "$found" == "false" ]; then
+		echo "Installing packer plugin"
+		packer plugins install github.com/bketelsen/incus
+	fi
 
 }
 
 packer_build() {
-    cfgdir=$(dirname "${CONFIG_FILE}")
-    name=$1
-    recipe="${cfgdir}/packer/${name}.pkr.hcl"
-    if [ ! -f "${recipe}" ]; then
-        echo "ERROR: recipe file not found: ${recipe}"
-        exit 1
-    fi
+	cfgdir=$(dirname "${CONFIG_FILE}")
+	name=$1
+	recipe="${cfgdir}/packer/${name}.pkr.hcl"
+	if [ ! -f "${recipe}" ]; then
+		echo "ERROR: recipe file not found: ${recipe}"
+		exit 1
+	fi
 
-    workdir="${cfgdir}/packer"
-    pushd "${workdir}" >/dev/null
-    packer build --force "${name}.pkr.hcl"
-    popd >/dev/null
+	workdir="${cfgdir}/packer"
+	pushd "${workdir}" >/dev/null
+	packer build --force "${name}.pkr.hcl"
+	popd >/dev/null
 
-    ubuilds=$(unique_builds "${name}")
-    for build in ${ubuilds}; do
-        echo ""
-        echo "$(blue Build:) ${build}"
-        img_id=$(image_id "${build}" "${name}")
-        echo "  $(blue fingerprint:) ${img_id}"
-        alias=$(image_alias "${build}" "${name}")
-        echo "  $(blue alias:) ${alias}"
-        tmplt=$(blincus_get_property "${img_id}" "template")
-        echo "  $(blue template:) ${tmplt}"
-        scrpts=$(blincus_get_property "${img_id}" "scripts")
-        echo "  $(blue scripts:) ${scrpts}"
+	ubuilds=$(unique_builds "${name}")
+	for build in ${ubuilds}; do
+		echo ""
+		echo "$(blue Build:) ${build}"
+		img_id=$(image_id "${build}" "${name}")
+		echo "  $(blue fingerprint:) ${img_id}"
+		alias=$(image_alias "${build}" "${name}")
+		echo "  $(blue alias:) ${alias}"
+		tmplt=$(blincus_get_property "${img_id}" "template")
+		echo "  $(blue template:) ${tmplt}"
+		scrpts=$(blincus_get_property "${img_id}" "scripts")
+		echo "  $(blue scripts:) ${scrpts}"
 
-        # ensure sourcetemplate exists
-        if [ ! -e "${cfgdir}/templates/${tmplt}.config.yaml" ]; then
-            echo "Source template $(red ${tmplt}) does not exist"
-            exit 1
-        fi
-        # ensure scriptdir exists
-        if [ ! -e "${cfgdir}/scripts/${scrpts}" ]; then
-            echo "Script directory $(red ${scrpts}) does not exist"
-            exit 1
-        fi
+		# ensure sourcetemplate exists
+		if [ ! -e "${cfgdir}/templates/${tmplt}.config.yaml" ]; then
+			echo "Source template $(red ${tmplt}) does not exist"
+			exit 1
+		fi
+		# ensure scriptdir exists
+		if [ ! -e "${cfgdir}/scripts/${scrpts}" ]; then
+			echo "Script directory $(red ${scrpts}) does not exist"
+			exit 1
+		fi
 
-        local imageref
-        # if alias is set, use it
-        if [ -n "${alias}" ]; then
-            imageref="${alias}"
-        else
-            imageref="${img_id}"
-        fi
+		local imageref
+		# if alias is set, use it
+		if [ -n "${alias}" ]; then
+			imageref="${alias}"
+		else
+			imageref="${img_id}"
+		fi
 
-        # Create config values for this image
-        config_set "packer-${name}.image" "${imageref}"
-        config_set "packer-${name}.scripts" "${scrpts}"
+		# Create config values for this image
+		config_set "packer-${name}.image" "${imageref}"
+		config_set "packer-${name}.scripts" "${scrpts}"
 
-        # copy image template
-        cp "${cfgdir}/templates/${tmplt}.config.yaml" "${cfgdir}/templates/packer-${name}.config.yaml"
+		# copy image template
+		cp "${cfgdir}/templates/${tmplt}.config.yaml" "${cfgdir}/templates/packer-${name}.config.yaml"
 
-    done
+	done
 }
 
 personalize() {
 
-cfgdir=$(dirname "${CONFIG_FILE}")
+	cfgdir=$(dirname "${CONFIG_FILE}")
 
-template_path="${cfgdir}/templates"
-packer_path="${cfgdir}/packer"
+	template_path="${cfgdir}/templates"
+	packer_path="${cfgdir}/packer"
 
-shopt -s globstar
+	shopt -s globstar
 
-for file in $template_path/*.config.yaml; do
+	for file in $template_path/*.config.yaml; do
 
-    fullname=$(getent passwd "$USER" | cut -d ':' -f 5)
-    sed -i "s/BLINCUSUSER/$USER/g" "$file"
-    sed -i "s/BLINCUSFULLNAME/$fullname/g" "$file"
+		fullname=$(getent passwd "$USER" | cut -d ':' -f 5)
+		sed -i "s/BLINCUSUSER/$USER/g" "$file"
+		sed -i "s/BLINCUSFULLNAME/$fullname/g" "$file"
 
-    # if we're running on WSL we need to remove the gecos line from the config
-    # https://wsl.dev/wslblincus/
-    if grep -qE "(Microsoft|WSL)" /proc/version &> /dev/null ; then
-        sed -i 's/gecos/#gecos/g' "$file"
-    fi
+		# if we're running on WSL we need to remove the gecos line from the config
+		# https://wsl.dev/wslblincus/
+		if grep -qE "(Microsoft|WSL)" /proc/version &>/dev/null; then
+			sed -i 's/gecos/#gecos/g' "$file"
+		fi
 
-# I don't know a better way to get the first file
-    for i in "$HOME"/.ssh/id*.pub; do
-        [ -f "$i" ] || break
-        contents=$(cat "$i")
-        sed -i "s|SSHKEY|$contents|g" "$file"
-        break
+		# I don't know a better way to get the first file
+		for i in "$HOME"/.ssh/id*.pub; do
+			[ -f "$i" ] || break
+			contents=$(cat "$i")
+			sed -i "s|SSHKEY|$contents|g" "$file"
+			break
 
-    done
-done
+		done
+	done
 
-for file in $packer_path/* $packer_path/**/*; do
+	for file in $packer_path/* $packer_path/**/*; do
 
-# if it's not a directory
-if ! [ -d "$file" ]; then
-    fullname=$(getent passwd "$USER" | cut -d ':' -f 5)
-    sed -i "s/BLINCUSUSER/$USER/g" "$file"
-    sed -i "s/BLINCUSFULLNAME/$fullname/g" "$file"
+		# if it's not a directory
+		if ! [ -d "$file" ]; then
+			fullname=$(getent passwd "$USER" | cut -d ':' -f 5)
+			sed -i "s/BLINCUSUSER/$USER/g" "$file"
+			sed -i "s/BLINCUSFULLNAME/$fullname/g" "$file"
 
-    # if we're running on WSL we need to remove the gecos line from the config
-    # https://wsl.dev/wslblincus/
-    if grep -qE "(Microsoft|WSL)" /proc/version &> /dev/null ; then
-        sed -i 's/gecos/#gecos/g' "$file"
-    fi
+			# if we're running on WSL we need to remove the gecos line from the config
+			# https://wsl.dev/wslblincus/
+			if grep -qE "(Microsoft|WSL)" /proc/version &>/dev/null; then
+				sed -i 's/gecos/#gecos/g' "$file"
+			fi
 
-# I don't know a better way to get the first file
-    for i in "$HOME"/.ssh/id*.pub; do
-        [ -f "$i" ] || break
-        contents=$(cat "$i")
-        sed -i "s|SSHKEY|$contents|g" "$file"
-        break
+			# I don't know a better way to get the first file
+			for i in "$HOME"/.ssh/id*.pub; do
+				[ -f "$i" ] || break
+				contents=$(cat "$i")
+				sed -i "s|SSHKEY|$contents|g" "$file"
+				break
 
-    done
-fi
-done
+			done
+		fi
+	done
 
 }
 
 prefix() {
-    # find the path where `blincus` is located and use that as the prefix
-    # default to /usr/local if not found
-    local prefix
-    prefix=$(dirname "$(dirname "$(command -v blincus)")")
-    [ -z "${prefix}" ] && prefix="/usr/local"
-    echo "${prefix}"
+	# find the path where `blincus` is located and use that as the prefix
+	# default to /usr/local if not found
+	local prefix
+	prefix=$(dirname "$(dirname "$(command -v blincus)")")
+	[ -z "${prefix}" ] && prefix="/usr/local"
+	echo "${prefix}"
 }
 
 sanity() {
-    local errors;
+	local errors
 
-if ! grep -q 'root:1000:1' /etc/subgid; then
+	if ! grep -q 'root:1000:1' /etc/subgid; then
+		errors=1
+		echo "Error: 'root:1000:1' missing from /etc/subgid"
+		echo "To resolve run:"
+		echo 'echo "root:1000:1" | sudo tee -a /etc/subuid /etc/subgid'
+	fi
 
- errors=1;
- echo "Error: 'root:1000:1' missing from /etc/subgid";
- echo "To resolve run:"
- echo 'echo "root:1000:1" | sudo tee -a /etc/subuid /etc/subgid'
-fi
+	if ! grep -q 'root:1000:1' /etc/subuid; then
+		errors=1
+		echo "Error: 'root:1000:1' missing from /etc/subuid"
+		echo "To resolve run:"
+		echo 'echo "root:1000:1" | sudo tee -a /etc/subuid /etc/subgid'
+	fi
 
-if ! grep -q 'root:1000:1' /etc/subuid; then
-
-    errors=1;
-    echo "Error: 'root:1000:1' missing from /etc/subuid";
-    echo "To resolve run:"
-    echo 'echo "root:1000:1" | sudo tee -a /etc/subuid /etc/subgid'
-fi
-
-if ! groups $USER | grep -qw 'incus-admin' ; then
-    errors=1;
-    echo "Error: User does not belong to 'incus-admin' group.";
-    echo "To resolve run:"
-    echo 'sudo usermod -aG $USER'
-fi
-if (( errors > 0 )); then
-   echo "$(red Sanity check failed.)"
-   echo "$(yellow See documentation at https://blincus.dev)"
-   exit 1;
-fi
+	if ! groups $USER | grep -qw 'incus-admin'; then
+		errors=1
+		echo "Error: User does not belong to 'incus-admin' group."
+		echo "To resolve run:"
+		echo 'sudo usermod -aG $USER'
+	fi
+	if ((errors > 0)); then
+		echo "$(red Sanity check failed.)"
+		echo "$(yellow See documentation at https://blincus.dev)"
+		exit 1
+	fi
 }
 
 uuid() {
-    uuidgen | sed 's/-//g'
+	uuidgen | sed 's/-//g'
 }
 
 blincus_config_set_command() {
@@ -1254,21 +1245,22 @@ blincus_config_set_command() {
 blincus_config_get_command() {
   key="${args[key]}"
   if config_has_key "$key"; then
-    config_get "$key"
+  	config_get "$key"
   else
-    echo "No such key: $key"
+  	echo "No such key: $key"
   fi
+
 }
 
 blincus_config_list_command() {
   for key in $(config_keys); do
-    echo "$key: $(config_get "$key")"
+  	echo "$key: $(config_get "$key")"
   done
+
 }
 
 blincus_launch_command() {
-
-  nomount=${args[--no-mount]}
+  nomount=${args[--no - mount]}
   cfgdir=$(dirname "${CONFIG_FILE}")
   name=${args[name]}
   template=${args[--template]}
@@ -1278,12 +1270,12 @@ blincus_launch_command() {
 
   config="${cfgdir}/templates/${template}"
   echo "Using $(blue ${template}) template"
-  incus init "${image}" "${args[name]}" < "${config}.config.yaml"
+  incus init "${image}" "${args[name]}" <"${config}.config.yaml"
 
   if [[ ! -z "${persist}" ]]; then
-      echo "$(yellow_bold Persisting home directories for $name at $persist)"
-      mkdir -p "$persist"
-      incus config device add "${args[name]}" persistdir disk source="$persist" path=/home
+  	echo "$(yellow_bold Persisting home directories for $name at $persist)"
+  	mkdir -p "$persist"
+  	incus config device add "${args[name]}" persistdir disk source="$persist" path=/home
   fi
 
   echo "$(yellow Starting instance $name)"
@@ -1304,32 +1296,32 @@ blincus_launch_command() {
   incus exec "${args[name]}" -- bash -c "command -v cloud-init && cloud-init status --wait || echo No cloud-init"
 
   TMPFILE=$(mktemp)
-  echo " * Blincus instance: $(red $name)" > $TMPFILE
-  echo " * Template: $(red $template)" >> $TMPFILE
-  echo " * Image: $(red $image)" >> $TMPFILE
-  echo " * Helper Scripts: $(red /opt/scripts)" >> $TMPFILE
-  echo " " >> $TMPFILE
+  echo " * Blincus instance: $(red $name)" >$TMPFILE
+  echo " * Template: $(red $template)" >>$TMPFILE
+  echo " * Image: $(red $image)" >>$TMPFILE
+  echo " * Helper Scripts: $(red /opt/scripts)" >>$TMPFILE
+  echo " " >>$TMPFILE
 
   incus file push $TMPFILE "$name"/etc/blincus
   MOTDPROFILE=$(mktemp)
-  echo "cat /etc/blincus" > $MOTDPROFILE
+  echo "cat /etc/blincus" >$MOTDPROFILE
 
   incus file push $MOTDPROFILE "$name"/etc/profile.d/02-blincus.sh
   guid=$(uuid)
   echo "Blincus ID: $(yellow $guid)"
-  incus config set "$name"  user.blincusuid=$guid
+  incus config set "$name" user.blincusuid=$guid
 
   prompt_create_profile "$guid" "$name"
 
   # mount $HOME at $HOME/host
 
   if [[ ! $nomount ]]; then
-      echo "$(yellow Mounting home directory)"
-      incus config device add "${args[name]}" myhomedir disk source="$HOME" path=/home/"${USER}"/host/
+  	echo "$(yellow Mounting home directory)"
+  	incus config device add "${args[name]}" myhomedir disk source="$HOME" path=/home/"${USER}"/host/
   fi
   if [[ ! -z "${DISPLAY}" ]]; then
-      echo "$(yellow_bold Allowing X sharing:)"
-      xhost +
+  	echo "$(yellow_bold Allowing X sharing:)"
+  	xhost +
   fi
   echo "$(green_bold Instance $name ready)"
   echo "Run $(magenta_bold blincus shell $name) to enter"
@@ -1338,16 +1330,16 @@ blincus_launch_command() {
 
 blincus_shell_command() {
   root=${args[--root]}
-  nologin=${args[--no-login]}
+  nologin=${args[--no - login]}
   container=${args[name]}
   shelluser=${USER}
   loginflag="--login"
 
-  if [[  $root ]]; then
-      shelluser="root"
+  if [[ $root ]]; then
+  	shelluser="root"
   fi
-  if [[  $nologin ]]; then
-      loginflag=""
+  if [[ $nologin ]]; then
+  	loginflag=""
   fi
 
   incus exec "$container" -- su ${loginflag} ${shelluser}
@@ -1355,11 +1347,11 @@ blincus_shell_command() {
 }
 
 blincus_template_edit_command() {
-
   cfgdir=$(dirname "${CONFIG_FILE}")
 
   template_path="${cfgdir}/templates"
   $EDITOR ${template_path}/${args[name]}.config.yaml
+
 }
 
 blincus_template_list_command() {
@@ -1369,20 +1361,20 @@ blincus_template_list_command() {
 
   template_path="${cfgdir}/templates"
 
-  if [[  $comp ]]; then
-      templates=()
-      for file in $template_path/*.config.yaml; do
-          name="$(basename "${file}" .config.yaml)"
-          templates+=( $name )
-      done
-      echo ${templates[@]}
-      return
+  if [[ $comp ]]; then
+  	templates=()
+  	for file in $template_path/*.config.yaml; do
+  		name="$(basename "${file}" .config.yaml)"
+  		templates+=($name)
+  	done
+  	echo ${templates[@]}
+  	return
   fi
 
   for file in $template_path/*.config.yaml; do
-      name="$(basename "${file}" .config.yaml)"
+  	name="$(basename "${file}" .config.yaml)"
   	echo "$(blue_bold $name)"
-      echo "  $(grep "description" ${file})"
+  	echo "  $(grep "description" ${file})"
 
   done
 
@@ -1411,6 +1403,7 @@ blincus_template_restore_command() {
   echo "$(magenta User packer template directory:) $packer_path"
   echo ""
   echo "$(red To restore a packer template copy the template from the installer directory to the user directory)"
+
 }
 
 blincus_packer_build_command() {
@@ -1424,6 +1417,7 @@ blincus_packer_build_command() {
 
   # build the packer image
   packer_build $name
+
 }
 
 blincus_packer_buildall_command() {
@@ -1434,10 +1428,10 @@ blincus_packer_buildall_command() {
   packer_path="${cfgdir}/packer"
 
   for file in $packer_path/*.pkr.hcl; do
-      name="$(basename "${file}" .pkr.hcl)"
-      echo ""
+  	name="$(basename "${file}" .pkr.hcl)"
+  	echo ""
   	echo "Found definition $(red_bold $name):"
-      packer_build $name
+  	packer_build $name
 
   done
 
@@ -1450,22 +1444,23 @@ blincus_packer_list_command() {
 
   packer_path="${cfgdir}/packer"
 
-  if [[  $comp ]]; then
-      packers=()
-      for file in $packer_path/*.pkr.hcl; do
-          name="$(basename "${file}" .pkr.hcl)"
-          packers+=( $name )
-      done
-      echo ${packers[@]}
-      return
+  if [[ $comp ]]; then
+  	packers=()
+  	for file in $packer_path/*.pkr.hcl; do
+  		name="$(basename "${file}" .pkr.hcl)"
+  		packers+=($name)
+  	done
+  	echo ${packers[@]}
+  	return
   fi
 
   for file in $packer_path/*.pkr.hcl; do
-      name="$(basename "${file}" .pkr.hcl)"
+  	name="$(basename "${file}" .pkr.hcl)"
   	echo "$(blue_bold $name)"
-      echo "$(grep "description" ${file})"
+  	echo "$(grep "description" ${file})"
 
   done
+
 }
 
 blincus_personalize_command() {
@@ -2455,14 +2450,14 @@ initialize() {
   cfgdir=$(dirname "${CONFIG_FILE}")
   [[ -d "$cfgdir" ]] || mkdir -p "$cfgdir"
   if ! test -f "${CONFIG_FILE:-}"; then
-    echo "$(yellow_bold Config file does not exist. Creating it with defaults.)"
-    echo "$(yellow_bold Disabling XAuth controls.)"
-    write_defaults
-    echo "--> Config file created at ${CONFIG_FILE}."
+  	echo "$(yellow_bold Config file does not exist. Creating it with defaults.)"
+  	echo "$(yellow_bold Disabling XAuth controls.)"
+  	write_defaults
+  	echo "--> Config file created at ${CONFIG_FILE}."
   fi
 
-  if [ "$BLINCUS_SKIP_SANITY" != 1 ] ; then
-    sanity
+  if [ "$BLINCUS_SKIP_SANITY" != 1 ]; then
+  	sanity
   fi
   #personalize
   prompt_reconcile

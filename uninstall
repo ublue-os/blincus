@@ -1,6 +1,5 @@
 #!/bin/sh
 
-
 # POSIX
 
 verbose=0
@@ -11,7 +10,7 @@ verbose=0
 # Outputs:
 #   print usage with examples.
 show_help() {
-	cat << EOF
+	cat <<EOF
 uninstall --prefix /usr/local
 
 Options:
@@ -24,35 +23,35 @@ EOF
 # Parse arguments
 while :; do
 	case $1 in
-		-h | --help)
-			# Call a "show_help" function to display a synopsis, then exit.
-			show_help
-			exit
-			;;
-		-v | --verbose)
+	-h | --help)
+		# Call a "show_help" function to display a synopsis, then exit.
+		show_help
+		exit
+		;;
+	-v | --verbose)
+		shift
+		verbose=1
+		;;
+	-p | --path)
+		if [ -n "$2" ]; then
+			dest_path="$2"
 			shift
-			verbose=1
-			;;
-		-p | --path)
-			if [ -n "$2" ]; then
-				dest_path="$2"
-				shift
-				shift
-			fi
-			;;
-		-P | --prefix)
-			if [ -n "$2" ]; then
-				prefix="$2"
-				shift
-				shift
-			fi
-			;;
-		*) # Default case: If no more options then break out of the loop.
-			break ;;
+			shift
+		fi
+		;;
+	-P | --prefix)
+		if [ -n "$2" ]; then
+			prefix="$2"
+			shift
+			shift
+		fi
+		;;
+	*) # Default case: If no more options then break out of the loop.
+		break ;;
 	esac
 done
 
-if  [ -z "${prefix}" ]; then
+if [ -z "${prefix}" ]; then
 	prefix="/usr/local"
 	# in case we're not root, just default to the home directory
 	if [ "$(id -u)" -ne 0 ]; then
@@ -91,7 +90,6 @@ done
 [ -d "${script_dest_path}" ] && rm -rf "${script_dest_path}"
 [ -d "${build_dest_path}" ] && rm -rf "${build_dest_path}"
 [ -d "${script_config_dest_path}" ] && rm -rf "${script_config_dest_path}"
-
 
 printf >&2 "\033[1;32m Thank you for using Blincus. Uninstall complete.\n\033[0m"
 printf >&2 "\033[0m Removed shell scripts located in \033[1;31m%s\n\033[0m" "${dest_path}"

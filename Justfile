@@ -1,8 +1,11 @@
 
-generate:
+generate: format
     docker run --rm -it --user $(id -u):$(id -g) --volume "$PWD:/app" dannyben/bashly generate --upgrade
     docker run --rm -it --user $(id -u):$(id -g) --volume "$PWD:/app" dannyben/bashly render templates/markdown site/src/content/docs/cli
     cp ./completions.bash completions/blincus
+
+format:
+    docker run --rm -u "$(id -u):$(id -g)" -v "$PWD:/mnt" -w /mnt mvdan/shfmt:v3 -w .
 
 install: generate
     ./install

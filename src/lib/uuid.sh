@@ -1,3 +1,3 @@
 uuid() {
-    uuidgen | sed 's/-//g'
+	uuidgen | sed 's/-//g'
 }
