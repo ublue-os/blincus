@@ -24,8 +24,15 @@ flags:
   arg: location
   help: |
     Persist instance $HOME to location on the host
+- long: --vm
+  short: -v
+  arg: size
+  allowed: [nano, micro, small, medium, large, xlarge, 2xlarge]
+  help: |
+    Run as a virtual machine with AWS "t3" style sizes
     
 examples:
 - blincus launch -t ubuntu mydevctr
 - blincus launch -t ubuntux mydevctr
-- blincus launch -t fedora mydevmachine 
+- blincus launch -t fedora mydevmachine
+- blincus launch --vm large -t ubuntu myfatvm

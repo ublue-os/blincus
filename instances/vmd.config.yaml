@@ -1,0 +1,36 @@
+architecture: x86_64
+config:
+  raw.idmap: both 1000 1000
+  limits.memory: 8GiB
+  limits.cpu:  4
+  user.user-data: |-
+    #cloud-config
+    packages:
+      - curl
+      - wget
+      - openssh-server
+    users:
+      - name: bjk
+        plain_text_passwd: 'bjk'
+        home: /home/bjk
+        shell: /bin/bash
+        lock_passwd: True
+        gecos: Brian Ketelsen
+        groups: [adm, cdrom, dip, sudo]
+        sudo: ALL=(ALL) NOPASSWD:ALL
+        ssh_authorized_keys:
+          - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDNbFnPhQvvO3wdmeNYOMPnXEzkXY7V9Uil3TZuowA8tw8oNDQSF0pymf6TyqRwN32BoyTbVwV+YLVKjBiCWktNRqZNfOL5rx5BEaBtw6QQMspyIcuM92ndxoRILCmRGVWZVyQzGtGLqH+Xun2r8pjQsXYE96BAaVenJHzVa7BvBSjpufMYziTzNuOzav8a6xbg5m0LnYMJLqOWEpSMsFlxHFrNkDF/lwU/WH3vItsKJkGBwmQ+AwZmZhMmfQPe+UYeuoeQ5scsuTVGURMZTURbgb4KN7dgxTBTfC3F8OkT8bcfuFKjH9GNCYa2zsjNpjeSFJVsZpmBM+CBsR+iBGlZ
+    runcmd:
+    - [ sh, -c, "[ -x /opt/scripts/init.sh ] && /opt/scripts/init.sh"]
+devices:
+  keys:
+    path: /home/bjk/.ssh
+    source: /home/bjk/.ssh
+    type: disk
+  cloud:
+    type: disk
+    source: cloud-init:config
+profiles:
+- default
+stateful: false
+description: "Ubuntu"

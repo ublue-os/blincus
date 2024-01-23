@@ -1,0 +1,3 @@
+config:
+  security.nesting: "true"
+description: "Container profile"

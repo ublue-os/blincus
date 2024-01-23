@@ -35,6 +35,10 @@ blincus launch -t ubuntux mydevctr
 blincus launch -t fedora mydevmachine
 ```
 
+```bash
+blincus launch --vm large -t ubuntu myfatvm
+```
+
 ## Arguments
 
 #### *NAME*
@@ -61,5 +65,14 @@ Use `blincus template list` to see available templates
 
 Persist instance $HOME to location on the host  
 
+
+#### *--vm, -v SIZE*
+
+Run as a virtual machine with AWS "t3" style sizes  
+
+
+| Attributes      | &nbsp;
+|-----------------|-------------
+| Allowed Values: | nano, micro, small, medium, large, xlarge, 2xlarge
 
 

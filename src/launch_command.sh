@@ -3,12 +3,32 @@ cfgdir=$(dirname "${CONFIG_FILE}")
 name=${args[name]}
 template=${args[--template]}
 persist=${args[--persist]}
+vm=${args[--vm]}
+vmflag=""
+sizeflag=""
+if [[ ! -z "${vm}" ]]; then
+	vmflag="--vm"
+	sizeflag="--type t3.${vm}"
+fi
+
+profilelist=$(config_get arraytest.profiles)
+IFS=,
+read line <<<$profilelist
+profiles=($line)
+shopt -s extglob
+profileline='--profile default'
+for each in "${profiles[@]}"; do
+	profileline+=" --profile "
+	profileline+="${each##*( )}"
+done
+echo "${profileline}"
+exit 0
 
 image=$(config_get ${template}.image)
 
 config="${cfgdir}/templates/${template}"
 echo "Using $(blue ${template}) template"
-incus init "${image}" "${args[name]}" <"${config}.config.yaml"
+incus init "${image}" "${args[name]}" "${vmflag}" "${sizeflag}" <"${config}.config.yaml"
 
 if [[ ! -z "${persist}" ]]; then
 	echo "$(yellow_bold Persisting home directories for $name at $persist)"
@@ -19,16 +39,24 @@ fi
 echo "$(yellow Starting instance $name)"
 # add our useful scripts
 # mount or copy scripts
+
 scripts=$(config_get ${template}.scripts)
 scriptdir="${cfgdir}/scripts/${scripts}"
-
-incus file push -r -p "$scriptdir"/* "$name"/opt/scripts/
+if [[ ! "${vm}" ]]; then
+	# copy scripts
+	echo "$(yellow_bold Copying scripts from $HOME/.blincus/scripts)"
+	incus file push -r -p "$HOME"/.blincus/scripts/* "$name"/opt/scripts/
+	echo "copied"
+fi
 
 # now start it
 incus start "${args[name]}"
 
 echo "$(yellow Waiting for cloud init...)"
 
+if [[ "${vm}" ]]; then
+	sleep 10
+fi
 # wait for cloud-init to create the user
 # otherwise the home mount will prevent /etc/skel from being applied
 incus exec "${args[name]}" -- bash -c "command -v cloud-init && cloud-init status --wait || echo No cloud-init"
