@@ -232,33 +232,51 @@ else
 		fi
 	fi
 
-	if [ -e "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')/packer/" ]; then
+	if [ -e "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')/recipes/" ]; then
 		mkdir -p "${script_dest_path}"
-		cp -R "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')"/packer "${script_dest_path}"
-		if [ -d $script_config_dest_path/packer ]; then
-			printf >&2 "\033[0m Refusing to overwrite packer templates at \033[1;31m%s\n\033[0m" "${script_config_dest_path}/packer"
-			printf >&2 "\033[0m\033[1;31m   Updated packer templates available at %s\n\033[0m" "${script_dest_path}/packer"
+		cp -R "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')"/recipes "${script_dest_path}"
+		if [ -d $script_config_dest_path/recipes ]; then
+			printf >&2 "\033[0m Refusing to overwrite packer recipes at \033[1;31m%s\n\033[0m" "${script_config_dest_path}/recipes"
+			printf >&2 "\033[0m\033[1;31m   Updated packer recipes available at %s\n\033[0m" "${script_dest_path}/recipes"
 
 		else
 			mkdir -p "${script_config_dest_path}"
-			cp -R "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')"/packer "${script_config_dest_path}"
+			cp -R "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')"/recipes "${script_config_dest_path}"
 		fi
 	fi
 
-	if [ -e "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')/instances/" ]; then
-		mkdir -p "${template_dest_path}"
-		for file in "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')"/instances/*; do
-			install -D -m 0644 -t "${template_dest_path}" "${file}"
+	if [ -e "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')/profiles/" ]; then
+		mkdir -p "${profile_dest_path}"
+		for file in "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')"/profiles/*; do
+			install -D -m 0644 -t "${profile_dest_path}" "${file}"
 		done
 
-		if [ -d $template_config_dest_path ]; then
-			printf >&2 "\033[0m Refusing to overwrite user templates at \033[1;31m%s\n\033[0m" "${template_config_dest_path}"
-			printf >&2 "\033[0m\033[1;31m   Updated templates available at %s\n\033[0m" "${template_dest_path}"
+		if [ -d $profile_config_dest_path ]; then
+			printf >&2 "\033[0m Refusing to overwrite profiles at \033[1;31m%s\n\033[0m" "${profile_config_dest_path}"
+			printf >&2 "\033[0m\033[1;31m   Updated profiles available at %s\n\033[0m" "${template_dest_path}"
 
 		else
-			mkdir -p "${template_config_dest_path}"
-			for file in "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')"/instances/*; do
-				install -D -m 0644 -t "${template_config_dest_path}" "${file}"
+			mkdir -p "${profile_config_dest_path}"
+			for file in "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')"/profiles/*; do
+				install -D -m 0644 -t "${profiles_config_dest_path}" "${file}"
+			done
+		fi
+
+	fi
+		if [ -e "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')/cloud-init/" ]; then
+		mkdir -p "${init_dest_path}"
+		for file in "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')"/cloud-init/*; do
+			install -D -m 0644 -t "${init_dest_path}" "${file}"
+		done
+
+		if [ -d $init_config_dest_path ]; then
+			printf >&2 "\033[0m Refusing to overwrite cloud-init files at \033[1;31m%s\n\033[0m" "${init_config_dest_path}"
+			printf >&2 "\033[0m\033[1;31m   Updated cloud-init files available at %s\n\033[0m" "${init_dest_path}"
+
+		else
+			mkdir -p "${init_config_dest_path}"
+			for file in "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')"/cloud-init/*; do
+				install -D -m 0644 -t "${init_config_dest_path}" "${file}"
 			done
 		fi
 
@@ -276,7 +294,7 @@ fi
 
 printf >&2 "\033[1;32m Installation successful!\n\033[0m"
 printf >&2 "\033[0m Blincus command installed at \033[1;31m%s\n\033[0m" "${dest_path}"
-printf >&2 "\033[0m Templates are located in \033[1;31m%s\n\033[0m" "${template_config_dest_path}"
+printf >&2 "\033[0m Configuration files are located in \033[1;31m%s\n\033[0m" "${script_config_dest_path}"
 
 if ! echo "${PATH}" | grep -q "${dest_path}"; then
 	printf >&2 "\033[0m Be sure that \033[1;31m%s\033[0m is in your \033[1;31m\$PATH\033[0m environment variable to be able to use blincus without specifying the full path.\n\033[0m" "${dest_path}"
