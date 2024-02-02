@@ -21,7 +21,7 @@ for project in $(incus query "/1.0/projects?recursion=1" | jq .[].name -r); do
     echo "==> Deleting all profiles for project: ${project}"
     for profile in $(incus query "/1.0/profiles?recursion=1&project=${project}" | jq .[].name -r); do
         if [ "${profile}" = "default" ]; then
-            printf 'config: {}\ndevices: {}' | incus profile edit --project "${project}" default
+            # printf 'config: {}\ndevices: {}' | incus profile edit --project "${project}" default
             continue
         fi
         incus profile delete --project "${project}" "${profile}"

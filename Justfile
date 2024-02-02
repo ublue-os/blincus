@@ -28,3 +28,6 @@ bashly +COMMANDS:
 
 wipe:
     ./empty-incus.sh
+
+sync:
+    rsync -azvh `pwd` bjk@debian12.home.arpa:~/

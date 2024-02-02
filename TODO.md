@@ -1,5 +1,6 @@
-- [ ] fix installer/uninstaller for new paths
-- [ ] clean up documents
+- [x] fix installer
+- [ ] fix uninstaller for new paths
+- [x] clean up documents
 - [ ] refactor / clean up code
 - [x] smarter error prevention
 - [ ] profile reconcile

@@ -1376,7 +1376,8 @@ profiles() {
 
 # src/lib/uuid.sh
 uuid() {
-	uuidgen | sed 's/-//g'
+	uuid=$(cat /proc/sys/kernel/random/uuid)
+	echo $uuid | sed 's/-//g'
 }
 
 # src/lib/validations/validate_dir_exists.sh

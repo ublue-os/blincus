@@ -1,3 +1,4 @@
 uuid() {
-	uuidgen | sed 's/-//g'
+	uuid=$(cat /proc/sys/kernel/random/uuid)
+	echo $uuid | sed 's/-//g'
 }

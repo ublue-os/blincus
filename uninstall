@@ -66,6 +66,13 @@ script_dest_path="${prefix}/share/blincus"
 script_config_dest_path="${HOME}/.config/blincus"
 man_dest_path="${prefix}/share/man/man1"
 completion_dest_path="${prefix}/share/bash-completion/completions/"
+dest_path="${prefix}/bin"
+init_dest_path="${prefix}/share/blincus/cloud-init"
+init_config_dest_path="${HOME}/.config/blincus/cloud-init"
+profile_dest_path="${prefix}/share/blincus/profiles"
+profile_config_dest_path="${HOME}/.config/blincus/profiles"
+packer_dest_path="${prefix}/share/blincus/recipes"
+packer_config_dest_path="${HOME}/.config/blincus/recipes"
 
 set -o errexit
 set -o nounset
