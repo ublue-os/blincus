@@ -1,7 +1,4 @@
-architecture: x86_64
 config:
-  raw.idmap: both 1000 1000
-  security.nesting: "true"
   user.user-data: |-
     #cloud-config
     packages:
@@ -9,6 +6,7 @@ config:
       - curl
       - wget
       - openssh-server
+      - git
     users:
       - name: BLINCUSUSER
         plain_text_passwd: 'BLINCUSUSER'
@@ -19,7 +17,7 @@ config:
         groups: [adm, cdrom, dip, sudo]
         sudo: ALL=(ALL) NOPASSWD:ALL
         ssh_authorized_keys:
-          - SSHKEY
+          - SSHKEY    
     write_files:
     - path: /usr/local/bin/mystartup.sh
       permissions: 0755
@@ -62,8 +60,4 @@ devices:
     path: /mnt/.container_x11_socket
     source: /tmp/.X11-unix/X0
     type: disk
-ephemeral: false
-profiles:
-- default
-stateful: false
-description: "Debian with with cloud-init and X Sharing"
+description: "Debian with cloud-init with X Sharing"

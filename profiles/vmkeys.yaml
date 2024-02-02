@@ -1,0 +1,7 @@
+devices:
+  keys:
+    path: /home/BLINCUSUSER/.ssh
+    source: /home/BLINCUSUSER/.ssh
+    type: disk
+
+description: "VM with ssh keys and cloud config"

@@ -1,31 +1,22 @@
-packer {
-  required_plugins {
-    incus = {
-      version = ">= 1.0.4"
-      source  = "github.com/bketelsen/incus"
-    }
-  }
-}
-
 source "incus" "focal" {
   image        = "images:ubuntu/focal"
-  output_image = "ubuntu-focal"
+  output_image = "focalp"
   reuse        = true
   publish_properties = {
     "builder" = "blincus"
     "description" = "Ubuntu Focal"
-    "template" = "nocloud"
+    "cloud-init"  = "none"
     "scripts" = "ubuntu"
   }
 }
 source "incus" "jammy" {
   image        = "images:ubuntu/jammy"
-  output_image = "ubuntu-jammy"
+  output_image = "jammyp"
   reuse        = true
   publish_properties = {
     "builder" = "blincus"
     "description" = "Ubuntu Jammy"
-    "template" = "nocloud"
+    "cloud-init"  = "none"
     "scripts" = "ubuntu"
 
   }

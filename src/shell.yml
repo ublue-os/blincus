@@ -20,6 +20,5 @@ flags:
 
 
 examples:
-- blincus shell mydevctr --login
+- blincus shell mydevctr 
 - blincus shell mydevctr --root --no-login
-- blincus shell mydevctr

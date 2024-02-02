@@ -1,11 +1,3 @@
-packer {
-  required_plugins {
-    incus = {
-      version = ">= 1.0.4"
-      source  = "github.com/bketelsen/incus"
-    }
-  }
-}
 source "incus" "bookworm" {
   image        = "images:debian/bookworm"
   output_image = "debian-bookworm"
@@ -13,8 +5,8 @@ source "incus" "bookworm" {
   publish_properties = {
     "builder" = "blincus"
     "description" = "Debian Bookworm"
-    "template" = "nocloud"
-    "scripts" = "ubuntu"
+    "scripts" = "debian"
+    "cloud-init"  = "none"
   }
 }
 source "incus" "trixie" {
@@ -24,8 +16,8 @@ source "incus" "trixie" {
   publish_properties = {
     "builder" = "blincus"
     "description" = "Debian Trixie"
-    "template" = "nocloud"
     "scripts" = "debian"
+    "cloud-init"  = "none"
   }
 }
 
@@ -36,8 +28,8 @@ source "incus" "sid" {
   publish_properties = {
     "builder" = "blincus"
     "description" = "Debian Sid"
-    "template" = "nocloud"
     "scripts" = "debian"
+    "cloud-init"  = "none"
   }
 }
 

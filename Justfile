@@ -1,5 +1,5 @@
 
-generate: format
+generate: 
     docker run --rm -it --user $(id -u):$(id -g) --volume "$PWD:/app" dannyben/bashly generate --upgrade
     docker run --rm -it --user $(id -u):$(id -g) --volume "$PWD:/app" dannyben/bashly render templates/markdown site/src/content/docs/cli
     cp ./completions.bash completions/blincus
@@ -15,7 +15,7 @@ build: generate
     docker push bketelsen/blincus:latest
 
 docbox: generate
-    distrobox enter universal
+    distrobox enter bluefin-cli
 
 docs: 
     cd site && npm run dev
@@ -25,3 +25,6 @@ uninstall:
 
 bashly +COMMANDS:
     docker run --rm -it --user $(id -u):$(id -g) --volume "$PWD:/app" dannyben/bashly {{COMMANDS}}
+
+wipe:
+    ./empty-incus.sh

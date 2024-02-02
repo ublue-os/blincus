@@ -91,9 +91,7 @@ blincus_config_usage() {
   echo
   # :command.usage_commands
   printf "%s\n" "$(bold "Commands:")"
-  printf "  %s   Save a value in the config file\n" "$(green "set") "
-  printf "  %s   Read a value from the config file\n" "$(green "get") "
-  printf "  %s   Show all values\n" "$(green "list")"
+  printf "  %s   Show configuration values from ~/.config/blincus/config.ini\n" "$(green "list")"
   echo
 
   # :command.long_usage
@@ -113,110 +111,13 @@ blincus_config_usage() {
 }
 
 # :command.usage
-blincus_config_set_usage() {
-  if [[ -n $long_usage ]]; then
-    printf "blincus config set - Save a value in the config file\n"
-    echo
-
-  else
-    printf "blincus config set - Save a value in the config file\n"
-    echo
-
-  fi
-
-  printf "Alias: s\n"
-  echo
-
-  printf "%s\n" "$(bold "Usage:")"
-  printf "  blincus config set KEY VALUE\n"
-  printf "  blincus config set --help | -h\n"
-  echo
-
-  # :command.long_usage
-  if [[ -n $long_usage ]]; then
-    printf "%s\n" "$(bold "Options:")"
-
-    # :command.usage_fixed_flags
-    printf "  %s\n" "$(magenta "--help, -h")"
-    printf "    Show this help\n"
-    echo
-
-    # :command.usage_args
-    printf "%s\n" "$(bold "Arguments:")"
-
-    # :argument.usage
-    printf "  %s\n" "$(blue "KEY")"
-    printf "    Config key\n"
-    echo
-
-    # :argument.usage
-    printf "  %s\n" "$(blue "VALUE")"
-    printf "    Config value\n"
-    echo
-
-    # :command.usage_examples
-    printf "%s\n" "$(bold "Examples:")"
-    printf "  blincus set engine lxd\n"
-    printf "  blincus set fedora.latest 40\n"
-    echo
-
-  fi
-}
-
-# :command.usage
-blincus_config_get_usage() {
-  if [[ -n $long_usage ]]; then
-    printf "blincus config get - Read a value from the config file\n"
-    echo
-
-  else
-    printf "blincus config get - Read a value from the config file\n"
-    echo
-
-  fi
-
-  printf "Alias: g\n"
-  echo
-
-  printf "%s\n" "$(bold "Usage:")"
-  printf "  blincus config get KEY\n"
-  printf "  blincus config get --help | -h\n"
-  echo
-
-  # :command.long_usage
-  if [[ -n $long_usage ]]; then
-    printf "%s\n" "$(bold "Options:")"
-
-    # :command.usage_fixed_flags
-    printf "  %s\n" "$(magenta "--help, -h")"
-    printf "    Show this help\n"
-    echo
-
-    # :command.usage_args
-    printf "%s\n" "$(bold "Arguments:")"
-
-    # :argument.usage
-    printf "  %s\n" "$(blue "KEY")"
-    printf "    Config key\n"
-    echo
-
-    # :command.usage_examples
-    printf "%s\n" "$(bold "Examples:")"
-    printf "  blincus get engine\n"
-    printf "  blincus get default_release\n"
-    echo
-
-  fi
-}
-
-# :command.usage
 blincus_config_list_usage() {
   if [[ -n $long_usage ]]; then
-    printf "blincus config list - Show all values\n"
+    printf "blincus config list - Show configuration values from ~/.config/blincus/config.ini\n"
     echo
 
   else
-    printf "blincus config list - Show all values\n"
+    printf "blincus config list - Show configuration values from ~/.config/blincus/config.ini\n"
     echo
 
   fi
@@ -271,18 +172,18 @@ blincus_launch_usage() {
     # :command.usage_flags
     # :flag.usage
     printf "  %s\n" "$(magenta "--template, -t TEMPLATE (required)")"
-    printf "    Blincus template name \n    Use \`blincus template list\` to see available templates\n"
-    echo
-
-    # :flag.usage
-    printf "  %s\n" "$(magenta "--persist, -p LOCATION")"
-    printf "    Persist instance $HOME to location on the host\n"
+    printf "    Blincus template name \n    Use \`blincus template list\` to see available templates,\n    or view ~/.config/blincus/config.ini\n"
     echo
 
     # :flag.usage
     printf "  %s\n" "$(magenta "--vm, -v SIZE")"
     printf "    Run as a virtual machine with AWS \"t3\" style sizes\n"
     printf "    Allowed: nano, micro, small, medium, large, xlarge, 2xlarge\n"
+    echo
+
+    # :flag.usage
+    printf "  %s\n" "$(magenta "--workspace, -w DIRECTORY")"
+    printf "    Mount specified directory at \"/workspace\"\n"
     echo
 
     # :command.usage_fixed_flags
@@ -303,6 +204,7 @@ blincus_launch_usage() {
     printf "  blincus launch -t ubuntu mydevctr\n"
     printf "  blincus launch -t ubuntux mydevctr\n"
     printf "  blincus launch -t fedora mydevmachine\n"
+    printf "  blincus launch -t ubuntu -w /var/home/me/projects/blincus blincusdev\n"
     printf "  blincus launch --vm large -t ubuntu myfatvm\n"
     echo
 
@@ -363,9 +265,8 @@ blincus_shell_usage() {
 
     # :command.usage_examples
     printf "%s\n" "$(bold "Examples:")"
-    printf "  blincus shell mydevctr --login\n"
-    printf "  blincus shell mydevctr --root --no-login\n"
     printf "  blincus shell mydevctr\n"
+    printf "  blincus shell mydevctr --root --no-login\n"
     echo
 
     # :command.footer
@@ -393,7 +294,6 @@ blincus_template_usage() {
   echo
   # :command.usage_commands
   printf "%s\n" "$(bold "Commands:")"
-  printf "  %s   Edit a template\n" "$(green "edit")   "
   printf "  %s   List all templates\n" "$(green "list")   "
   printf "  %s   Restore default templates\n" "$(green "restore")"
   echo
@@ -409,51 +309,6 @@ blincus_template_usage() {
 
     # :command.footer
     printf "View documentation online at https://blincus.dev\n\n"
-    echo
-
-  fi
-}
-
-# :command.usage
-blincus_template_edit_usage() {
-  if [[ -n $long_usage ]]; then
-    printf "blincus template edit - Edit a template\n"
-    echo
-
-  else
-    printf "blincus template edit - Edit a template\n"
-    echo
-
-  fi
-
-  printf "Alias: e\n"
-  echo
-
-  printf "%s\n" "$(bold "Usage:")"
-  printf "  blincus template edit NAME\n"
-  printf "  blincus template edit --help | -h\n"
-  echo
-
-  # :command.long_usage
-  if [[ -n $long_usage ]]; then
-    printf "%s\n" "$(bold "Options:")"
-
-    # :command.usage_fixed_flags
-    printf "  %s\n" "$(magenta "--help, -h")"
-    printf "    Show this help\n"
-    echo
-
-    # :command.usage_args
-    printf "%s\n" "$(bold "Arguments:")"
-
-    # :argument.usage
-    printf "  %s\n" "$(blue "NAME")"
-    printf "    Template name\n"
-    echo
-
-    # :command.usage_examples
-    printf "%s\n" "$(bold "Examples:")"
-    printf "  blincus template edit ubuntu\n"
     echo
 
   fi
@@ -1033,31 +888,51 @@ prompt_reconcile() {
 write_defaults() {
 
 	# default container engine
-	config_set "engine" "incus"
+	config_set "default_cloud-init" "debian"
+	config_set "default_container_image" "images:ubuntu/mantic/cloud"
+	config_set "default_container_profiles" "container,idmap"
+	config_set "default_scripts" "ubuntu"
+	config_set "default_home-mounts" "none"
+	config_set "default_vm_image" "images:ubuntu/mantic/cloud"
+	config_set "default_vm_profiles" "idmap,vmkeys"
 
 	# ubuntu defaults
 	config_set "ubuntu.image" "images:ubuntu/jammy/cloud"
 	config_set "ubuntu.scripts" "ubuntu"
+	config_set "ubuntu.description" "Ubuntu Jammy + cloud"
 
 	config_set "ubuntux.image" "images:ubuntu/jammy/cloud"
 	config_set "ubuntux.scripts" "ubuntu"
+	config_set "ubuntux.description" "Ubuntu Jammy cloud + x"
+	config_set "ubuntux.profiles" "container,idmap,xdevs"
+	config_set "ubuntux.cloud-init" "debianx"
+
 	# debian defaults
 	config_set "debian.image" "images:debian/bookworm/cloud"
 	config_set "debian.scripts" "debian"
+	config_set "debian.description" "Debian Bookworm + cloud"
 
 	config_set "debianx.image" "images:debian/bookworm/cloud"
 	config_set "debianx.scripts" "debian"
+	config_set "debianx.description" "Debian Bookworm cloud + x"
+	config_set "debianx.profiles" "container,idmap,xdevs"
+	config_set "debianx.cloud-init" "debianx"
 
 	#fedora defaults
 	config_set "fedora.image" "images:fedora/39/cloud"
 	config_set "fedora.scripts" "fedora"
+	config_set "fedora.description" "Fedora 39 + cloud"
 
 	config_set "fedorax.image" "images:fedora/39/cloud"
 	config_set "fedorax.scripts" "fedora"
+	config_set "fedorax.description" "Fedora 39 cloud + x"
+	config_set "fedorax.profiles" "container,idmap,xdevs"
+	config_set "fedorax.cloud-init" "fedorax"
 
 	# nix defaults
 
 	config_set "nix.image" "images:ubuntu/jammy/cloud"
+	config_set "nix.description" "Ubuntu + Nix"
 	config_set "nix.scripts" "nix"
 	# todo: flag or JIT set this
 	# xhost +
@@ -1076,7 +951,23 @@ blincus_instance_name() {
 blincus_get_property() {
 	local image=$1
 	local property=$2
-	incus image get-property "$1" "$2"
+	incus image get-property "$1" "$2" || echo ""
+}
+
+blincus_profile_exists() {
+	local profile=$1
+	name=$(incus profile ls --format json | jq -r '.[] | select(.name == "'"$profile"'") | .name')
+	if [[ $name == $profile ]]; then
+		echo 1
+	else
+		echo 0
+	fi
+
+}
+
+# images that haven't been assigned an alias
+dangling_images() {
+	incus image list --format json | jq -r '.[] | select ( .aliases | length == 0) | .fingerprint '
 }
 
 # src/lib/ini.sh
@@ -1161,7 +1052,7 @@ image_id() {
 	local manifest=$2
 	#echo "build: $build"
 	cfgdir=$(dirname "${CONFIG_FILE}")
-	workdir="${cfgdir}/packer"
+	workdir="${cfgdir}/recipes"
 	img_id=$(jq -r '.builds[] | select(.name=="'"$build"'") | .artifact_id' "$workdir/$manifest.json")
 	echo "$img_id"
 
@@ -1172,7 +1063,7 @@ image_alias() {
 	local manifest=$2
 	#echo "build: $build"
 	cfgdir=$(dirname "${CONFIG_FILE}")
-	workdir="${cfgdir}/packer"
+	workdir="${cfgdir}/recipes"
 	img_id=$(jq -r '.builds[] | select(.name=="'"$build"'") | .custom_data.alias' "$workdir/$manifest.json")
 	echo "$img_id"
 
@@ -1181,7 +1072,7 @@ image_alias() {
 unique_builds() {
 	local build=$1
 	cfgdir=$(dirname "${CONFIG_FILE}")
-	workdir="${cfgdir}/packer"
+	workdir="${cfgdir}/recipes"
 	builds=$(jq -r '.builds| group_by(.name) | .[][-1] | .name' "$workdir/$1.json")
 	# return builds as an array
 	echo "$builds"
@@ -1201,18 +1092,19 @@ plugin() {
 packer_build() {
 	cfgdir=$(dirname "${CONFIG_FILE}")
 	name=$1
-	recipe="${cfgdir}/packer/${name}.pkr.hcl"
+	recipe="${cfgdir}/recipes/${name}.pkr.hcl"
 	if [ ! -f "${recipe}" ]; then
-		echo "ERROR: recipe file not found: ${recipe}"
+		echo "ERROR: packer build recipe file not found: ${recipe}"
 		exit 1
 	fi
 
-	workdir="${cfgdir}/packer"
+	workdir="${cfgdir}/recipes"
 	pushd "${workdir}" >/dev/null
 	packer build --force "${name}.pkr.hcl"
 	popd >/dev/null
 
 	ubuilds=$(unique_builds "${name}")
+	echo "Unique builds: " $ubuilds
 	for build in ${ubuilds}; do
 		echo ""
 		echo "$(blue Build:) ${build}"
@@ -1220,16 +1112,15 @@ packer_build() {
 		echo "  $(blue fingerprint:) ${img_id}"
 		alias=$(image_alias "${build}" "${name}")
 		echo "  $(blue alias:) ${alias}"
-		tmplt=$(blincus_get_property "${img_id}" "template")
-		echo "  $(blue template:) ${tmplt}"
 		scrpts=$(blincus_get_property "${img_id}" "scripts")
 		echo "  $(blue scripts:) ${scrpts}"
+		cloudinit=$(blincus_get_property "${img_id}" "cloud-init")
+		echo "  $(blue cloud-init:) ${cloudinit}"
+		profiles=$(blincus_get_property "${img_id}" "profiles")
+		echo "  $(blue profiles:) ${profiles}"
 
-		# ensure sourcetemplate exists
-		if [ ! -e "${cfgdir}/templates/${tmplt}.config.yaml" ]; then
-			echo "Source template $(red ${tmplt}) does not exist"
-			exit 1
-		fi
+		description=$(blincus_get_property "${img_id}" "description")
+		echo "  $(blue description:) ${description}"
 		# ensure scriptdir exists
 		if [ ! -e "${cfgdir}/scripts/${scrpts}" ]; then
 			echo "Script directory $(red ${scrpts}) does not exist"
@@ -1244,12 +1135,24 @@ packer_build() {
 			imageref="${img_id}"
 		fi
 
-		# Create config values for this image
-		config_set "packer-${name}.image" "${imageref}"
-		config_set "packer-${name}.scripts" "${scrpts}"
+		local tname
+		# if alias is set, use it
+		if [ -n "${alias}" ]; then
+			tname="${alias}"
+		else
+			tname="${name}-packer"
+		fi
 
-		# copy image template
-		cp "${cfgdir}/templates/${tmplt}.config.yaml" "${cfgdir}/templates/packer-${name}.config.yaml"
+		# Create config values for this image
+		config_set "${tname}.image" "${imageref}"
+		config_set "${tname}.scripts" "${scrpts}"
+		config_set "${tname}.description" "${description}"
+		if [ ! -z "${cloudinit}" ]; then
+			config_set "${tname}.cloud-init" "${cloudinit}"
+		fi
+		if [ ! -z "${profiles}" ]; then
+			config_set "${tname}.profiles" "${profiles}"
+		fi
 
 	done
 }
@@ -1259,58 +1162,57 @@ personalize() {
 
 	cfgdir=$(dirname "${CONFIG_FILE}")
 
-	template_path="${cfgdir}/templates"
-	packer_path="${cfgdir}/packer"
+	packer_path="${cfgdir}/recipes"
 
 	shopt -s globstar
-
-	for file in $template_path/*.config.yaml; do
-
-		fullname=$(getent passwd "$USER" | cut -d ':' -f 5)
-		sed -i "s/BLINCUSUSER/$USER/g" "$file"
-		sed -i "s/BLINCUSFULLNAME/$fullname/g" "$file"
-
-		# if we're running on WSL we need to remove the gecos line from the config
-		# https://wsl.dev/wslblincus/
-		if grep -qE "(Microsoft|WSL)" /proc/version &>/dev/null; then
-			sed -i 's/gecos/#gecos/g' "$file"
-		fi
-
-		# I don't know a better way to get the first file
-		for i in "$HOME"/.ssh/id*.pub; do
-			[ -f "$i" ] || break
-			contents=$(cat "$i")
-			sed -i "s|SSHKEY|$contents|g" "$file"
-			break
-
-		done
-	done
-
 	for file in $packer_path/* $packer_path/**/*; do
 
 		# if it's not a directory
 		if ! [ -d "$file" ]; then
-			fullname=$(getent passwd "$USER" | cut -d ':' -f 5)
-			sed -i "s/BLINCUSUSER/$USER/g" "$file"
-			sed -i "s/BLINCUSFULLNAME/$fullname/g" "$file"
+			personalize_file "${file}"
+		fi
+	done
+	cloud_path="${cfgdir}/cloud-init"
 
-			# if we're running on WSL we need to remove the gecos line from the config
-			# https://wsl.dev/wslblincus/
-			if grep -qE "(Microsoft|WSL)" /proc/version &>/dev/null; then
-				sed -i 's/gecos/#gecos/g' "$file"
-			fi
+	for file in $cloud_path/* $cloud_path/**/*; do
 
-			# I don't know a better way to get the first file
-			for i in "$HOME"/.ssh/id*.pub; do
-				[ -f "$i" ] || break
-				contents=$(cat "$i")
-				sed -i "s|SSHKEY|$contents|g" "$file"
-				break
-
-			done
+		# if it's not a directory
+		if ! [ -d "$file" ]; then
+			personalize_file "${file}"
 		fi
 	done
 
+	profile_path="${cfgdir}/profiles"
+
+	for file in $profile_path/* $profile_path/**/*; do
+
+		# if it's not a directory
+		if ! [ -d "$file" ]; then
+			personalize_file "${file}"
+		fi
+	done
+}
+
+personalize_file() {
+	file=$1
+	fullname=$(getent passwd "$USER" | cut -d ':' -f 5)
+	sed -i "s/BLINCUSUSER/$USER/g" "$file"
+	sed -i "s/BLINCUSFULLNAME/$fullname/g" "$file"
+
+	# if we're running on WSL we need to remove the gecos line from the config
+	# https://wsl.dev/wslblincus/
+	if grep -qE "(Microsoft|WSL)" /proc/version &>/dev/null; then
+		sed -i 's/gecos/#gecos/g' "$file"
+	fi
+
+	# I don't know a better way to get the first file
+	for i in "$HOME"/.ssh/id*.pub; do
+		[ -f "$i" ] || break
+		contents=$(cat "$i")
+		sed -i "s|SSHKEY|$contents|g" "$file"
+		break
+
+	done
 }
 
 # src/lib/prefix.sh
@@ -1321,6 +1223,83 @@ prefix() {
 	prefix=$(dirname "$(dirname "$(command -v blincus)")")
 	[ -z "${prefix}" ] && prefix="/usr/local"
 	echo "${prefix}"
+}
+
+# src/lib/resolve.sh
+profile_line() {
+	local template=$1
+	local vm=$2
+	profilelist=$(config_get "$template".profiles)
+	if [ -z "$profilelist" ]; then
+		if [[ ! -z "${vm}" ]]; then
+			profilelist=$(config_get default_vm_profiles)
+		else
+			profilelist=$(config_get default_container_profiles)
+		fi
+	fi
+	IFS=,
+	read line <<<$profilelist
+	profiles=($line)
+	shopt -s extglob
+	profileline='--profile default'
+	for each in "${profiles[@]}"; do
+		profileline+=" --profile "
+		profileline+="${each##*( )}"
+	done
+	echo "${profileline}"
+}
+
+image() {
+	local template=$1
+	local vm=$2
+
+	imagename=$(config_get "$template".image)
+	if [ -z "$imagename" ]; then
+		if [[ ! -z "${vm}" ]]; then
+			imagename=$(config_get default_vm_image)
+		else
+			imagename=$(config_get default_container_image)
+		fi
+	fi
+	echo "${imagename}"
+}
+scripts() {
+	local template=$1
+	local vm=$2
+
+	scriptsdir=$(config_get "$template".scripts)
+	if [ -z "$scriptsdir" ]; then
+
+		scriptsdir=$(config_get default_scripts)
+
+	fi
+	echo "${scriptsdir}"
+}
+
+home_mounts() {
+	local template=$1
+	local vm=$2
+
+	homemounts=$(config_get "$template".home-mounts)
+	if [ -z "$homemounts" ]; then
+
+		homemounts=$(config_get default_home-mounts)
+
+	fi
+	echo "${homemounts}"
+}
+
+cloud() {
+	local template=$1
+	local vm=$2
+
+	cloudinit=$(config_get "$template".cloud-init)
+	if [ -z "$cloudinit" ]; then
+
+		cloudinit=$(config_get default_cloud-init)
+
+	fi
+	echo "${cloudinit}"
 }
 
 # src/lib/sanity.sh
@@ -1345,13 +1324,54 @@ sanity() {
 		errors=1
 		echo "Error: User does not belong to 'incus-admin' group."
 		echo "To resolve run:"
-		echo 'sudo usermod -aG $USER'
+		echo 'sudo usermod -aG incus-admin $USER'
 	fi
 	if ((errors > 0)); then
 		echo "$(red Sanity check failed.)"
 		echo "$(yellow See documentation at https://blincus.dev)"
 		exit 1
 	fi
+}
+
+profiles() {
+	cfgdir=$(dirname "${CONFIG_FILE}")
+	done=$(config_get "profilescreated" "0")
+	if [ $done -eq 1 ]; then
+		return
+	fi
+	initpath="${cfgdir}/cloud-init"
+	profilepath="${cfgdir}/profiles"
+
+	shopt -s globstar
+	for file in $initpath/*.yaml; do
+		name="$(basename "${file}" .yaml)"
+		exists=$(blincus_profile_exists "${name}")
+		if [[ $exists -eq 0 ]]; then
+			echo "$(red_bold Profile "${name}" is missing. Creating...)"
+			incus profile --quiet create "${name}"
+			# now personalize it
+			personalize_file "${file}"
+			incus profile --quiet edit "${name}" <  "${file}"
+
+		fi
+	done
+
+		for file in $profilepath/*.yaml; do
+		name="$(basename "${file}" .yaml)"
+		exists=$(blincus_profile_exists "${name}")
+		if [[ $exists -eq 0 ]]; then
+			echo "$(red_bold Profile "${name}" is missing. Creating...)"
+			incus profile --quiet create "${name}"
+
+			# now personalize it
+			personalize_file "${file}"
+			incus profile --quiet edit "${name}" <  "${file}"
+
+		fi
+	done
+
+	config_set "profilescreated" "1"
+
 }
 
 # src/lib/uuid.sh
@@ -1404,27 +1424,6 @@ yaml_load() {
 # :command.command_functions
 
 # :command.function
-blincus_config_set_command() {
-  # src/config_set_command.sh
-  # Using the standard library (lib/config.sh) to store a value to the config
-  config_set "${args[key]}" "${args[value]}"
-  config_show
-
-}
-
-# :command.function
-blincus_config_get_command() {
-  # src/config_get_command.sh
-  key="${args[key]}"
-  if config_has_key "$key"; then
-  	config_get "$key"
-  else
-  	echo "No such key: $key"
-  fi
-
-}
-
-# :command.function
 blincus_config_list_command() {
   # src/config_list_command.sh
   for key in $(config_keys); do
@@ -1440,73 +1439,116 @@ blincus_launch_command() {
   cfgdir=$(dirname "${CONFIG_FILE}")
   name=${args[name]}
   template=${args[--template]}
-  persist=${args[--persist]}
   vm=${args[--vm]}
   vmflag=""
   sizeflag=""
+  workspace=${args[--workspace]}
+  resolvedworkspace=""
+
+  if [[ ! -z "${workspace}" ]]; then
+  	resolvedworkspace=$(readlink -f "${workspace}")
+  fi
+
+  # set vm flag and size if specified
   if [[ ! -z "${vm}" ]]; then
   	vmflag="--vm"
   	sizeflag="--type t3.${vm}"
   fi
 
-  profilelist=$(config_get arraytest.profiles)
+  profilelist=$(config_get "$template".profiles)
+  if [ -z "$profilelist" ]; then
+  	if [[ ! -z "${vm}" ]]; then
+  		profilelist=$(config_get default_vm_profiles)
+  	else
+  		profilelist=$(config_get default_container_profiles)
+  	fi
+  fi
+
+  # todo: extract this out if I can return an array properly
+  OLD_IFS=$IFS
   IFS=,
   read line <<<$profilelist
   profiles=($line)
-  shopt -s extglob
-  profileline='--profile default'
-  for each in "${profiles[@]}"; do
-  	profileline+=" --profile "
-  	profileline+="${each##*( )}"
-  done
-  echo "${profileline}"
-  exit 0
+  IFS=${OLD_IFS}
 
-  image=$(config_get ${template}.image)
+  image=$(image $template $vmflag)
+  scripts=$(scripts $template $vmflag)
+  cloudinit=$(cloud $template $vmflag)
+  mounts=$(home_mounts $template $vmflag)
 
-  config="${cfgdir}/templates/${template}"
   echo "Using $(blue ${template}) template"
-  incus init "${image}" "${args[name]}" "${vmflag}" "${sizeflag}" <"${config}.config.yaml"
+  incus init --quiet $vmflag $sizeflag "${image}" "${args[name]}"
 
-  if [[ ! -z "${persist}" ]]; then
-  	echo "$(yellow_bold Persisting home directories for $name at $persist)"
-  	mkdir -p "$persist"
-  	incus config device add "${args[name]}" persistdir disk source="$persist" path=/home
+  for each in "${profiles[@]}"; do
+  	exists=$(blincus_profile_exists "${each##*( )}")
+  	if [[ $exists -eq 0 ]]; then
+  		echo "$(red_bold Profile "${each##*( )}" is missing!)"
+  		exit 1
+  	fi
+  done
+
+  # Add profiles specified by template
+  for each in "${profiles[@]}"; do
+  	incus profile --quiet add "${args[name]}" "${each##*( )}"
+  done
+
+  # add cloud-init profile
+  # TODO : skip if "none"
+
+  if [ ! "$cloudinit" = "none" ]; then
+  	echo "Using $(blue $cloudinit) cloud-init profile"
+
+  	# ensure profile exists. do this all at once earlier? -- before init to save pain
+  	exists=$(blincus_profile_exists $cloudinit)
+  	if [[ $exists -eq 0 ]]; then
+  		echo "$(red_bold Profile "${cloudinit}" is missing!)"
+  		exit 1
+  	fi
+
+  	incus profile --quiet add "${args[name]}" "${cloudinit}"
   fi
-
-  echo "$(yellow Starting instance $name)"
-  # add our useful scripts
-  # mount or copy scripts
-
-  scripts=$(config_get ${template}.scripts)
-  scriptdir="${cfgdir}/scripts/${scripts}"
-  if [[ ! "${vm}" ]]; then
-  	# copy scripts
-  	echo "$(yellow_bold Copying scripts from $HOME/.blincus/scripts)"
-  	incus file push -r -p "$HOME"/.blincus/scripts/* "$name"/opt/scripts/
-  	echo "copied"
-  fi
-
-  # now start it
-  incus start "${args[name]}"
-
-  echo "$(yellow Waiting for cloud init...)"
 
   if [[ "${vm}" ]]; then
-  	sleep 10
+  	incus config  --quiet device add "${args[name]}" cloud disk source=cloud-init:config
   fi
-  # wait for cloud-init to create the user
-  # otherwise the home mount will prevent /etc/skel from being applied
-  incus exec "${args[name]}" -- bash -c "command -v cloud-init && cloud-init status --wait || echo No cloud-init"
 
+  echo "$(yellow_bold Starting instance $name)"
   TMPFILE=$(mktemp)
   echo " * Blincus instance: $(red $name)" >$TMPFILE
   echo " * Template: $(red $template)" >>$TMPFILE
   echo " * Image: $(red $image)" >>$TMPFILE
-  echo " * Helper Scripts: $(red /opt/scripts)" >>$TMPFILE
-  echo " " >>$TMPFILE
+  echo " * Host Mounts: $(red Host) <-> $(blue Instance)" >>$TMPFILE
 
-  incus file push $TMPFILE "$name"/etc/blincus
+  # TODO - don't mount if scriptdir doesn't exist
+  scripts=$(config_get "$template".scripts)
+  if [ -z "$scripts" ]; then
+  	scripts=$(config_get default_scripts)
+  fi
+
+  scriptdir="${cfgdir}/scripts/${scripts}"
+  # mount scripts
+  if [ -d "$scriptdir" ]; then
+  	echo "$(yellow Mounting scripts from $HOME/.blincus/scripts)"
+  	#incus file push -r -p "${scriptdir}"/* "$name"/opt/scripts
+  	incus config --quiet device add "${name}" scriptdir disk source="${scriptdir}" path=/opt/scripts
+  	echo "   - $(red ${scriptdir}) <-> $(blue /opt/scripts)" >>$TMPFILE
+
+  fi
+
+  # now start it
+  incus start --quiet "${args[name]}"
+
+  if [[ "${vm}" ]]; then
+  	echo "$(yellow Waiting for instance start...)"
+  	sleeptime=$(config_get "vm_sleep" 30)
+  	sleep $sleeptime
+  fi
+  echo "$(yellow Waiting for cloud init...)"
+
+  # wait for cloud-init to create the user
+  # otherwise the home mount will prevent /etc/skel from being applied
+  incus exec  "${args[name]}" -- bash -c "command -v cloud-init && cloud-init status --wait || echo No cloud-init"
+
   MOTDPROFILE=$(mktemp)
   echo "cat /etc/blincus" >$MOTDPROFILE
 
@@ -1520,11 +1562,39 @@ blincus_launch_command() {
   # mount $HOME at $HOME/host
 
   if [[ ! $nomount ]]; then
-  	echo "$(yellow Mounting home directory)"
-  	incus config device add "${args[name]}" myhomedir disk source="$HOME" path=/home/"${USER}"/host/
+  	echo "$(yellow Mounting home directory at ~/host)"
+  	incus config --quiet device add "${args[name]}" myhomedir disk source="$HOME" path=/home/"${USER}"/host/
+  	echo "   - $(red $HOME) <-> $(blue /home/${USER}/host/)" >>$TMPFILE
+
   fi
+
+  if [[ ! -z "${workspace}" ]]; then
+  	echo "$(yellow Mounting workspace directory)"
+  	dirname=$(basename "$resolvedworkspace")
+  	incus config --quiet device add "${args[name]}" workspace disk source="${resolvedworkspace}" path=/workspace/"${dirname}"
+  	echo "   - $(red $resolvedworkspace) <-> $(blue /workspace)" >>$TMPFILE
+  fi
+
+  OLD_IFS=$IFS
+  IFS=,
+  read line <<<$mounts
+  mountlist=($line)
+  IFS=${OLD_IFS}
+
+  for each in "${mountlist[@]}"; do
+  	if [ ! "${each}" = "none" ]; then
+  		echo "$(yellow Mounting directory ${each} at ~/${each})"
+  		incus config --quiet device add "${args[name]}" "${each##*( )}"mount disk source="$HOME"/"${each##*( )}" path=/home/"${USER}"/"${each##*( )}"
+  		echo "   - $(red ${each##*( )}) <-> $(blue /home/${USER}/${each##*( )})" >>$TMPFILE
+  	fi
+  done
+
+  # finish motd
+  echo " " >>$TMPFILE
+  incus file push $TMPFILE "$name"/etc/blincus
+
   if [[ ! -z "${DISPLAY}" ]]; then
-  	echo "$(yellow_bold Allowing X sharing:)"
+  	echo "$(yellow Allowing X sharing:)"
   	xhost +
   fi
   echo "$(green_bold Instance $name ready)"
@@ -1553,16 +1623,6 @@ blincus_shell_command() {
 }
 
 # :command.function
-blincus_template_edit_command() {
-  # src/template_edit_command.sh
-  cfgdir=$(dirname "${CONFIG_FILE}")
-
-  template_path="${cfgdir}/templates"
-  $EDITOR ${template_path}/${args[name]}.config.yaml
-
-}
-
-# :command.function
 blincus_template_list_command() {
   # src/template_list_command.sh
   comp=${args[--completions]}
@@ -1571,23 +1631,22 @@ blincus_template_list_command() {
 
   template_path="${cfgdir}/templates"
 
-  if [[ $comp ]]; then
-  	templates=()
-  	for file in $template_path/*.config.yaml; do
-  		name="$(basename "${file}" .config.yaml)"
-  		templates+=($name)
-  	done
-  	echo ${templates[@]}
-  	return
-  fi
-
-  for file in $template_path/*.config.yaml; do
-  	name="$(basename "${file}" .config.yaml)"
-  	echo "$(blue_bold $name)"
-  	echo "  $(grep "description" ${file})"
-
+  tmplts=$(cat "${cfgdir}"/config.ini | grep "^\[" | awk -F'[][]' '{print $2}')
+  for t in ${tmplts}; do
+  	echo "$(blue $t):"
+  	desc=$(config_get "${t}.description")
+  	if [ -z "$desc" ]; then
+  		desc="[no description]"
+  	fi
+  	echo "$desc"
+  	imagename=$(config_get "$t".image)
+  	if [ -z "$imagename" ]; then
+  		imagename="(default)"
+  	fi
+  	echo "Image: ${imagename}"
+  	echo ""
   done
-
+  #config_keys
 }
 
 # :command.function
@@ -1595,27 +1654,30 @@ blincus_template_restore_command() {
   # src/template_restore_command.sh
   cfgdir=$(dirname "${CONFIG_FILE}")
 
-  template_path="${cfgdir}/templates"
-  packer_path="${cfgdir}/packer"
-
+  packer_path="${cfgdir}/recipes"
+  profile_path="${cfgdir}/profiles"
+  init_path="${cfgdir}/cloud-init"
   baseDir="$(prefix)/share/blincus"
   templateDir="${baseDir}/templates"
-  packerDir="${baseDir}/packer"
+  packerDir="${baseDir}/recipes"
+  profileDir="${baseDir}/profiles"
+  initDir="${baseDir}/cloud-init"
 
+  echo ""
+  echo "$(red To restore original files, copy from the installer directory to the user directory)"
   echo ""
   echo "$(green Installer base directory:) $baseDir"
+  echo "$(green User base directory:) $cfgdir"
   echo ""
-  echo "$(blue Installer template directory:) $templateDir"
-  echo "$(blue User template directory:) $template_path"
+  echo "$(blue Installer packer recipe directory:) $packerDir"
+  echo "$(blue User packer recipe directory:) $packer_path"
   echo ""
-  echo "$(red To restore a template copy the template from the installer directory to the user directory)"
+  echo "$(blue Installer profile directory:) $profileDir"
+  echo "$(blue User packer recipe directory:) $profile_path"
   echo ""
+  echo "$(blue Installer cloud-init directory:) $initDir"
+  echo "$(blue User cloud-init directory:) $init_path"
   echo ""
-  echo "$(magenta Installer packer template directory:) $packerDir"
-  echo "$(magenta User packer template directory:) $packer_path"
-  echo ""
-  echo "$(red To restore a packer template copy the template from the installer directory to the user directory)"
-
 }
 
 # :command.function
@@ -1632,6 +1694,10 @@ blincus_packer_build_command() {
   # build the packer image
   packer_build $name
 
+  for image in $(dangling_images); do
+  	incus image --quiet delete "${image}"
+  done
+
 }
 
 # :command.function
@@ -1641,7 +1707,7 @@ blincus_packer_buildall_command() {
 
   personalize
 
-  packer_path="${cfgdir}/packer"
+  packer_path="${cfgdir}/recipes"
 
   for file in $packer_path/*.pkr.hcl; do
   	name="$(basename "${file}" .pkr.hcl)"
@@ -1649,6 +1715,10 @@ blincus_packer_buildall_command() {
   	echo "Found definition $(red_bold $name):"
   	packer_build $name
 
+  done
+
+  for image in $(dangling_images); do
+  	incus image --quiet delete "${image}"
   done
 
 }
@@ -1660,7 +1730,7 @@ blincus_packer_list_command() {
 
   cfgdir=$(dirname "${CONFIG_FILE}")
 
-  packer_path="${cfgdir}/packer"
+  packer_path="${cfgdir}/recipes"
 
   if [[ $comp ]]; then
   	packers=()
@@ -1685,9 +1755,9 @@ blincus_packer_list_command() {
 blincus_personalize_command() {
   # src/personalize_command.sh
   echo ""
-  echo "$(blue Personalizing templates.)"
+  echo "$(blue Personalizing...)"
   personalize
-  echo "$(green Template personalization complete.)"
+  echo "$(green Personalization complete.)"
 
 }
 
@@ -1841,20 +1911,6 @@ blincus_config_parse_requirements() {
   case $action in
     -*) ;;
 
-    set | s)
-      action="set"
-      shift
-      blincus_config_set_parse_requirements "$@"
-      shift $#
-      ;;
-
-    get | g)
-      action="get"
-      shift
-      blincus_config_get_parse_requirements "$@"
-      shift $#
-      ;;
-
     list | l)
       action="list"
       shift
@@ -1895,126 +1951,6 @@ blincus_config_parse_requirements() {
 
     esac
   done
-
-}
-
-# :command.parse_requirements
-blincus_config_set_parse_requirements() {
-  # :command.fixed_flags_filter
-  while [[ $# -gt 0 ]]; do
-    case "${1:-}" in
-      --help | -h)
-        long_usage=yes
-        blincus_config_set_usage
-        exit
-        ;;
-
-      *)
-        break
-        ;;
-
-    esac
-  done
-
-  # :command.command_filter
-  action="config set"
-
-  # :command.parse_requirements_while
-  while [[ $# -gt 0 ]]; do
-    key="$1"
-    case "$key" in
-
-      -?*)
-        printf "invalid option: %s\n" "$key" >&2
-        exit 1
-        ;;
-
-      *)
-        # :command.parse_requirements_case
-        # :command.parse_requirements_case_simple
-        if [[ -z ${args['key']+x} ]]; then
-
-          args['key']=$1
-          shift
-        elif [[ -z ${args['value']+x} ]]; then
-
-          args['value']=$1
-          shift
-        else
-          printf "invalid argument: %s\n" "$key" >&2
-          exit 1
-        fi
-
-        ;;
-
-    esac
-  done
-
-  # :command.required_args_filter
-  if [[ -z ${args['key']+x} ]]; then
-    printf "missing required argument: KEY\nusage: blincus config set KEY VALUE\n" >&2
-    exit 1
-  fi
-  if [[ -z ${args['value']+x} ]]; then
-    printf "missing required argument: VALUE\nusage: blincus config set KEY VALUE\n" >&2
-    exit 1
-  fi
-
-}
-
-# :command.parse_requirements
-blincus_config_get_parse_requirements() {
-  # :command.fixed_flags_filter
-  while [[ $# -gt 0 ]]; do
-    case "${1:-}" in
-      --help | -h)
-        long_usage=yes
-        blincus_config_get_usage
-        exit
-        ;;
-
-      *)
-        break
-        ;;
-
-    esac
-  done
-
-  # :command.command_filter
-  action="config get"
-
-  # :command.parse_requirements_while
-  while [[ $# -gt 0 ]]; do
-    key="$1"
-    case "$key" in
-
-      -?*)
-        printf "invalid option: %s\n" "$key" >&2
-        exit 1
-        ;;
-
-      *)
-        # :command.parse_requirements_case
-        # :command.parse_requirements_case_simple
-        if [[ -z ${args['key']+x} ]]; then
-
-          args['key']=$1
-          shift
-        else
-          printf "invalid argument: %s\n" "$key" >&2
-          exit 1
-        fi
-
-        ;;
-
-    esac
-  done
-
-  # :command.required_args_filter
-  if [[ -z ${args['key']+x} ]]; then
-    printf "missing required argument: KEY\nusage: blincus config get KEY\n" >&2
-    exit 1
-  fi
 
 }
 
@@ -2103,21 +2039,6 @@ blincus_launch_parse_requirements() {
         ;;
 
       # :flag.case
-      --persist | -p)
-
-        # :flag.case_arg
-        if [[ -n ${2+x} ]]; then
-
-          args['--persist']="$2"
-          shift
-          shift
-        else
-          printf "%s\n" "--persist requires an argument: --persist, -p LOCATION" >&2
-          exit 1
-        fi
-        ;;
-
-      # :flag.case
       --vm | -v)
 
         # :flag.case_arg
@@ -2128,6 +2049,26 @@ blincus_launch_parse_requirements() {
           shift
         else
           printf "%s\n" "--vm requires an argument: --vm, -v SIZE" >&2
+          exit 1
+        fi
+        ;;
+
+      # :flag.case
+      --workspace | -w)
+        # :flag.conflicts
+        if [[ -n "${args['--vm']:-}" ]]; then
+          printf "conflicting options: %s cannot be used with %s\n" "$key" "--vm" >&2
+          exit 1
+        fi
+
+        # :flag.case_arg
+        if [[ -n ${2+x} ]]; then
+
+          args['--workspace']="$2"
+          shift
+          shift
+        else
+          printf "%s\n" "--workspace requires an argument: --workspace, -w DIRECTORY" >&2
           exit 1
         fi
         ;;
@@ -2269,13 +2210,6 @@ blincus_template_parse_requirements() {
   case $action in
     -*) ;;
 
-    edit | e)
-      action="edit"
-      shift
-      blincus_template_edit_parse_requirements "$@"
-      shift $#
-      ;;
-
     list | l)
       action="list"
       shift
@@ -2323,62 +2257,6 @@ blincus_template_parse_requirements() {
 
     esac
   done
-
-}
-
-# :command.parse_requirements
-blincus_template_edit_parse_requirements() {
-  # :command.fixed_flags_filter
-  while [[ $# -gt 0 ]]; do
-    case "${1:-}" in
-      --help | -h)
-        long_usage=yes
-        blincus_template_edit_usage
-        exit
-        ;;
-
-      *)
-        break
-        ;;
-
-    esac
-  done
-
-  # :command.command_filter
-  action="template edit"
-
-  # :command.parse_requirements_while
-  while [[ $# -gt 0 ]]; do
-    key="$1"
-    case "$key" in
-
-      -?*)
-        printf "invalid option: %s\n" "$key" >&2
-        exit 1
-        ;;
-
-      *)
-        # :command.parse_requirements_case
-        # :command.parse_requirements_case_simple
-        if [[ -z ${args['name']+x} ]]; then
-
-          args['name']=$1
-          shift
-        else
-          printf "invalid argument: %s\n" "$key" >&2
-          exit 1
-        fi
-
-        ;;
-
-    esac
-  done
-
-  # :command.required_args_filter
-  if [[ -z ${args['name']+x} ]]; then
-    printf "missing required argument: NAME\nusage: blincus template edit NAME\n" >&2
-    exit 1
-  fi
 
 }
 
@@ -2773,7 +2651,7 @@ blincus_personalize_parse_requirements() {
 
 # :command.initialize
 initialize() {
-  version="0.3.2"
+  version="0.4.0"
   long_usage=''
   set -e
 
@@ -2793,7 +2671,9 @@ initialize() {
   if [ "$BLINCUS_SKIP_SANITY" != 1 ]; then
   	sanity
   fi
+
   #personalize
+  profiles
   prompt_reconcile
 
 }
@@ -2810,13 +2690,10 @@ run() {
 
   case "$action" in
     "config") blincus_config_command ;;
-    "config set") blincus_config_set_command ;;
-    "config get") blincus_config_get_command ;;
     "config list") blincus_config_list_command ;;
     "launch") blincus_launch_command ;;
     "shell") blincus_shell_command ;;
     "template") blincus_template_command ;;
-    "template edit") blincus_template_edit_command ;;
     "template list") blincus_template_list_command ;;
     "template restore") blincus_template_restore_command ;;
     "packer") blincus_packer_command ;;

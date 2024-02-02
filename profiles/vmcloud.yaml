@@ -1,0 +1,5 @@
+devices:
+  cloud:
+    type: disk
+    source: cloud-init:config
+description: "VM cloud-init disk"

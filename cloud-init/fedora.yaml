@@ -1,13 +1,12 @@
 architecture: x86_64
 config:
-  raw.idmap: both 1000 1000
-  security.nesting: "true"
   user.user-data: |-
     #cloud-config
     packages:
       - curl
       - wget
       - openssh-server
+      - git
     users:
       - name: BLINCUSUSER
         plain_text_passwd: 'BLINCUSUSER'
@@ -15,14 +14,10 @@ config:
         shell: /bin/bash
         lock_passwd: True
         gecos: BLINCUSFULLNAME
-        groups: [adm, cdrom, dip, sudo]
+        groups: [adm, wheel]
         sudo: ALL=(ALL) NOPASSWD:ALL
         ssh_authorized_keys:
-          - SSHKEY
+          - SSHKEY    
     runcmd:
     - [ sh, -c, "[ -x /opt/scripts/init.sh ] && /opt/scripts/init.sh"]
-ephemeral: false
-profiles:
-- default
-stateful: false
-description: "Ubuntu with cloud-init"
+description: "Fedora cloud-init configuration"

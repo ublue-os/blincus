@@ -1,11 +1,3 @@
-packer {
-  required_plugins {
-    incus = {
-      version = ">= 1.0.4"
-      source  = "github.com/bketelsen/incus"
-    }
-  }
-}
 source "incus" "jammyx" {
   image        = "images:ubuntu/jammy"
   output_image = "ubuntu-jammyx"
@@ -13,8 +5,9 @@ source "incus" "jammyx" {
   publish_properties = {
     "builder"     = "blincus"
     "description" = "Ubuntu Jammy - X"
-    "template"    = "nocloudx"
     "scripts"     = "ubuntu"
+    "profiles"    = "container,idmap,xdevs"
+    "cloud-init"  = "none"
   }
 }
 
@@ -35,7 +28,7 @@ build {
   }
   provisioner "shell" {
     scripts = [
-      "common/debian/packagesx.sh",
+      "common/debian/code.sh",
       "common/debian/user.sh",
       "common/debian/sudoers.sh",
       "common/debian/provisionstartup.sh",

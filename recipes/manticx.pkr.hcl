@@ -1,11 +1,3 @@
-packer {
-  required_plugins {
-    incus = {
-      version = ">= 1.0.4"
-      source  = "github.com/bketelsen/incus"
-    }
-  }
-}
 source "incus" "manticx" {
   image        = "images:ubuntu/mantic"
   output_image = "ubuntu-manticx"
@@ -13,7 +5,8 @@ source "incus" "manticx" {
   publish_properties = {
     "builder"     = "blincus"
     "description" = "Ubuntu Mantic - X"
-    "template"    = "nocloudx"
+    "cloud-init"  = "none"
+    "profiles"    = "container,idmap,xdevs"
     "scripts"     = "ubuntu"
   }
 }
@@ -35,7 +28,7 @@ build {
   }
   provisioner "shell" {
     scripts = [
-      "common/debian/packagesx.sh",
+      "common/debian/code.sh",
       "common/debian/user.sh",
       "common/debian/sudoers.sh",
       "common/debian/provisionstartup.sh",

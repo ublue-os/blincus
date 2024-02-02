@@ -89,6 +89,42 @@ There are two directories under `~/.config/blincus`. `scripts` and `templates`.
 
 The `scripts` directory contains one or more subdirectories that will be copied into an instance when it's created. The `scripts` key in `config.ini` determines which directory.  You can have one directory that's shared by multiple templates (say all Debian based templates use the same scripts). Or you can make a new scripts directory for each template.
 
-The `templates` directory contains Incus configuration templates that are used in the `blincus launch` command. The first part of the filename is used as the template name. To use `~/.config/blincus/templates/ubuntu.config.yaml` you would run `blincus launch -t ubuntu <containername>`.
+The `cloud-init` and `profiles` directories contains Incus configuration templates that are used in the `blincus launch` command.
 
-There is no limit to the number of templates you can have, but each template must have a corresponding configuration section in the `config.ini` specifying which image to use and which scripts directory to mount.
+`profiles` are Incus configurations that specify settings for your instance. You can apply one or many profiles to your instances. Blincus takes an opinionated approach, specifying one category of configuration per profile, letting you add them together as needed.
+
+`cloud-init` files are configurations that specify users, package installation, and other operating system configurations on first boot. The big cloud providers like Azure, AWS, and Google Cloud all use this same method to configure your virtual machines when you launch.  Blincus uses `cloud-init` configurations to create a user in your instances that matches your user on the host and setup SSH configuration.
+
+Collectively, a base image, one or more `profiles`, and a `cloud-init` are a `template`.
+
+`templates` are defined in `~/.config/blincus/config.ini` and look like this:
+
+```ini
+[ubuntu]
+description = Ubuntu Jammy + cloud
+image = images:ubuntu/jammy/cloud
+scripts = ubuntu
+```
+
+This template does not specify `profiles` or `cloud-init`, so Blincus will use the defaults that are listed at the top of the `config.ini`:
+
+```ini
+default_cloud-init = debian
+default_container_image = images:ubuntu/mantic/cloud
+default_container_profiles = container,idmap
+default_home-mounts = Documents,projects
+default_scripts = ubuntu
+default_vm_image = images:ubuntu/mantic/cloud
+default_vm_profiles = idmap,vmkeys
+```
+
+`image`, `cloud-init`, plus `profiles` together define a configuration that meets the conventions listed at the top of this page:
+
+* `cloud-init` to create user, assign groups, add SSH keys, install packages
+* `profiles` to configure properties of the Incus instance
+* `image` to define the base operating system used to create your instance
+
+Additionally, you can add some other convenient things:
+
+* `home-mounts`: a list of folders from $HOME on your host that will be mapped into the instance
+* `scripts`: a directory containing scripts you commonly use

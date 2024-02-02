@@ -4,19 +4,6 @@ footer: |
   View documentation online at https://blincus.dev
 
 commands:
-- name: edit
-  alias: e
-  help: Edit a template
-
-  args:
-  - name: name
-    required: true
-    help: Template name
-
-
-  examples:
-  - blincus template edit ubuntu
-
 - name: list
   alias: l
   help: List all templates

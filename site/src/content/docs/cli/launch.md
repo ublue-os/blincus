@@ -36,6 +36,10 @@ blincus launch -t fedora mydevmachine
 ```
 
 ```bash
+blincus launch -t ubuntu -w /var/home/me/projects/blincus blincusdev
+```
+
+```bash
 blincus launch --vm large -t ubuntu myfatvm
 ```
 
@@ -54,17 +58,13 @@ Instance name
 #### *--template, -t TEMPLATE*
 
 Blincus template name   
-Use `blincus template list` to see available templates  
+Use `blincus template list` to see available templates,  
+or view ~/.config/blincus/config.ini  
 
 
 | Attributes      | &nbsp;
 |-----------------|-------------
 | Required:       | ✓ Yes
-
-#### *--persist, -p LOCATION*
-
-Persist instance $HOME to location on the host  
-
 
 #### *--vm, -v SIZE*
 
@@ -74,5 +74,14 @@ Run as a virtual machine with AWS "t3" style sizes
 | Attributes      | &nbsp;
 |-----------------|-------------
 | Allowed Values: | nano, micro, small, medium, large, xlarge, 2xlarge
+
+#### *--workspace, -w DIRECTORY*
+
+Mount specified directory at "/workspace"  
+
+
+| Attributes      | &nbsp;
+|-----------------|-------------
+| Conflicts With: | *--vm*
 
 

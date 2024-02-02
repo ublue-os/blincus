@@ -4,19 +4,19 @@ cfgdir=$(dirname "${CONFIG_FILE}")
 
 template_path="${cfgdir}/templates"
 
-if [[ $comp ]]; then
-	templates=()
-	for file in $template_path/*.config.yaml; do
-		name="$(basename "${file}" .config.yaml)"
-		templates+=($name)
-	done
-	echo ${templates[@]}
-	return
-fi
-
-for file in $template_path/*.config.yaml; do
-	name="$(basename "${file}" .config.yaml)"
-	echo "$(blue_bold $name)"
-	echo "  $(grep "description" ${file})"
-
+tmplts=$(cat "${cfgdir}"/config.ini | grep "^\[" | awk -F'[][]' '{print $2}')
+for t in ${tmplts}; do
+	echo "$(blue $t):"
+	desc=$(config_get "${t}.description")
+	if [ -z "$desc" ]; then
+		desc="[no description]"
+	fi
+	echo "$desc"
+	imagename=$(config_get "$t".image)
+	if [ -z "$imagename" ]; then
+		imagename="(default)"
+	fi
+	echo "Image: ${imagename}"
+	echo ""
 done
+#config_keys

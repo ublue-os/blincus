@@ -19,10 +19,10 @@ This example creates a recipe called `fatfedora`, associates the `fedora` script
 
 ```bash
 $ blincus custom-image create fatfedora --template fedora --scripts fedora
-Created /home/bjk/.config/blincus/build/fatfedora.yaml recipe
-Created /home/bjk/.config/blincus/templates/builder-fatfedora.config.yaml template
+Created /home/BLINCUSUSER/.config/blincus/build/fatfedora.yaml recipe
+Created /home/BLINCUSUSER/.config/blincus/templates/builder-fatfedora.config.yaml template
 Next Steps:
- * Edit /home/bjk/.config/blincus/build/fatfedora.yaml with a valid Distrobuilder recipe
+ * Edit /home/BLINCUSUSER/.config/blincus/build/fatfedora.yaml with a valid Distrobuilder recipe
  * Run `blincus custom-image build fatfedora` to build the image
 
 ```

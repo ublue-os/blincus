@@ -1,11 +1,3 @@
-packer {
-  required_plugins {
-    incus = {
-      version = ">= 1.0.4"
-      source  = "github.com/bketelsen/incus"
-    }
-  }
-}
 source "incus" "nix" {
   image = "images:ubuntu/jammy"
   output_image = "ubuntu-nix"
@@ -13,7 +5,7 @@ source "incus" "nix" {
   publish_properties = {
     "builder" = "blincus"
     "description" = "Ubuntu + Nix"
-    "template" = "nocloud"
+    "cloud-init"  = "none"
     "scripts" = "ubuntu"
   }
 }

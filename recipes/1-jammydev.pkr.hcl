@@ -1,11 +1,3 @@
-packer {
-  required_plugins {
-    incus = {
-      version = ">= 1.0.4"
-      source  = "github.com/bketelsen/incus"
-    }
-  }
-}
 source "incus" "jammydev" {
   image        = "jammybase"
   output_image = "jammydev"
@@ -13,8 +5,8 @@ source "incus" "jammydev" {
   publish_properties = {
     "builder"     = "blincus"
     "description" = "Ubuntu Jammy - Dev"
-    "template"    = "nocloud"
     "scripts"     = "ubuntu"
+    "cloud-init"  = "none"
   }
 }
 

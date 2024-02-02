@@ -1,22 +1,29 @@
-source "incus" "jammybase" {
-  image        = "images:ubuntu/jammy"
-  output_image = "jammybase"
+source "incus" "mantic" {
+  image        = "images:ubuntu/mantic/desktop"
+  output_image = "manticvmd"
   reuse        = true
+  virtual_machine = true
+  init_sleep = "30"
+  launch_config = {
+    "limits.memory" = "8GiB"
+    "limits.cpu" = "4"
+  }
   publish_properties = {
     "builder"     = "blincus"
-    "description" = "Ubuntu Jammy Base"
-    "scripts"     = "ubuntu"
+    "description" = "Ubuntu mantic desktop"
     "cloud-init"  = "none"
-
+    "profiles"    = "idmap,vmkeys"
+    "scripts"     = "ubuntu"
   }
 }
 
 build {
-  sources = ["incus.jammybase"]
+  sources = ["incus.mantic"]
   provisioner "file" {
     source      = "common/90-incus"
     destination = "/tmp/90-incus"
   }
+
   provisioner "shell" {
     scripts = [
       "common/debian/packages.sh",
@@ -26,7 +33,7 @@ build {
   }
 
   post-processor "manifest" {
-    output     = "0-jammybase.json"
+    output     = "manticvmd.json"
     strip_path = true
     custom_data = {
       alias = "${build.Alias}"

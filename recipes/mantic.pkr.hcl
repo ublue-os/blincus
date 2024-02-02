@@ -1,12 +1,3 @@
-packer {
-  required_plugins {
-    incus = {
-      version = ">= 1.0.4"
-      source  = "github.com/bketelsen/incus"
-    }
-  }
-}
-
 source "incus" "mantic" {
   image        = "images:ubuntu/mantic"
   output_image = "ubuntu-mantic"
@@ -14,8 +5,8 @@ source "incus" "mantic" {
   publish_properties = {
     "builder" = "blincus"
     "description" = "Ubuntu Mantic"
-    "template" = "nocloud"
-    "scripts" = "ubuntu"
+    "scripts"     = "ubuntu"
+    "cloud-init"  = "none"
   }
 }
 

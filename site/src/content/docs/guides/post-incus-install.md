@@ -44,7 +44,7 @@ If the launch succeeds, make sure your instance has a network connection. You ca
 ```bash
 incus ls
 
-| fleektest | RUNNING | 10.0.1.175 (eth0) |      | CONTAINER | 0         |
+| mytest | RUNNING | 10.0.1.175 (eth0) |      | CONTAINER | 0         |
 ```
 
 ## Further reading

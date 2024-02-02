@@ -1,11 +1,3 @@
-packer {
-  required_plugins {
-    incus = {
-      version = ">= 1.0.4"
-      source  = "github.com/bketelsen/incus"
-    }
-  }
-}
 source "incus" "bullseye" {
   image        = "images:debian/bullseye"
   output_image = "debian-bullseye"
@@ -13,8 +5,8 @@ source "incus" "bullseye" {
   publish_properties = {
     "builder"     = "blincus"
     "description" = "Debian Bullseye"
-    "template"    = "nocloud"
     "scripts"     = "debian"
+    "cloud-init"  = "none"
   }
 }
 

@@ -19,7 +19,7 @@ Custom images are built using [Packer](https://www.packer.io/), so you'll need t
 
 ## Packer Recipes
 
-Packer recipes are stored at `~/.config/blincus/packer` and have the file suffix `.pkr.hcl`.  They're written in HCL - Hashicorp Configuration Language, which is very similar to JSON.
+Packer recipes are stored at `~/.config/blincus/recipes` and have the file suffix `.pkr.hcl`.  They're written in HCL - Hashicorp Configuration Language, which is very similar to JSON.
 
 ### Plugins 
 
@@ -50,7 +50,8 @@ source "incus" "jammy" {
   publish_properties = {
     "builder"     = "blincus"
     "description" = "Ubuntu Jammy"
-    "template"    = "nocloud"
+    "cloud-init"  = "none"
+    "profiles"    = "container,idmap"
     "scripts"     = "ubuntu"
   }
 }
@@ -59,7 +60,7 @@ source "incus" "jammy" {
 This example will use `images:ubuntu/jammy` as the base image, and publish it as `ubuntu-jammy` on our local server when it's built.
 
 :::note[Publish Properties]
-Blincus uses the `publish_properties` list to store some important metadata about our custom image. Most importantly, it defines the launch template and scripts folder that should be used when launching an instance based on this image.
+Blincus uses the `publish_properties` list to store some important metadata about our custom image. Most importantly, it defines the `cloud-init`, `profiles`, and scripts folder that should be used when launching an instance based on this image.
 :::
 
 ### Build
@@ -125,12 +126,13 @@ build {
 
 For a Packer recipe named `jammy.pkr.hcl`, you can run `blincus packer build jammy`.
 
-Blincus will run Packer against the recipe, build the image, import into your Incus instance, and create a launch template for it. Finally Blincus will add an entry to your Blincus config (`~/.config/blincus/config.ini`) that ties the launch template together with the custom image name and shared scripts directory.
+Blincus will run Packer against the recipe, build the image, import into your Incus instance, and create a launch template for it. Finally Blincus will add an entry to your Blincus config (`~/.config/blincus/config.ini`) that connects the template name together with the custom image, profiles, cloud-init, and shared scripts directory.
 
 ```ini
 [packer-jammy]
 image = ubuntu-jammy
 scripts = ubuntu
+profiles= container,idmap
 ```
 
 When the build is complete you can launch an instance like this:

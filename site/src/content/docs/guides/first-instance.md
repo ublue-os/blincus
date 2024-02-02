@@ -16,22 +16,15 @@ The `launch` command expects the name of your instance as an argument. This will
 
 The `launch` command also requires a flag specifying the template you want to use. To see the starter templates that come with Blincus, run `blincus template list`.
 
-```bash
+```
 > blincus template list
-debian
-  description: "Debian"
-debianx
-  description: "Debian with X Sharing"
-fedora
-  description: "Fedora"
-fedorax
-  description: "Fedora with X Sharing"
-nix
-  description: "Nix on Ubuntu"
-ubuntu
-  description: "Ubuntu"
-ubuntux
-  description: "Ubuntu with X sharing"
+ubuntu:
+Ubuntu Jammy + cloud
+Image: images:ubuntu/jammy/cloud
+
+ubuntux:
+Ubuntu Jammy cloud + x
+Image: images:ubuntu/jammy/cloud
 ```
 
 Pick one to test and launch it.
@@ -39,15 +32,19 @@ Pick one to test and launch it.
 ```bash
 > blincus launch myfirst -t ubuntu
 Using ubuntu template
-Creating myfirst
+Using debian cloud-init profile
 Starting instance myfirst
+Mounting scripts from /home/bjk/.blincus/scripts
 Waiting for cloud init...
-...........................
+/usr/bin/cloud-init
+..........................................
 status: done
-Mounting home directory
-Device myhomedir added to myfirst
+Blincus ID: bc11b8e9445c4a169eafa63bd293b224                                  
+Mounting home directory at /home/bjk/host
+Allowing X sharing:                                          
+access control disabled, clients can connect from any host
 Instance myfirst ready
-Run 'blincus shell myfirst' to enter
+Run blincus shell myfirst to enter
 
 ```
 
@@ -58,9 +55,18 @@ Success! And the output gives you your next step: `blincus shell myfirst`:
 To run a command as administrator (user "root"), use "sudo <command>".
 See "man sudo_root" for details.
 
+ * Blincus instance: myfirst
+ * Template: ubuntu
+ * Image: images:ubuntu/jammy/cloud
+ * Host Mounts: Host <-> Instance
+   - /home/bjk/.config/blincus/scripts/ubuntu <-> /opt/scripts
+   - /home/bjk <-> /home/bjk/host/
+
 bjk@myfirst:~$ 
 
 ```
+
+Blincus automatically sets the MOTD (message of the day) in your shell with some helpful information about the instance's configuration.
 
 You're in a shell inside your running instance. To prove it to yourself, try running 
 

@@ -1,0 +1,11 @@
+- [ ] fix installer/uninstaller for new paths
+- [ ] clean up documents
+- [ ] refactor / clean up code
+- [x] smarter error prevention
+- [ ] profile reconcile
+- [x] JIT profile creation
+- [x] fix packer build & template generation
+- [x] personalize more things (profiles, cloud)
+- [x] default mounts at HOME
+- [x] add description to packer output and ini  
+- [x] X devices profile for nocloud packer images w x

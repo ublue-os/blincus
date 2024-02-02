@@ -10,5 +10,7 @@ fi
 if [ "$BLINCUS_SKIP_SANITY" != 1 ]; then
 	sanity
 fi
+
 #personalize
+profiles
 prompt_reconcile

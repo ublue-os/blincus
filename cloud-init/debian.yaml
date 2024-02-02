@@ -1,13 +1,12 @@
 architecture: x86_64
 config:
-  raw.idmap: both 1000 1000
-  security.nesting: "true"
   user.user-data: |-
     #cloud-config
     packages:
       - curl
       - wget
       - openssh-server
+      - git
     users:
       - name: BLINCUSUSER
         plain_text_passwd: 'BLINCUSUSER'
@@ -18,12 +17,7 @@ config:
         groups: [adm, cdrom, dip, sudo]
         sudo: ALL=(ALL) NOPASSWD:ALL
         ssh_authorized_keys:
-          - SSHKEY
+          - SSHKEY    
     runcmd:
-    - curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install --no-confirm
     - [ sh, -c, "[ -x /opt/scripts/init.sh ] && /opt/scripts/init.sh"]
-ephemeral: false
-profiles:
-- default
-stateful: false
-description: "Nix on Ubuntu with cloud-init"
+description: "Debian / Ubuntu cloud-init configuration"
