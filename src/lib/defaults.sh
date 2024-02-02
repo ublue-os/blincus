@@ -9,6 +9,7 @@ write_defaults() {
 	config_set "default_home-mounts" "none"
 	config_set "default_vm_image" "images:ubuntu/mantic/cloud"
 	config_set "default_vm_profiles" "idmap,vmkeys"
+	config_set "prompt_integration" "false"
 
 	# ubuntu defaults
 	config_set "ubuntu.image" "images:ubuntu/jammy/cloud"

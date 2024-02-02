@@ -1,3 +1,11 @@
+packer {
+  required_plugins {
+    incus = {
+      version = ">= 1.0.4"
+      source  = "github.com/bketelsen/incus"
+    }
+  }
+}
 source "incus" "focal" {
   image        = "images:ubuntu/focal"
   output_image = "focalp"

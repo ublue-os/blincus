@@ -1,3 +1,11 @@
+packer {
+  required_plugins {
+    incus = {
+      version = ">= 1.0.4"
+      source  = "github.com/bketelsen/incus"
+    }
+  }
+}
 source "incus" "mantic" {
   image        = "images:ubuntu/mantic/desktop"
   output_image = "manticvmd"

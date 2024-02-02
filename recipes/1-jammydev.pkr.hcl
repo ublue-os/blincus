@@ -1,3 +1,12 @@
+packer {
+  required_plugins {
+    incus = {
+      version = ">= 1.0.4"
+      source  = "github.com/bketelsen/incus"
+    }
+  }
+}
+
 source "incus" "jammydev" {
   image        = "jammybase"
   output_image = "jammydev"
