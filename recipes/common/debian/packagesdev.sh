@@ -2,5 +2,5 @@
 
 sleep 5
 
-apt-get update
-apt-get -y install build-essential git
+DEBIAN_FRONTEND=noninteractive apt-get update
+DEBIAN_FRONTEND=noninteractive apt-get -y install build-essential git

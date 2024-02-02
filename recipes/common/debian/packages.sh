@@ -2,5 +2,5 @@
 
 sleep 5
 
-apt-get update
-apt-get -y install openssh-server curl wget
+DEBIAN_FRONTEND=noninteractive apt-get update
+DEBIAN_FRONTEND=noninteractive apt-get -y install openssh-server curl wget

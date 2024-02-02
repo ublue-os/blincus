@@ -3,4 +3,4 @@
 sleep 5
 
 apt-get update
-apt-get -y install cloud-init
+DEBIAN_FRONTEND=noninteractive apt-get -y install cloud-init
