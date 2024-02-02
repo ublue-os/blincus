@@ -3,7 +3,7 @@ image_id() {
 	local manifest=$2
 	#echo "build: $build"
 	cfgdir=$(dirname "${CONFIG_FILE}")
-	workdir="${cfgdir}/packer"
+	workdir="${cfgdir}/recipes"
 	img_id=$(jq -r '.builds[] | select(.name=="'"$build"'") | .artifact_id' "$workdir/$manifest.json")
 	echo "$img_id"
 
@@ -14,7 +14,7 @@ image_alias() {
 	local manifest=$2
 	#echo "build: $build"
 	cfgdir=$(dirname "${CONFIG_FILE}")
-	workdir="${cfgdir}/packer"
+	workdir="${cfgdir}/recipes"
 	img_id=$(jq -r '.builds[] | select(.name=="'"$build"'") | .custom_data.alias' "$workdir/$manifest.json")
 	echo "$img_id"
 
@@ -23,7 +23,7 @@ image_alias() {
 unique_builds() {
 	local build=$1
 	cfgdir=$(dirname "${CONFIG_FILE}")
-	workdir="${cfgdir}/packer"
+	workdir="${cfgdir}/recipes"
 	builds=$(jq -r '.builds| group_by(.name) | .[][-1] | .name' "$workdir/$1.json")
 	# return builds as an array
 	echo "$builds"
@@ -43,18 +43,19 @@ plugin() {
 packer_build() {
 	cfgdir=$(dirname "${CONFIG_FILE}")
 	name=$1
-	recipe="${cfgdir}/packer/${name}.pkr.hcl"
+	recipe="${cfgdir}/recipes/${name}.pkr.hcl"
 	if [ ! -f "${recipe}" ]; then
-		echo "ERROR: recipe file not found: ${recipe}"
+		echo "ERROR: packer build recipe file not found: ${recipe}"
 		exit 1
 	fi
 
-	workdir="${cfgdir}/packer"
+	workdir="${cfgdir}/recipes"
 	pushd "${workdir}" >/dev/null
 	packer build --force "${name}.pkr.hcl"
 	popd >/dev/null
 
 	ubuilds=$(unique_builds "${name}")
+	echo "Unique builds: " $ubuilds
 	for build in ${ubuilds}; do
 		echo ""
 		echo "$(blue Build:) ${build}"
@@ -62,16 +63,15 @@ packer_build() {
 		echo "  $(blue fingerprint:) ${img_id}"
 		alias=$(image_alias "${build}" "${name}")
 		echo "  $(blue alias:) ${alias}"
-		tmplt=$(blincus_get_property "${img_id}" "template")
-		echo "  $(blue template:) ${tmplt}"
 		scrpts=$(blincus_get_property "${img_id}" "scripts")
 		echo "  $(blue scripts:) ${scrpts}"
+		cloudinit=$(blincus_get_property "${img_id}" "cloud-init")
+		echo "  $(blue cloud-init:) ${cloudinit}"
+		profiles=$(blincus_get_property "${img_id}" "profiles")
+		echo "  $(blue profiles:) ${profiles}"
 
-		# ensure sourcetemplate exists
-		if [ ! -e "${cfgdir}/templates/${tmplt}.config.yaml" ]; then
-			echo "Source template $(red ${tmplt}) does not exist"
-			exit 1
-		fi
+		description=$(blincus_get_property "${img_id}" "description")
+		echo "  $(blue description:) ${description}"
 		# ensure scriptdir exists
 		if [ ! -e "${cfgdir}/scripts/${scrpts}" ]; then
 			echo "Script directory $(red ${scrpts}) does not exist"
@@ -86,12 +86,24 @@ packer_build() {
 			imageref="${img_id}"
 		fi
 
-		# Create config values for this image
-		config_set "packer-${name}.image" "${imageref}"
-		config_set "packer-${name}.scripts" "${scrpts}"
+		local tname
+		# if alias is set, use it
+		if [ -n "${alias}" ]; then
+			tname="${alias}"
+		else
+			tname="${name}-packer"
+		fi
 
-		# copy image template
-		cp "${cfgdir}/templates/${tmplt}.config.yaml" "${cfgdir}/templates/packer-${name}.config.yaml"
+		# Create config values for this image
+		config_set "${tname}.image" "${imageref}"
+		config_set "${tname}.scripts" "${scrpts}"
+		config_set "${tname}.description" "${description}"
+		if [ ! -z "${cloudinit}" ]; then
+			config_set "${tname}.cloud-init" "${cloudinit}"
+		fi
+		if [ ! -z "${profiles}" ]; then
+			config_set "${tname}.profiles" "${profiles}"
+		fi
 
 	done
 }

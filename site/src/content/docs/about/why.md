@@ -6,7 +6,7 @@ description: Why yet another development container tool?
 As a developer, you already have a lot of choices for local development.
 
 - Local: install required tools and libraries locally
-- Virtual Machine: create a virtual machine, install required libraries and tools there
+- Virtual Machine: create a VM, install required libraries and tools there
 - Containers: keep source code locally, but develop inside a container
 
 There are benefits and drawbacks to each approach. Let's take a simplistic look at each:
@@ -49,5 +49,5 @@ Blincus is powered by [incus](https://linuxcontainers.org/incus/), which uses "s
 
 Container images start from pre-built file systems, so the time required for installation drops from tens of minutes to the few seconds required to download the container image.
 
-Finally, Blincus makes the process of launching and provisioning containers less tedious by providing a set of pre-configured templates. You can use the provided templates as-is, or you can customize them to suit your needs.
+Finally, Blincus makes the process of launching and provisioning containers less tedious by providing a set of pre-configured templates. You can use the provided templates as-is, or you can customize them to suit your needs. When you really need to flex your tools you can create customized images using Packer.
 

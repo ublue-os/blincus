@@ -1,4 +1,4 @@
 echo ""
-echo "$(blue Personalizing templates.)"
+echo "$(blue Personalizing...)"
 personalize
-echo "$(green Template personalization complete.)"
+echo "$(green Personalization complete.)"

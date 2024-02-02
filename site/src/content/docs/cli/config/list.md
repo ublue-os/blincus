@@ -1,12 +1,12 @@
 ---
 title: blincus config list
 description: | 
-  Show all values
+  Show configuration values from ~/.config/blincus/config.ini
 ---
 
 # blincus config list
 
-Show all values
+Show configuration values from ~/.config/blincus/config.ini
 
 | Attributes       | &nbsp;
 |------------------|-------------

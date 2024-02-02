@@ -21,15 +21,11 @@ blincus shell NAME [OPTIONS]
 ## Examples
 
 ```bash
-blincus shell mydevctr --login
+blincus shell mydevctr
 ```
 
 ```bash
 blincus shell mydevctr --root --no-login
-```
-
-```bash
-blincus shell mydevctr
 ```
 
 ## Arguments

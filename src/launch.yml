@@ -17,15 +17,26 @@ flags:
   arg: template
   help: |
     Blincus template name 
-    Use `blincus template list` to see available templates
+    Use `blincus template list` to see available templates,
+    or view ~/.config/blincus/config.ini
   required: true
-- long: --persist
-  short: -p
-  arg: location
+
+- long: --vm
+  short: -v
+  arg: size
+  allowed: [nano, micro, small, medium, large, xlarge, 2xlarge]
   help: |
-    Persist instance $HOME to location on the host
+    Run as a virtual machine with AWS "t3" style sizes
+- long: --workspace
+  short: -w
+  arg: directory
+  conflicts: [--vm]
+  help: |
+    Mount specified directory at "/workspace"
     
 examples:
 - blincus launch -t ubuntu mydevctr
 - blincus launch -t ubuntux mydevctr
-- blincus launch -t fedora mydevmachine 
+- blincus launch -t fedora mydevmachine
+- blincus launch -t ubuntu -w /var/home/me/projects/blincus blincusdev
+- blincus launch --vm large -t ubuntu myfatvm

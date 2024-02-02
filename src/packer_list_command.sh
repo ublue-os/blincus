@@ -2,7 +2,7 @@ comp=${args[--completions]}
 
 cfgdir=$(dirname "${CONFIG_FILE}")
 
-packer_path="${cfgdir}/packer"
+packer_path="${cfgdir}/recipes"
 
 if [[ $comp ]]; then
 	packers=()

@@ -1,0 +1,21 @@
+architecture: x86_64
+config:
+  user.user-data: |-
+    #cloud-config
+    packages:
+      - curl
+      - wget
+      - openssh-server
+      - git
+    users:
+      - name: BLINCUSUSER
+        plain_text_passwd: 'BLINCUSUSER'
+        home: /home/BLINCUSUSER
+        shell: /bin/bash
+        lock_passwd: True
+        gecos: BLINCUSFULLNAME
+        groups: [adm, cdrom, dip, sudo]
+        sudo: ALL=(ALL) NOPASSWD:ALL
+        ssh_authorized_keys:
+          - SSHKEY
+    description: "Debian / Ubuntu VM cloud-init configuration"
