@@ -258,7 +258,7 @@ else
 		else
 			mkdir -p "${profile_config_dest_path}"
 			for file in "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')"/profiles/*; do
-				install -D -m 0644 -t "${profiles_config_dest_path}" "${file}"
+				install -D -m 0644 -t "${profile_config_dest_path}" "${file}"
 			done
 		fi
 
