@@ -13,7 +13,3 @@ fi
 
 #personalize
 profiles
-doprompt=$(config_get "prompt_integration" "false")
-if [ ! $doprompt == "false" ]; then
-	prompt_reconcile
-fi

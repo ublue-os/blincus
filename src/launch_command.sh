@@ -126,7 +126,6 @@ guid=$(uuid)
 echo "Blincus ID: $(yellow $guid)"
 incus config set "$name" user.blincusuid=$guid
 
-prompt_create_profile "$guid" "$name"
 
 # mount $HOME at $HOME/host
 

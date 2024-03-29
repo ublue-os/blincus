@@ -64,8 +64,6 @@ init_dest_path="${prefix}/share/blincus/cloud-init"
 init_config_dest_path="${HOME}/.config/blincus/cloud-init"
 profile_dest_path="${prefix}/share/blincus/profiles"
 profile_config_dest_path="${HOME}/.config/blincus/profiles"
-packer_dest_path="${prefix}/share/blincus/recipes"
-packer_config_dest_path="${HOME}/.config/blincus/recipes"
 script_dest_path="${prefix}/share/blincus"
 script_config_dest_path="${HOME}/.config/blincus"
 man_dest_path="${prefix}/share/man/man1"
@@ -119,18 +117,7 @@ if [ -e "${curr_dir}/blincus" ]; then
 		fi
 	fi
 
-	if [ -e "recipes" ]; then
-		mkdir -p "${script_dest_path}"
 
-		if [ -d $script_config_dest_path/recipes ]; then
-			printf >&2 "\033[0m Refusing to overwrite packer templates at \033[1;31m%s\n\033[0m" "${script_config_dest_path}/recipes"
-			printf >&2 "\033[0m\033[1;31m   Updated packer templates available at %s\n\033[0m" "${script_dest_path}/recipes"
-
-		else
-			mkdir -p "${script_config_dest_path}"
-			cp -R recipes "${script_config_dest_path}"
-		fi
-	fi
 	if [ -e "cloud-init" ]; then
 		mkdir -p "${init_dest_path}"
 		for file in cloud-init/*; do
@@ -232,18 +219,6 @@ else
 		fi
 	fi
 
-	if [ -e "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')/recipes/" ]; then
-		mkdir -p "${script_dest_path}"
-		cp -R "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')"/recipes "${script_dest_path}"
-		if [ -d $script_config_dest_path/recipes ]; then
-			printf >&2 "\033[0m Refusing to overwrite packer recipes at \033[1;31m%s\n\033[0m" "${script_config_dest_path}/recipes"
-			printf >&2 "\033[0m\033[1;31m   Updated packer recipes available at %s\n\033[0m" "${script_dest_path}/recipes"
-
-		else
-			mkdir -p "${script_config_dest_path}"
-			cp -R "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')"/recipes "${script_config_dest_path}"
-		fi
-	fi
 
 	if [ -e "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')/profiles/" ]; then
 		mkdir -p "${profile_dest_path}"
@@ -258,7 +233,7 @@ else
 		else
 			mkdir -p "${profile_config_dest_path}"
 			for file in "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')"/profiles/*; do
-				install -D -m 0644 -t "${profiles_config_dest_path}" "${file}"
+				install -D -m 0644 -t "${profile_config_dest_path}" "${file}"
 			done
 		fi
 
