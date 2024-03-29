@@ -49,5 +49,5 @@ Blincus is powered by [incus](https://linuxcontainers.org/incus/), which uses "s
 
 Container images start from pre-built file systems, so the time required for installation drops from tens of minutes to the few seconds required to download the container image.
 
-Finally, Blincus makes the process of launching and provisioning containers less tedious by providing a set of pre-configured templates. You can use the provided templates as-is, or you can customize them to suit your needs. When you really need to flex your tools you can create customized images using Packer.
+Finally, Blincus makes the process of launching and provisioning containers less tedious by providing a set of pre-configured templates. You can use the provided templates as-is, or you can customize them to suit your needs. 
 

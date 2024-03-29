@@ -2,16 +2,6 @@ personalize() {
 
 	cfgdir=$(dirname "${CONFIG_FILE}")
 
-	packer_path="${cfgdir}/recipes"
-
-	shopt -s globstar
-	for file in $packer_path/* $packer_path/**/*; do
-
-		# if it's not a directory
-		if ! [ -d "$file" ]; then
-			personalize_file "${file}"
-		fi
-	done
 	cloud_path="${cfgdir}/cloud-init"
 
 	for file in $cloud_path/* $cloud_path/**/*; do

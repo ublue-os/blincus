@@ -22,5 +22,4 @@ commands:
 - import: src/launch.yml
 - import: src/shell.yml
 - import: src/template.yml
-- import: src/packer.yml
 - import: src/personalize.yml

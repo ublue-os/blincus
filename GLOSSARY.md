@@ -4,10 +4,6 @@
   <dt><b>image</b></dt>
   <dd>Pre-built operating system installations.</dd>
   <dd><a href="https://linuxcontainers.org/incus/docs/main/images/#images">Images</a> can be built locally or downloaded from a <a href="https://linuxcontainers.org/incus/docs/main/reference/remote_image_servers/#remote-image-servers">remote image server</a>. </dd>
-  <dt><b>recipe</b></dt>
-  <dd>Packer recipe to build images that Blincus uses to create your instances.</dd>
-  <dd>Your recipes are stored at <code>~/.config/blincus/recipes</code></dd>
-  <dd>Original demonstration recipes are stored at <code>~/.local/share/blincus/recipes</code></dd>
   <dt><b>profile</b></dt>
   <dd>Incus <a href="https://linuxcontainers.org/incus/docs/main/profiles/">profile</a> applied to your instance at launch.</dd>
   <dd>Your profiles are stored at <code>~/.config/blincus/profiles</code></dd>
