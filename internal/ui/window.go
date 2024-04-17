@@ -11,7 +11,7 @@ import (
 
 	"github.com/adrg/xdg"
 	"github.com/ublue-os/blincusui/internal/blincus"
-	"github.com/ublue-os/blincusui/internal/profiles"
+	"github.com/ublue-os/blincusui/shared/profiles"
 
 	"github.com/diamondburned/gotk4-adwaita/pkg/adw"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
