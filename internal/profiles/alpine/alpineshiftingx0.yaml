@@ -1,0 +1,80 @@
+config:
+  raw.idmap: |-
+    uid 1000 1000
+    gid 1000 1000
+  security.nesting: "true"
+  cloud-init.user-data: |
+    #cloud-config
+    package_update: true
+    package_reboot_if_required: true
+    packages:
+      - pulseaudio-utils
+      - bash
+      - sudo
+    write_files:
+    - path: /var/lib/cloud/scripts/per-boot/set_up_sockets.sh
+      permissions: 0755
+      content: |
+        #!/bin/bash
+        user_uid=1000
+        user_name=$( getent passwd ${user_uid} | cut -d: -f1 )
+        user_gid=$( getent passwd ${user_name} | cut -d: -f4 )
+        if [[ -n ${user_name} ]]; then
+          mnt_dir=/mnt/.container_sockets
+          run_dir=/run/user/${user_uid}
+          [[ ! -d "${run_dir}" ]] && mkdir -p "${run_dir}" && chmod 700 "${run_dir}" && chown ${user_uid}:${user_gid} "${run_dir}"
+          [[ ! -d "${run_dir}/pulse" ]] && mkdir -p "${run_dir}/pulse" && chmod 700 "${run_dir}/pulse" && chown ${user_uid}:${user_gid} "${run_dir}/pulse"
+          [[ -S "${mnt_dir}/native" ]]  && [[ -d "${run_dir}/pulse" ]] && [[ ! -e "${run_dir}/pulse/native" ]] && touch "${run_dir}/pulse/native" && sudo mount --bind "${mnt_dir}/native" "${run_dir}/pulse/native"
+        fi
+    - path: /var/lib/cloud/scripts/per-once/set_up_env_vars.sh
+      permissions: 0755
+      content: |
+        #!/bin/bash
+        user_uid=1000
+        home_dir="$( getent passwd ${user_uid} | cut -d: -f6 )"
+        user_name=$( getent passwd ${user_uid} | cut -d: -f1 )
+        usermod -a -G video ${user_name}
+        profile="${home_dir}/.profile"
+        if [[ -f "${profile}" ]]; then
+          echo "export DISPLAY=:0" >> "${profile}"
+        fi
+    - path: /var/lib/cloud/scripts/per-once/change_gid.sh
+      permissions: 0755
+      content: |
+        #!/bin/bash
+        user_uid=1000
+        user_name=$( getent passwd ${user_uid} | cut -d: -f1 )
+        user_gid=$( getent passwd ${user_name} | cut -d: -f4 )
+        home_dir=$( getent passwd ${user_name} | cut -d: -f6 )
+        if [[ -n ${user_name} && ! ${user_uid} == ${user_gid} ]]; then
+          group_to_move=$( getent group ${user_uid} | cut -d: -f1 )
+          if [[ -n ${group_to_move} ]]; then
+            for gid in {1000..6000}; do
+              return_value=$( getent group ${gid} )
+              if [[ -z ${return_value} ]]; then
+                groupmod -g ${gid} ${group_to_move}
+                break
+              fi
+            done
+          fi
+          users_group=$( getent group ${user_gid} | cut -d: -f1 )
+          groupmod -g ${user_uid} ${users_group}
+          chown -R ${user_uid}:${user_uid} "${home_dir}"
+        fi
+description: GUI X0 profile with pulseaudio, shifting enabled
+devices:
+  gpu:
+    type: gpu
+    gid: 985
+  pulseaudio_socket:
+    type: disk
+    shift: true
+    source: /run/user/1000/pulse/native
+    path: /mnt/.container_sockets/native
+  x_socket:
+    type: proxy
+    bind: container
+    security.gid: "1000"
+    security.uid: "1000"
+    connect: unix:@/tmp/.X11-unix/X0
+    listen: unix:@/tmp/.X11-unix/X0

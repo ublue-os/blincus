@@ -1,0 +1,20 @@
+FROM fedora:40
+
+RUN dnf -y update \
+ && dnf -y install \
+    gtk4-devel \
+    gobject-introspection-devel \
+    libadwaita-devel \
+    golang-go \
+    libglvnd-gles \
+ && dnf clean all
+
+COPY . /app
+WORKDIR /app
+
+RUN go build -trimpath -o blincusui
+
+RUN cp /app/blincusui /usr/bin/blincusui
+RUN cp /app/blincusui.svg /usr/share/icons/hicolor/scalable/apps/blincusui.svg
+RUN cp /app/dev.brian.BlincusUI.desktop /usr/share/applications/blincusui.desktop
+RUN cp /app/dev.brian.BlincusUI.appdata.xml /usr/share/metainfo/blincusui.appdata.xml

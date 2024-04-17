@@ -1,30 +1,31 @@
-
-generate: 
-    docker run --rm -it --user $(id -u):$(id -g) --volume "$PWD:/app" dannyben/bashly generate --upgrade
-    docker run --rm -it --user $(id -u):$(id -g) --volume "$PWD:/app" dannyben/bashly render templates/markdown site/src/content/docs/cli
-    cp ./completions.bash completions/blincus
-
-format:
-    docker run --rm -u "$(id -u):$(id -g)" -v "$PWD:/mnt" -w /mnt mvdan/shfmt:v3 -w .
-
-install: generate
-    ./install
-
-build: generate
-    docker build -t bketelsen/blincus:latest .
-    docker push bketelsen/blincus:latest
-
-docbox: generate
-    distrobox enter bluefin-cli
+buildui:
+    go build -trimpath -o blincusui
 
 docs: 
     cd site && npm run dev
 
-uninstall:
-    ./uninstall
-
-bashly +COMMANDS:
-    docker run --rm -it --user $(id -u):$(id -g) --volume "$PWD:/app" dannyben/bashly {{COMMANDS}}
+flatpak-vendor:
+	go run github.com/dennwc/flatpak-go-mod@latest .
 
 wipe:
-    ./empty-incus.sh
+    ./hack/empty-incus.sh
+
+docker:
+    docker build -f contrib/Dockerfile.blincusui . -t bketelsen/blincusui
+
+docker-push: docker
+    docker push bketelsen/blincusui
+
+# create blincusui distrobox
+distrobox:
+    distrobox assemble create --replace --file contrib/blincusui.ini
+
+# remove blincusui distrobox
+distrobox-rm: 
+    distrobox assemble rm --file contrib/blincusui.ini
+
+
+
+
+# bash alias:
+# alias bashly='docker run --rm -it --user $(id -u):$(id -g) --volume "$PWD:/app" dannyben/bashly'

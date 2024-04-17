@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>dev.brian.BlincusUI</id>
+  
+  <name>BlincusUI</name>
+<developer id="tld.vendor">
+  <name>Brian Ketelsen</name>
+</developer>
+  <summary>Dev Environments in Incus</summary>
+  
+  <metadata_license>MIT</metadata_license>
+  <project_license>Apache-2.0</project_license>
+  
+  <recommends>
+    <control>pointing</control>
+    <control>keyboard</control>
+    <control>touch</control>
+  </recommends>
+  
+  <description>
+   <p>Quick development environments powered by Incus.</p>
+   <p>Easily share your $HOME directory in development instances, allowing you to keep projects stored safely on your host, but install development dependencies in Incus instances.</p>
+   <p>Seamlessly share your X11 or Wayland session with no extra configuration required. Install a graphical application in your instance and it "just works".</p>
+  </description>
+  
+  <launchable type="desktop-id">dev.brian.BlincusUI.desktop</launchable>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/fyne-io/blincus/main/img/screenshot1.png</image>
+      <caption>Markdown preview</caption>
+    </screenshot>
+  </screenshots>
+
+  <icon type="stock">dev.brian.BlincusUI</icon>
+  <!-- Override the kudos that aren't automatically added. See https://gitlab.gnome.org/GNOME/gnome-software/blob/main/doc/kudos.md.-->
+  <!-- This is not required in any way but helps software centers better understand Fyne applications. If you don't use notifications, you should remove it from the list. -->
+  <kudos>
+    <kudo>ModernToolkit</kudo>
+    <kudo>Notifications</kudo>
+  </kudos>
+
+  <url type="bugtracker">https://github.com/bketelsen/blincus/issues</url>
+  <url type="donation">https://github.com/sponsors/bketelsen</url>
+  <url type="homepage">https://blincus.dev</url>
+<url type="vcs-browser">https://github.com/bketelsen/blincus</url>
+
+  <!-- Generate the oars rating at: https://hughsie.github.io/oars/generate.html -->
+  <content_rating type="oars-1.1" />
+
+  <releases>
+    <release version="1.2.0" date="2021-12-22" type="stable">
+      <description>
+        <p>Better metadata and sandbox permissions</p>
+      </description>
+      <url type="details">https://github.com/fyne-io/blincus/releases/tag/v1.2.0</url>
+    </release>
+  </releases>
+
+</component>

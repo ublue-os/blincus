@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+
+Name=BlincusUI
+Comment=Development environments in Incus. 
+Categories=Development;Documentation;
+Keywords=incus;
+
+Icon=dev.brian.BlincusUI
+Exec=blincusui
+Terminal=false

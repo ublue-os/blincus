@@ -1,0 +1,218 @@
+# github.com/KarpelesLab/weak v0.1.1
+## explicit; go 1.18
+github.com/KarpelesLab/weak
+# github.com/adrg/xdg v0.4.0
+## explicit; go 1.14
+github.com/adrg/xdg
+github.com/adrg/xdg/internal/pathutil
+# github.com/diamondburned/adaptive v0.0.2-0.20220226002257-ef8720b54399
+## explicit; go 1.17
+github.com/diamondburned/adaptive
+# github.com/diamondburned/gotk4-adwaita/pkg v0.0.0-20240107232253-5f283b5d35bc
+## explicit; go 1.18
+github.com/diamondburned/gotk4-adwaita/pkg/adw
+# github.com/diamondburned/gotk4/pkg v0.2.2
+## explicit; go 1.21.0
+github.com/diamondburned/gotk4/pkg/cairo
+github.com/diamondburned/gotk4/pkg/cairo/swizzle
+github.com/diamondburned/gotk4/pkg/core/closure
+github.com/diamondburned/gotk4/pkg/core/gbox
+github.com/diamondburned/gotk4/pkg/core/gcancel
+github.com/diamondburned/gotk4/pkg/core/gdebug
+github.com/diamondburned/gotk4/pkg/core/gerror
+github.com/diamondburned/gotk4/pkg/core/gextras
+github.com/diamondburned/gotk4/pkg/core/gioutil
+github.com/diamondburned/gotk4/pkg/core/glib
+github.com/diamondburned/gotk4/pkg/core/intern
+github.com/diamondburned/gotk4/pkg/core/slab
+github.com/diamondburned/gotk4/pkg/gdk/v4
+github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2
+github.com/diamondburned/gotk4/pkg/gio/v2
+github.com/diamondburned/gotk4/pkg/glib/v2
+github.com/diamondburned/gotk4/pkg/graphene
+github.com/diamondburned/gotk4/pkg/gsk/v4
+github.com/diamondburned/gotk4/pkg/gtk/v4
+github.com/diamondburned/gotk4/pkg/pango
+# github.com/diamondburned/gotkit v0.0.0-20240214122856-34324269516c
+## explicit; go 1.21.0
+github.com/diamondburned/gotkit/app
+github.com/diamondburned/gotkit/app/locale
+github.com/diamondburned/gotkit/app/prefs
+github.com/diamondburned/gotkit/components/actionbutton
+github.com/diamondburned/gotkit/components/autoscroll
+github.com/diamondburned/gotkit/components/errpopup
+github.com/diamondburned/gotkit/components/logui
+github.com/diamondburned/gotkit/components/prefui
+github.com/diamondburned/gotkit/gtkutil
+github.com/diamondburned/gotkit/gtkutil/aggressivegc
+github.com/diamondburned/gotkit/gtkutil/cssutil
+github.com/diamondburned/gotkit/utils/config
+# github.com/golang/protobuf v1.5.3
+## explicit; go 1.9
+github.com/golang/protobuf/proto
+# github.com/google/uuid v1.6.0
+## explicit
+github.com/google/uuid
+# github.com/gorilla/schema v1.2.1
+## explicit; go 1.20
+github.com/gorilla/schema
+# github.com/gorilla/securecookie v1.1.2
+## explicit; go 1.20
+github.com/gorilla/securecookie
+# github.com/gorilla/websocket v1.5.1
+## explicit; go 1.20
+github.com/gorilla/websocket
+# github.com/imkira/go-observer/v2 v2.0.0-20230629064422-8e0b61f11f1b
+## explicit; go 1.18
+github.com/imkira/go-observer/v2
+# github.com/kr/fs v0.1.0
+## explicit
+github.com/kr/fs
+# github.com/leonelquinteros/gotext v1.5.3-0.20230829162019-37f474cfb069
+## explicit; go 1.13
+github.com/leonelquinteros/gotext
+github.com/leonelquinteros/gotext/plurals
+# github.com/lmittmann/tint v1.0.4
+## explicit; go 1.21
+github.com/lmittmann/tint
+# github.com/lxc/incus v0.6.0
+## explicit; go 1.21
+github.com/lxc/incus/client
+github.com/lxc/incus/shared/api
+github.com/lxc/incus/shared/cancel
+github.com/lxc/incus/shared/cliconfig
+github.com/lxc/incus/shared/ioprogress
+github.com/lxc/incus/shared/logger
+github.com/lxc/incus/shared/osarch
+github.com/lxc/incus/shared/proxy
+github.com/lxc/incus/shared/simplestreams
+github.com/lxc/incus/shared/subprocess
+github.com/lxc/incus/shared/tcp
+github.com/lxc/incus/shared/termios
+github.com/lxc/incus/shared/tls
+github.com/lxc/incus/shared/units
+github.com/lxc/incus/shared/util
+github.com/lxc/incus/shared/ws
+# github.com/mattn/go-isatty v0.0.20
+## explicit; go 1.15
+github.com/mattn/go-isatty
+# github.com/muhlemmer/gu v0.3.1
+## explicit; go 1.18
+github.com/muhlemmer/gu
+# github.com/pkg/errors v0.9.1
+## explicit
+github.com/pkg/errors
+# github.com/pkg/sftp v1.13.6
+## explicit; go 1.15
+github.com/pkg/sftp
+github.com/pkg/sftp/internal/encoding/ssh/filexfer
+# github.com/sirupsen/logrus v1.9.3
+## explicit; go 1.13
+github.com/sirupsen/logrus
+github.com/sirupsen/logrus/hooks/syslog
+github.com/sirupsen/logrus/hooks/writer
+# github.com/yalue/merged_fs v1.2.3
+## explicit; go 1.16
+github.com/yalue/merged_fs
+# github.com/zitadel/oidc/v2 v2.12.0
+## explicit; go 1.19
+github.com/zitadel/oidc/v2/pkg/client
+github.com/zitadel/oidc/v2/pkg/client/rp
+github.com/zitadel/oidc/v2/pkg/crypto
+github.com/zitadel/oidc/v2/pkg/http
+github.com/zitadel/oidc/v2/pkg/oidc
+github.com/zitadel/oidc/v2/pkg/oidc/grants/tokenexchange
+github.com/zitadel/oidc/v2/pkg/strings
+# go4.org/unsafe/assume-no-moving-gc v0.0.0-20231121144256-b99613f794b6
+## explicit; go 1.11
+go4.org/unsafe/assume-no-moving-gc
+# golang.org/x/crypto v0.19.0
+## explicit; go 1.18
+golang.org/x/crypto/blowfish
+golang.org/x/crypto/chacha20
+golang.org/x/crypto/curve25519
+golang.org/x/crypto/curve25519/internal/field
+golang.org/x/crypto/ed25519
+golang.org/x/crypto/internal/alias
+golang.org/x/crypto/internal/poly1305
+golang.org/x/crypto/pbkdf2
+golang.org/x/crypto/ssh
+golang.org/x/crypto/ssh/internal/bcrypt_pbkdf
+# golang.org/x/exp v0.0.0-20240213143201-ec583247a57a
+## explicit; go 1.20
+golang.org/x/exp/maps
+# golang.org/x/net v0.21.0
+## explicit; go 1.18
+golang.org/x/net/internal/socks
+golang.org/x/net/proxy
+# golang.org/x/oauth2 v0.17.0
+## explicit; go 1.18
+golang.org/x/oauth2
+golang.org/x/oauth2/internal
+# golang.org/x/sync v0.6.0
+## explicit; go 1.18
+golang.org/x/sync/singleflight
+# golang.org/x/sys v0.17.0
+## explicit; go 1.18
+golang.org/x/sys/cpu
+golang.org/x/sys/plan9
+golang.org/x/sys/unix
+golang.org/x/sys/windows
+# golang.org/x/term v0.17.0
+## explicit; go 1.18
+golang.org/x/term
+# golang.org/x/text v0.14.0
+## explicit; go 1.18
+golang.org/x/text/internal/language
+golang.org/x/text/internal/language/compact
+golang.org/x/text/internal/tag
+golang.org/x/text/language
+# google.golang.org/appengine v1.6.8
+## explicit; go 1.11
+google.golang.org/appengine/internal
+google.golang.org/appengine/internal/base
+google.golang.org/appengine/internal/datastore
+google.golang.org/appengine/internal/log
+google.golang.org/appengine/internal/remote_api
+google.golang.org/appengine/internal/urlfetch
+google.golang.org/appengine/urlfetch
+# google.golang.org/protobuf v1.32.0
+## explicit; go 1.17
+google.golang.org/protobuf/encoding/prototext
+google.golang.org/protobuf/encoding/protowire
+google.golang.org/protobuf/internal/descfmt
+google.golang.org/protobuf/internal/descopts
+google.golang.org/protobuf/internal/detrand
+google.golang.org/protobuf/internal/encoding/defval
+google.golang.org/protobuf/internal/encoding/messageset
+google.golang.org/protobuf/internal/encoding/tag
+google.golang.org/protobuf/internal/encoding/text
+google.golang.org/protobuf/internal/errors
+google.golang.org/protobuf/internal/filedesc
+google.golang.org/protobuf/internal/filetype
+google.golang.org/protobuf/internal/flags
+google.golang.org/protobuf/internal/genid
+google.golang.org/protobuf/internal/impl
+google.golang.org/protobuf/internal/order
+google.golang.org/protobuf/internal/pragma
+google.golang.org/protobuf/internal/set
+google.golang.org/protobuf/internal/strs
+google.golang.org/protobuf/internal/version
+google.golang.org/protobuf/proto
+google.golang.org/protobuf/reflect/protodesc
+google.golang.org/protobuf/reflect/protoreflect
+google.golang.org/protobuf/reflect/protoregistry
+google.golang.org/protobuf/runtime/protoiface
+google.golang.org/protobuf/runtime/protoimpl
+google.golang.org/protobuf/types/descriptorpb
+# gopkg.in/square/go-jose.v2 v2.6.0
+## explicit
+gopkg.in/square/go-jose.v2
+gopkg.in/square/go-jose.v2/cipher
+gopkg.in/square/go-jose.v2/json
+# gopkg.in/yaml.v2 v2.4.0
+## explicit; go 1.15
+gopkg.in/yaml.v2
+# libdb.so/ctxt v0.0.0-20240229093153-2db38a5d3c12
+## explicit; go 1.21.0
+libdb.so/ctxt

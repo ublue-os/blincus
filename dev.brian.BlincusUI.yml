@@ -1,0 +1,36 @@
+id: dev.brian.BlincusUI
+runtime: org.gnome.Platform
+runtime-version: '46'
+sdk: org.gnome.Sdk
+sdk-extensions:
+- org.freedesktop.Sdk.Extension.golang
+command: blincusui
+finish-args:
+- "--share=ipc"
+- "--socket=x11"
+- "--device=dri"
+- "--talk-name=org.freedesktop.Notifications"
+- "--talk-name=org.freedesktop.Flatpak"
+- "--filesystem=home"
+- "--filesystem=/var/lib/incus"
+build-options:
+  append-path: "/usr/lib/sdk/golang/bin"
+  env:
+    GOROOT: "/usr/lib/sdk/golang"
+    GOBIN: "/app/bin"
+  build-args:
+  - "--share=network"
+modules:
+- name: blincusui
+  buildsystem: simple
+  build-commands:
+  - | 
+    set -e
+    /usr/lib/sdk/golang/bin/go build -trimpath -o blincusui
+    install -Dm00755 -t /app/bin blincusui
+    install -Dm00644 blincusui.svg /app/share/icons/hicolor/scalable/apps/$FLATPAK_ID.svg
+    install -Dm00644 -t /app/share/applications $FLATPAK_ID.desktop
+    install -Dm00644 -t /app/share/metainfo $FLATPAK_ID.appdata.xml
+  sources:
+  - type: dir
+    path: "./"
