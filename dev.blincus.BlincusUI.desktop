@@ -6,6 +6,6 @@ Comment=Development environments in Incus.
 Categories=Development;Documentation;
 Keywords=incus;
 
-Icon=dev.brian.BlincusUI
+Icon=dev.blincus.BlincusUI
 Exec=blincusui
 Terminal=false

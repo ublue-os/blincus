@@ -10,10 +10,9 @@ import (
 	"strings"
 
 	"github.com/adrg/xdg"
-	"github.com/bketelsen/blincus/internal/blincus"
-	"github.com/bketelsen/blincus/internal/profiles"
+	"github.com/ublue-os/blincusui/internal/blincus"
+	"github.com/ublue-os/blincusui/internal/profiles"
 
-	"github.com/bketelsen/blincus/internal/cfg"
 	"github.com/diamondburned/gotk4-adwaita/pkg/adw"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 	"github.com/diamondburned/gotkit/app"
@@ -21,6 +20,7 @@ import (
 	"github.com/diamondburned/gotkit/gtkutil"
 	"github.com/diamondburned/gotkit/gtkutil/cssutil"
 	"github.com/lxc/incus/shared/api"
+	"github.com/ublue-os/blincusui/internal/cfg"
 	"gopkg.in/yaml.v2"
 	"libdb.so/ctxt"
 )

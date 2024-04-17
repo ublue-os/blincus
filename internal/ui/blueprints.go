@@ -6,13 +6,13 @@ import (
 	"log/slog"
 	"slices"
 
-	"github.com/bketelsen/blincus/internal/blincus"
-	"github.com/bketelsen/blincus/internal/cfg"
 	"github.com/diamondburned/gotk4-adwaita/pkg/adw"
 	"github.com/diamondburned/gotk4/pkg/core/gioutil"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 	"github.com/diamondburned/gotkit/app"
+	"github.com/ublue-os/blincusui/internal/blincus"
+	"github.com/ublue-os/blincusui/internal/cfg"
 )
 
 type BlueprintsPage struct {

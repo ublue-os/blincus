@@ -1,4 +1,4 @@
-module github.com/bketelsen/blincus
+module github.com/ublue-os/blincusui
 
 go 1.22.1
 
@@ -13,6 +13,7 @@ require (
 	github.com/lxc/incus v0.6.0
 	golang.org/x/exp v0.0.0-20240213143201-ec583247a57a
 	golang.org/x/sys v0.17.0
+	gopkg.in/ini.v1 v1.67.0
 	gopkg.in/yaml.v2 v2.4.0
 	libdb.so/ctxt v0.0.0-20240229093153-2db38a5d3c12
 )

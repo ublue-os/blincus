@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 
-	"github.com/bketelsen/blincus/internal/ui"
 	"github.com/diamondburned/adaptive"
 	"github.com/diamondburned/gotk4-adwaita/pkg/adw"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -13,6 +12,7 @@ import (
 	"github.com/diamondburned/gotkit/components/prefui"
 	"github.com/diamondburned/gotkit/gtkutil"
 	"github.com/diamondburned/gotkit/gtkutil/cssutil"
+	"github.com/ublue-os/blincusui/internal/ui"
 
 	_ "github.com/diamondburned/gotkit/gtkutil/aggressivegc"
 )
@@ -31,7 +31,7 @@ var _ = cssutil.WriteCSS(`
 
 func main() {
 	m := manager{}
-	m.app = app.New(context.Background(), "dev.brian.BlincusUI", "BlincusUI")
+	m.app = app.New(context.Background(), "dev.blincus.BlincusUI", "BlincusUI")
 	m.app.AddJSONActions(map[string]interface{}{
 		"app.preferences": func() { prefui.ShowDialog(m.win.Context()) },
 		//	"app.about":       func() { about.New(m.win.Context()).Present() },

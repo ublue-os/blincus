@@ -6,7 +6,6 @@ import (
 	"log"
 	"log/slog"
 
-	"github.com/bketelsen/blincus/internal/blincus"
 	"github.com/diamondburned/gotk4-adwaita/pkg/adw"
 	"github.com/diamondburned/gotk4/pkg/core/gioutil"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -16,6 +15,7 @@ import (
 	"github.com/diamondburned/gotkit/components/actionbutton"
 	"github.com/diamondburned/gotkit/gtkutil"
 	"github.com/lxc/incus/shared/api"
+	"github.com/ublue-os/blincusui/internal/blincus"
 )
 
 type InstancePage struct {

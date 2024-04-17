@@ -9,11 +9,11 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/bketelsen/blincus/internal/blincus"
-	"github.com/bketelsen/blincus/internal/cfg"
 	"github.com/imkira/go-observer/v2"
 	incus "github.com/lxc/incus/client"
 	"github.com/lxc/incus/shared/api"
+	"github.com/ublue-os/blincusui/internal/blincus"
+	"github.com/ublue-os/blincusui/internal/cfg"
 )
 
 type State struct {

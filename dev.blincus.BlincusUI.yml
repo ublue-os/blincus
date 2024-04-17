@@ -1,4 +1,4 @@
-id: dev.brian.BlincusUI
+id: dev.blincus.BlincusUI
 runtime: org.gnome.Platform
 runtime-version: '46'
 sdk: org.gnome.Sdk

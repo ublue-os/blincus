@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-  <id>dev.brian.BlincusUI</id>
+  <id>dev.blincus.BlincusUI</id>
   
   <name>BlincusUI</name>
 <developer id="tld.vendor">
@@ -23,7 +23,7 @@
    <p>Seamlessly share your X11 or Wayland session with no extra configuration required. Install a graphical application in your instance and it "just works".</p>
   </description>
   
-  <launchable type="desktop-id">dev.brian.BlincusUI.desktop</launchable>
+  <launchable type="desktop-id">dev.blincus.BlincusUI.desktop</launchable>
   <screenshots>
     <screenshot type="default">
       <image>https://raw.githubusercontent.com/fyne-io/blincus/main/img/screenshot1.png</image>
@@ -31,7 +31,7 @@
     </screenshot>
   </screenshots>
 
-  <icon type="stock">dev.brian.BlincusUI</icon>
+  <icon type="stock">dev.blincus.BlincusUI</icon>
   <!-- Override the kudos that aren't automatically added. See https://gitlab.gnome.org/GNOME/gnome-software/blob/main/doc/kudos.md.-->
   <!-- This is not required in any way but helps software centers better understand Fyne applications. If you don't use notifications, you should remove it from the list. -->
   <kudos>
@@ -39,10 +39,10 @@
     <kudo>Notifications</kudo>
   </kudos>
 
-  <url type="bugtracker">https://github.com/bketelsen/blincus/issues</url>
+  <url type="bugtracker">https://github.com/ublue-os/blincusui/issues</url>
   <url type="donation">https://github.com/sponsors/bketelsen</url>
   <url type="homepage">https://blincus.dev</url>
-<url type="vcs-browser">https://github.com/bketelsen/blincus</url>
+<url type="vcs-browser">https://github.com/ublue-os/blincusui</url>
 
   <!-- Generate the oars rating at: https://hughsie.github.io/oars/generate.html -->
   <content_rating type="oars-1.1" />
