@@ -4,508 +4,506 @@
 
 # :wrapper.bash3_bouncer
 if [[ "${BASH_VERSINFO:-0}" -lt 4 ]]; then
-	printf "bash version 4 or higher is required\n" >&2
-	exit 1
+  printf "bash version 4 or higher is required\n" >&2
+  exit 1
 fi
 
 # :command.master_script
 
 # :command.version_command
 version_command() {
-	echo "$version"
+  echo "$version"
 }
 
 # :command.usage
 blincus_usage() {
-	if [[ -n $long_usage ]]; then
-		printf "blincus\n"
-		echo
+  if [[ -n $long_usage ]]; then
+    printf "blincus\n"
+    echo
 
-		printf "  Manage development containers with Incus\n  \n  Wraps the \`incus\` command, so commands not implemented \n  in blincus will pass through to \`incus\`.\n"
-		echo
+    printf "  Manage development containers with Incus\n  \n  Wraps the \`incus\` command, so commands not implemented \n  in blincus will pass through to \`incus\`.\n"
+    echo
 
-	else
-		printf "blincus - Manage development containers with Incus\n"
-		echo
+  else
+    printf "blincus - Manage development containers with Incus\n"
+    echo
 
-	fi
+  fi
 
-	printf "%s\n" "$(bold "Usage:")"
-	printf "  blincus COMMAND\n"
-	printf "  blincus [COMMAND] --help | -h\n"
-	printf "  blincus --version | -v\n"
-	echo
-	# :command.usage_commands
-	printf "%s\n" "$(bold "Commands:")"
-	printf "  %s   Manage blincus config\n" "$(green "config")     "
-	printf "  %s   Launch a new instance\n" "$(green "launch")     "
-	printf "  %s   Open a shell in an instance\n" "$(green "shell")      "
-	printf "  %s   Manage blincus templates\n" "$(green "template")   "
-	printf "  %s   Personalize included templates\n" "$(green "personalize")"
-	echo
+  printf "%s\n" "$(bold "Usage:")"
+  printf "  blincus COMMAND\n"
+  printf "  blincus [COMMAND] --help | -h\n"
+  printf "  blincus --version | -v\n"
+  echo
+  # :command.usage_commands
+  printf "%s\n" "$(bold "Commands:")"
+  printf "  %s   Manage Blincus config\n" "$(green "config")   "
+  printf "  %s   Configure host for Blincus and Incus\n" "$(green "setup")    "
+  printf "  %s   Launch a new instance\n" "$(green "launch")   "
+  printf "  %s   Open a shell in an instance\n" "$(green "shell")    "
+  printf "  %s   Manage Blincus blueprints\n" "$(green "blueprint")"
+  echo
 
-	# :command.long_usage
-	if [[ -n $long_usage ]]; then
-		printf "%s\n" "$(bold "Options:")"
+  # :command.long_usage
+  if [[ -n $long_usage ]]; then
+    printf "%s\n" "$(bold "Options:")"
 
-		# :command.usage_fixed_flags
-		printf "  %s\n" "$(magenta "--help, -h")"
-		printf "    Show this help\n"
-		echo
-		printf "  %s\n" "$(magenta "--version, -v")"
-		printf "    Show version number\n"
-		echo
+    # :command.usage_fixed_flags
+    printf "  %s\n" "$(magenta "--help, -h")"
+    printf "    Show this help\n"
+    echo
+    printf "  %s\n" "$(magenta "--version, -v")"
+    printf "    Show version number\n"
+    echo
 
-		# :command.usage_environment_variables
-		printf "%s\n" "$(bold "Environment Variables:")"
+    # :command.usage_environment_variables
+    printf "%s\n" "$(bold "Environment Variables:")"
 
-		# :environment_variable.usage
-		printf "  %s\n" "$(cyan "CONFIG_FILE")"
-		printf "    Location of blincus config.ini\n"
-		printf "    Default: $HOME/.config/blincus/config.ini\n"
-		echo
+    # :environment_variable.usage
+    printf "  %s\n" "$(cyan "CONFIG_FILE")"
+    printf "    Location of blincus config.ini\n"
+    printf "    Default: $HOME/.config/blincus/config.ini\n"
+    echo
 
-		# :command.footer
-		printf "View documentation online at https://blincus.dev\n\n"
-		echo
+    # :command.footer
+    printf "View documentation online at https://blincus.dev\n\n"
+    echo
 
-	fi
+  fi
 }
 
 # :command.usage
 blincus_config_usage() {
-	if [[ -n $long_usage ]]; then
-		printf "blincus config - Manage blincus config\n"
-		echo
+  if [[ -n $long_usage ]]; then
+    printf "blincus config - Manage Blincus config\n"
+    echo
 
-	else
-		printf "blincus config - Manage blincus config\n"
-		echo
+  else
+    printf "blincus config - Manage Blincus config\n"
+    echo
 
-	fi
+  fi
 
-	printf "%s\n" "$(bold "Usage:")"
-	printf "  blincus config COMMAND\n"
-	printf "  blincus config [COMMAND] --help | -h\n"
-	echo
-	# :command.usage_commands
-	printf "%s\n" "$(bold "Commands:")"
-	printf "  %s   Show configuration values from ~/.config/blincus/config.ini\n" "$(green "list")"
-	echo
+  printf "%s\n" "$(bold "Usage:")"
+  printf "  blincus config COMMAND\n"
+  printf "  blincus config [COMMAND] --help | -h\n"
+  echo
+  # :command.usage_commands
+  printf "%s\n" "$(bold "Commands:")"
+  printf "  %s   Show configuration values from ~/.config/blincus/config.ini\n" "$(green "list")"
+  echo
 
-	# :command.long_usage
-	if [[ -n $long_usage ]]; then
-		printf "%s\n" "$(bold "Options:")"
+  # :command.long_usage
+  if [[ -n $long_usage ]]; then
+    printf "%s\n" "$(bold "Options:")"
 
-		# :command.usage_fixed_flags
-		printf "  %s\n" "$(magenta "--help, -h")"
-		printf "    Show this help\n"
-		echo
+    # :command.usage_fixed_flags
+    printf "  %s\n" "$(magenta "--help, -h")"
+    printf "    Show this help\n"
+    echo
 
-		# :command.footer
-		printf "View documentation online at https://blincus.dev\n\n"
-		echo
+    # :command.footer
+    printf "View documentation online at https://blincus.dev\n\n"
+    echo
 
-	fi
+  fi
 }
 
 # :command.usage
 blincus_config_list_usage() {
-	if [[ -n $long_usage ]]; then
-		printf "blincus config list - Show configuration values from ~/.config/blincus/config.ini\n"
-		echo
+  if [[ -n $long_usage ]]; then
+    printf "blincus config list - Show configuration values from ~/.config/blincus/config.ini\n"
+    echo
 
-	else
-		printf "blincus config list - Show configuration values from ~/.config/blincus/config.ini\n"
-		echo
+  else
+    printf "blincus config list - Show configuration values from ~/.config/blincus/config.ini\n"
+    echo
 
-	fi
+  fi
 
-	printf "Alias: l\n"
-	echo
+  printf "Alias: l\n"
+  echo
 
-	printf "%s\n" "$(bold "Usage:")"
-	printf "  blincus config list\n"
-	printf "  blincus config list --help | -h\n"
-	echo
+  printf "%s\n" "$(bold "Usage:")"
+  printf "  blincus config list\n"
+  printf "  blincus config list --help | -h\n"
+  echo
 
-	# :command.long_usage
-	if [[ -n $long_usage ]]; then
-		printf "%s\n" "$(bold "Options:")"
+  # :command.long_usage
+  if [[ -n $long_usage ]]; then
+    printf "%s\n" "$(bold "Options:")"
 
-		# :command.usage_fixed_flags
-		printf "  %s\n" "$(magenta "--help, -h")"
-		printf "    Show this help\n"
-		echo
+    # :command.usage_fixed_flags
+    printf "  %s\n" "$(magenta "--help, -h")"
+    printf "    Show this help\n"
+    echo
 
-	fi
+  fi
+}
+
+# :command.usage
+blincus_setup_usage() {
+  if [[ -n $long_usage ]]; then
+    printf "blincus setup - Configure host for Blincus and Incus\n"
+    echo
+
+  else
+    printf "blincus setup - Configure host for Blincus and Incus\n"
+    echo
+
+  fi
+
+  printf "%s\n" "$(bold "Usage:")"
+  printf "  blincus setup COMMAND\n"
+  printf "  blincus setup [COMMAND] --help | -h\n"
+  echo
+  # :command.usage_commands
+  printf "%s\n" "$(bold "Commands:")"
+  printf "  %s   Check current setup for problems\n" "$(green "doctor")"
+  echo
+
+  # :command.long_usage
+  if [[ -n $long_usage ]]; then
+    printf "%s\n" "$(bold "Options:")"
+
+    # :command.usage_fixed_flags
+    printf "  %s\n" "$(magenta "--help, -h")"
+    printf "    Show this help\n"
+    echo
+
+    # :command.footer
+    printf "View documentation online at https://blincus.dev\n\n"
+    echo
+
+  fi
+}
+
+# :command.usage
+blincus_setup_doctor_usage() {
+  if [[ -n $long_usage ]]; then
+    printf "blincus setup doctor - Check current setup for problems\n"
+    echo
+
+  else
+    printf "blincus setup doctor - Check current setup for problems\n"
+    echo
+
+  fi
+
+  printf "Alias: d\n"
+  echo
+
+  printf "%s\n" "$(bold "Usage:")"
+  printf "  blincus setup doctor\n"
+  printf "  blincus setup doctor --help | -h\n"
+  echo
+
+  # :command.long_usage
+  if [[ -n $long_usage ]]; then
+    printf "%s\n" "$(bold "Options:")"
+
+    # :command.usage_fixed_flags
+    printf "  %s\n" "$(magenta "--help, -h")"
+    printf "    Show this help\n"
+    echo
+
+  fi
 }
 
 # :command.usage
 blincus_launch_usage() {
-	if [[ -n $long_usage ]]; then
-		printf "blincus launch\n"
-		echo
+  if [[ -n $long_usage ]]; then
+    printf "blincus launch\n"
+    echo
 
-		printf "  Launch a new instance\n  Use \`blincus template list\` to see a list of available templates.\n"
-		echo
+    printf "  Launch a new instance\n  Use \`blincus blueprint list\` to see a list of available blueprints.\n"
+    echo
 
-	else
-		printf "blincus launch - Launch a new instance\n"
-		echo
+  else
+    printf "blincus launch - Launch a new instance\n"
+    echo
 
-	fi
+  fi
 
-	printf "Alias: l\n"
-	echo
+  printf "Alias: l\n"
+  echo
 
-	printf "%s\n" "$(bold "Usage:")"
-	printf "  blincus launch NAME [OPTIONS]\n"
-	printf "  blincus launch --help | -h\n"
-	echo
+  printf "%s\n" "$(bold "Usage:")"
+  printf "  blincus launch NAME [OPTIONS]\n"
+  printf "  blincus launch --help | -h\n"
+  echo
 
-	# :command.long_usage
-	if [[ -n $long_usage ]]; then
-		printf "%s\n" "$(bold "Options:")"
+  # :command.long_usage
+  if [[ -n $long_usage ]]; then
+    printf "%s\n" "$(bold "Options:")"
 
-		# :command.usage_flags
-		# :flag.usage
-		printf "  %s\n" "$(magenta "--template, -t TEMPLATE (required)")"
-		printf "    Blincus template name \n    Use \`blincus template list\` to see available templates,\n    or view ~/.config/blincus/config.ini\n"
-		echo
+    # :command.usage_flags
+    # :flag.usage
+    printf "  %s\n" "$(magenta "--blueprint, -b BLUEPRINT (required)")"
+    printf "    Blincus blueprint name \n    Use \`blincus blueprint list\` to see available blueprints,\n    or view ~/.config/blincus/config.ini\n"
+    echo
 
-		# :flag.usage
-		printf "  %s\n" "$(magenta "--vm, -v SIZE")"
-		printf "    Run as a virtual machine with AWS \"t3\" style sizes\n"
-		printf "    Allowed: nano, micro, small, medium, large, xlarge, 2xlarge\n"
-		echo
+    # :flag.usage
+    printf "  %s\n" "$(magenta "--vm, -v SIZE")"
+    printf "    Run as a virtual machine with AWS \"t3\" style sizes\n"
+    printf "    Allowed: nano, micro, small, medium, large, xlarge, 2xlarge\n"
+    echo
 
-		# :flag.usage
-		printf "  %s\n" "$(magenta "--workspace, -w DIRECTORY")"
-		printf "    Mount specified directory at \"/workspace\"\n"
-		echo
+    # :flag.usage
+    printf "  %s\n" "$(magenta "--workspace, -w DIRECTORY")"
+    printf "    Mount specified directory at \"/workspace\"\n"
+    echo
 
-		# :command.usage_fixed_flags
-		printf "  %s\n" "$(magenta "--help, -h")"
-		printf "    Show this help\n"
-		echo
+    # :command.usage_fixed_flags
+    printf "  %s\n" "$(magenta "--help, -h")"
+    printf "    Show this help\n"
+    echo
 
-		# :command.usage_args
-		printf "%s\n" "$(bold "Arguments:")"
+    # :command.usage_args
+    printf "%s\n" "$(bold "Arguments:")"
 
-		# :argument.usage
-		printf "  %s\n" "$(blue "NAME")"
-		printf "    Instance name\n"
-		echo
+    # :argument.usage
+    printf "  %s\n" "$(blue "NAME")"
+    printf "    Instance name\n"
+    echo
 
-		# :command.usage_examples
-		printf "%s\n" "$(bold "Examples:")"
-		printf "  blincus launch -t ubuntu mydevctr\n"
-		printf "  blincus launch -t ubuntux mydevctr\n"
-		printf "  blincus launch -t fedora mydevmachine\n"
-		printf "  blincus launch -t ubuntu -w /var/home/me/projects/blincus blincusdev\n"
-		printf "  blincus launch --vm large -t ubuntu myfatvm\n"
-		echo
+    # :command.usage_examples
+    printf "%s\n" "$(bold "Examples:")"
+    printf "  blincus launch -b ubuntu mydevctr\n"
+    printf "  blincus launch -b ubuntux mydevctr\n"
+    printf "  blincus launch -b fedora mydevmachine\n"
+    printf "  blincus launch -b ubuntu -w /var/home/me/projects/blincus blincusdev\n"
+    printf "  blincus launch --vm large -b ubuntu myfatvm\n"
+    echo
 
-		# :command.footer
-		printf "View documentation online at https://blincus.dev\n\n"
-		echo
+    # :command.footer
+    printf "View documentation online at https://blincus.dev\n\n"
+    echo
 
-	fi
+  fi
 }
 
 # :command.usage
 blincus_shell_usage() {
-	if [[ -n $long_usage ]]; then
-		printf "blincus shell - Open a shell in an instance\n"
-		echo
+  if [[ -n $long_usage ]]; then
+    printf "blincus shell - Open a shell in an instance\n"
+    echo
 
-	else
-		printf "blincus shell - Open a shell in an instance\n"
-		echo
+  else
+    printf "blincus shell - Open a shell in an instance\n"
+    echo
 
-	fi
+  fi
 
-	printf "Alias: s\n"
-	echo
+  printf "Alias: s\n"
+  echo
 
-	printf "%s\n" "$(bold "Usage:")"
-	printf "  blincus shell NAME [OPTIONS]\n"
-	printf "  blincus shell --help | -h\n"
-	echo
+  printf "%s\n" "$(bold "Usage:")"
+  printf "  blincus shell NAME [OPTIONS]\n"
+  printf "  blincus shell --help | -h\n"
+  echo
 
-	# :command.long_usage
-	if [[ -n $long_usage ]]; then
-		printf "%s\n" "$(bold "Options:")"
+  # :command.long_usage
+  if [[ -n $long_usage ]]; then
+    printf "%s\n" "$(bold "Options:")"
 
-		# :command.usage_flags
-		# :flag.usage
-		printf "  %s\n" "$(magenta "--root, -r")"
-		printf "    Root shell\n"
-		echo
+    # :command.usage_flags
+    # :flag.usage
+    printf "  %s\n" "$(magenta "--root, -r")"
+    printf "    Root shell\n"
+    echo
 
-		# :flag.usage
-		printf "  %s\n" "$(magenta "--no-login, -n")"
-		printf "    Don't use a login shell\n"
-		echo
+    # :flag.usage
+    printf "  %s\n" "$(magenta "--no-login, -n")"
+    printf "    Don't use a login shell\n"
+    echo
 
-		# :command.usage_fixed_flags
-		printf "  %s\n" "$(magenta "--help, -h")"
-		printf "    Show this help\n"
-		echo
+    # :command.usage_fixed_flags
+    printf "  %s\n" "$(magenta "--help, -h")"
+    printf "    Show this help\n"
+    echo
 
-		# :command.usage_args
-		printf "%s\n" "$(bold "Arguments:")"
+    # :command.usage_args
+    printf "%s\n" "$(bold "Arguments:")"
 
-		# :argument.usage
-		printf "  %s\n" "$(blue "NAME")"
-		printf "    Instance name\n"
-		echo
+    # :argument.usage
+    printf "  %s\n" "$(blue "NAME")"
+    printf "    Instance name\n"
+    echo
 
-		# :command.usage_examples
-		printf "%s\n" "$(bold "Examples:")"
-		printf "  blincus shell mydevctr\n"
-		printf "  blincus shell mydevctr --root --no-login\n"
-		echo
+    # :command.usage_examples
+    printf "%s\n" "$(bold "Examples:")"
+    printf "  blincus shell mydevctr\n"
+    printf "  blincus shell mydevctr --root --no-login\n"
+    echo
 
-		# :command.footer
-		printf "View documentation online at https://blincus.dev\n\n"
-		echo
+    # :command.footer
+    printf "View documentation online at https://blincus.dev\n\n"
+    echo
 
-	fi
+  fi
 }
 
 # :command.usage
-blincus_template_usage() {
-	if [[ -n $long_usage ]]; then
-		printf "blincus template - Manage blincus templates\n"
-		echo
+blincus_blueprint_usage() {
+  if [[ -n $long_usage ]]; then
+    printf "blincus blueprint\n"
+    echo
 
-	else
-		printf "blincus template - Manage blincus templates\n"
-		echo
+    printf "  Manage Blincus blueprints\n  \n  Blueprints are pre-configured favorites that you can use quickly\n"
+    echo
 
-	fi
+  else
+    printf "blincus blueprint - Manage Blincus blueprints\n"
+    echo
 
-	printf "%s\n" "$(bold "Usage:")"
-	printf "  blincus template COMMAND\n"
-	printf "  blincus template [COMMAND] --help | -h\n"
-	echo
-	# :command.usage_commands
-	printf "%s\n" "$(bold "Commands:")"
-	printf "  %s   List all templates\n" "$(green "list")   "
-	printf "  %s   Restore default templates\n" "$(green "restore")"
-	echo
+  fi
 
-	# :command.long_usage
-	if [[ -n $long_usage ]]; then
-		printf "%s\n" "$(bold "Options:")"
+  printf "%s\n" "$(bold "Usage:")"
+  printf "  blincus blueprint COMMAND\n"
+  printf "  blincus blueprint [COMMAND] --help | -h\n"
+  echo
+  # :command.usage_commands
+  printf "%s\n" "$(bold "Commands:")"
+  printf "  %s   List all blueprints\n" "$(green "list")"
+  echo
 
-		# :command.usage_fixed_flags
-		printf "  %s\n" "$(magenta "--help, -h")"
-		printf "    Show this help\n"
-		echo
+  # :command.long_usage
+  if [[ -n $long_usage ]]; then
+    printf "%s\n" "$(bold "Options:")"
 
-		# :command.footer
-		printf "View documentation online at https://blincus.dev\n\n"
-		echo
+    # :command.usage_fixed_flags
+    printf "  %s\n" "$(magenta "--help, -h")"
+    printf "    Show this help\n"
+    echo
 
-	fi
+    # :command.footer
+    printf "View documentation online at https://blincus.dev\n\n"
+    echo
+
+  fi
 }
 
 # :command.usage
-blincus_template_list_usage() {
-	if [[ -n $long_usage ]]; then
-		printf "blincus template list - List all templates\n"
-		echo
+blincus_blueprint_list_usage() {
+  if [[ -n $long_usage ]]; then
+    printf "blincus blueprint list - List all blueprints\n"
+    echo
 
-	else
-		printf "blincus template list - List all templates\n"
-		echo
+  else
+    printf "blincus blueprint list - List all blueprints\n"
+    echo
 
-	fi
+  fi
 
-	printf "Alias: l\n"
-	echo
+  printf "Alias: l\n"
+  echo
 
-	printf "%s\n" "$(bold "Usage:")"
-	printf "  blincus template list [OPTIONS]\n"
-	printf "  blincus template list --help | -h\n"
-	echo
+  printf "%s\n" "$(bold "Usage:")"
+  printf "  blincus blueprint list [OPTIONS]\n"
+  printf "  blincus blueprint list --help | -h\n"
+  echo
 
-	# :command.long_usage
-	if [[ -n $long_usage ]]; then
-		printf "%s\n" "$(bold "Options:")"
+  # :command.long_usage
+  if [[ -n $long_usage ]]; then
+    printf "%s\n" "$(bold "Options:")"
 
-		# :command.usage_flags
-		# :flag.usage
-		printf "  %s\n" "$(magenta "--completions, -c")"
-		printf "    output as list for completions\n"
-		echo
+    # :command.usage_flags
+    # :flag.usage
+    printf "  %s\n" "$(magenta "--completions, -c")"
+    printf "    output as list for completions\n"
+    echo
 
-		# :command.usage_fixed_flags
-		printf "  %s\n" "$(magenta "--help, -h")"
-		printf "    Show this help\n"
-		echo
+    # :command.usage_fixed_flags
+    printf "  %s\n" "$(magenta "--help, -h")"
+    printf "    Show this help\n"
+    echo
 
-	fi
-}
-
-# :command.usage
-blincus_template_restore_usage() {
-	if [[ -n $long_usage ]]; then
-		printf "blincus template restore - Restore default templates\n"
-		echo
-
-	else
-		printf "blincus template restore - Restore default templates\n"
-		echo
-
-	fi
-
-	printf "Alias: r\n"
-	echo
-
-	printf "%s\n" "$(bold "Usage:")"
-	printf "  blincus template restore\n"
-	printf "  blincus template restore --help | -h\n"
-	echo
-
-	# :command.long_usage
-	if [[ -n $long_usage ]]; then
-		printf "%s\n" "$(bold "Options:")"
-
-		# :command.usage_fixed_flags
-		printf "  %s\n" "$(magenta "--help, -h")"
-		printf "    Show this help\n"
-		echo
-
-	fi
-}
-
-# :command.usage
-blincus_personalize_usage() {
-	if [[ -n $long_usage ]]; then
-		printf "blincus personalize - Personalize included templates\n"
-		echo
-
-	else
-		printf "blincus personalize - Personalize included templates\n"
-		echo
-
-	fi
-
-	printf "Alias: p\n"
-	echo
-
-	printf "%s\n" "$(bold "Usage:")"
-	printf "  blincus personalize\n"
-	printf "  blincus personalize --help | -h\n"
-	echo
-
-	# :command.long_usage
-	if [[ -n $long_usage ]]; then
-		printf "%s\n" "$(bold "Options:")"
-
-		# :command.usage_fixed_flags
-		printf "  %s\n" "$(magenta "--help, -h")"
-		printf "    Show this help\n"
-		echo
-
-		# :command.usage_examples
-		printf "%s\n" "$(bold "Examples:")"
-		printf "  blincus personalize\n"
-		echo
-
-		# :command.footer
-		printf "View documentation online at https://blincus.dev\n\n"
-		echo
-
-	fi
+  fi
 }
 
 # :command.normalize_input
 # :command.normalize_input_function
 normalize_input() {
-	local arg flags passthru
-	passthru=false
+  local arg flags passthru
+  passthru=false
 
-	while [[ $# -gt 0 ]]; do
-		arg="$1"
-		if [[ $passthru == true ]]; then
-			input+=("$arg")
-		elif [[ $arg =~ ^(--[a-zA-Z0-9_\-]+)=(.+)$ ]]; then
-			input+=("${BASH_REMATCH[1]}")
-			input+=("${BASH_REMATCH[2]}")
-		elif [[ $arg =~ ^(-[a-zA-Z0-9])=(.+)$ ]]; then
-			input+=("${BASH_REMATCH[1]}")
-			input+=("${BASH_REMATCH[2]}")
-		elif [[ $arg =~ ^-([a-zA-Z0-9][a-zA-Z0-9]+)$ ]]; then
-			flags="${BASH_REMATCH[1]}"
-			for ((i = 0; i < ${#flags}; i++)); do
-				input+=("-${flags:i:1}")
-			done
-		elif [[ "$arg" == "--" ]]; then
-			passthru=true
-			input+=("$arg")
-		else
-			input+=("$arg")
-		fi
+  while [[ $# -gt 0 ]]; do
+    arg="$1"
+    if [[ $passthru == true ]]; then
+      input+=("$arg")
+    elif [[ $arg =~ ^(--[a-zA-Z0-9_\-]+)=(.+)$ ]]; then
+      input+=("${BASH_REMATCH[1]}")
+      input+=("${BASH_REMATCH[2]}")
+    elif [[ $arg =~ ^(-[a-zA-Z0-9])=(.+)$ ]]; then
+      input+=("${BASH_REMATCH[1]}")
+      input+=("${BASH_REMATCH[2]}")
+    elif [[ $arg =~ ^-([a-zA-Z0-9][a-zA-Z0-9]+)$ ]]; then
+      flags="${BASH_REMATCH[1]}"
+      for ((i = 0; i < ${#flags}; i++)); do
+        input+=("-${flags:i:1}")
+      done
+    elif [[ "$arg" == "--" ]]; then
+      passthru=true
+      input+=("$arg")
+    else
+      input+=("$arg")
+    fi
 
-		shift
-	done
+    shift
+  done
 }
 
 # :command.inspect_args
 inspect_args() {
-	if ((${#args[@]})); then
-		readarray -t sorted_keys < <(printf '%s\n' "${!args[@]}" | sort)
-		echo args:
-		for k in "${sorted_keys[@]}"; do
-			echo "- \${args[$k]} = ${args[$k]}"
-		done
-	else
-		echo args: none
-	fi
+  if ((${#args[@]})); then
+    readarray -t sorted_keys < <(printf '%s\n' "${!args[@]}" | sort)
+    echo args:
+    for k in "${sorted_keys[@]}"; do
+      echo "- \${args[$k]} = ${args[$k]}"
+    done
+  else
+    echo args: none
+  fi
 
-	if ((${#other_args[@]})); then
-		echo
-		echo other_args:
-		echo "- \${other_args[*]} = ${other_args[*]}"
-		for i in "${!other_args[@]}"; do
-			echo "- \${other_args[$i]} = ${other_args[$i]}"
-		done
-	fi
+  if ((${#other_args[@]})); then
+    echo
+    echo other_args:
+    echo "- \${other_args[*]} = ${other_args[*]}"
+    for i in "${!other_args[@]}"; do
+      echo "- \${other_args[$i]} = ${other_args[$i]}"
+    done
+  fi
 
-	if ((${#deps[@]})); then
-		readarray -t sorted_keys < <(printf '%s\n' "${!deps[@]}" | sort)
-		echo
-		echo deps:
-		for k in "${sorted_keys[@]}"; do
-			echo "- \${deps[$k]} = ${deps[$k]}"
-		done
-	fi
+  if ((${#deps[@]})); then
+    readarray -t sorted_keys < <(printf '%s\n' "${!deps[@]}" | sort)
+    echo
+    echo deps:
+    for k in "${sorted_keys[@]}"; do
+      echo "- \${deps[$k]} = ${deps[$k]}"
+    done
+  fi
 
-	if ((${#env_var_names[@]})); then
-		readarray -t sorted_names < <(printf '%s\n' "${env_var_names[@]}" | sort)
-		echo
-		echo "environment variables:"
-		for k in "${sorted_names[@]}"; do
-			echo "- \$$k = ${!k:-}"
-		done
-	fi
+  if ((${#env_var_names[@]})); then
+    readarray -t sorted_names < <(printf '%s\n' "${env_var_names[@]}" | sort)
+    echo
+    echo "environment variables:"
+    for k in "${sorted_names[@]}"; do
+      echo "- \$$k = ${!k:-}"
+    done
+  fi
 }
 
 # :command.user_lib
 # src/lib/colors.sh
 print_in_color() {
-	local color="$1"
-	shift
-	if [[ -z ${NO_COLOR+x} ]]; then
-		printf "$color%b\e[0m\n" "$*"
-	else
-		printf "%b\n" "$*"
-	fi
+  local color="$1"
+  shift
+  if [[ -z ${NO_COLOR+x} ]]; then
+    printf "$color%b\e[0m\n" "$*"
+  else
+    printf "%b\n" "$*"
+  fi
 }
 
 red() { print_in_color "\e[31m" "$*"; }
@@ -531,116 +529,126 @@ cyan_underlined() { print_in_color "\e[4;36m" "$*"; }
 
 # src/lib/config.sh
 config_show() {
-	config_load
-	ini_show
+  config_load
+  ini_show
 }
 
 config_get() {
-	local key="${1-}"
-	local default_value="${2-}"
+  local key="${1-}"
+  local default_value="${2-}"
 
-	config_load
-	echo "${ini["$key"]:-$default_value}"
+  config_load
+  echo "${ini["$key"]:-$default_value}"
 }
 
 config_set() {
-	local key="${1-}"
-	shift
-	local value="$*"
+  local key="${1-}"
+  shift
+  local value="$*"
 
-	config_load
-	ini["$key"]="$value"
-	config_save
+  config_load
+  ini["$key"]="$value"
+  config_save
 }
 
 config_del() {
-	local key="${1-}"
+  local key="${1-}"
 
-	config_load
-	unset "ini[$key]"
-	config_save
+  config_load
+  unset "ini[$key]"
+  config_save
 }
 
 config_keys() {
-	config_load
-	ini_keys
+  config_load
+  ini_keys
 }
 
 config_has_key() {
-	[[ $(config_get "$1") ]]
+  [[ $(config_get "$1") ]]
 }
 
 config_reload() {
-	declare -g config_loaded=false
-	config_load
+  declare -g config_loaded=false
+  config_load
 }
 
 config_load() {
-	[[ "${config_loaded-}" == "true" ]] && return
+  [[ "${config_loaded-}" == "true" ]] && return
 
-	declare -g CONFIG_FILE=${CONFIG_FILE:=config.ini}
-	declare -g config_loaded=true
-	[[ -f "$CONFIG_FILE" ]] || touch "$CONFIG_FILE"
-	ini_load "$CONFIG_FILE"
+  declare -g CONFIG_FILE=${CONFIG_FILE:=config.ini}
+  declare -g config_loaded=true
+  [[ -f "$CONFIG_FILE" ]] || touch "$CONFIG_FILE"
+  ini_load "$CONFIG_FILE"
 }
 
 config_save() {
-	ini_save "$CONFIG_FILE"
+  ini_save "$CONFIG_FILE"
 }
 
 # src/lib/defaults.sh
 write_defaults() {
 
 	# default container engine
-	config_set "default_cloud-init" "debian"
-	config_set "default_container_image" "images:ubuntu/mantic/cloud"
-	config_set "default_container_profiles" "container,idmap"
-	config_set "default_scripts" "ubuntu"
-	config_set "default_home-mounts" "none"
-	config_set "default_vm_image" "images:ubuntu/mantic/cloud"
-	config_set "default_vm_profiles" "idmap"
 
-	# ubuntu defaults
-	config_set "ubuntu.image" "images:ubuntu/jammy/cloud"
-	config_set "ubuntu.scripts" "ubuntu"
-	config_set "ubuntu.description" "Ubuntu Jammy + cloud-init"
+	config_set "Jammy.image" "images:ubuntu/jammy/cloud"
+	config_set "Jammy.description" "Ubuntu Jammy + cloud-init"
 
-	config_set "ubuntux.image" "images:ubuntu/jammy/cloud"
-	config_set "ubuntux.scripts" "ubuntu"
-	config_set "ubuntux.description" "Ubuntu Jammy cloud-init + x"
-	config_set "ubuntux.profiles" "container,idmap,xdevs"
-	config_set "ubuntux.cloud-init" "debianx"
-
-	# debian defaults
-	config_set "debian.image" "images:debian/bookworm/cloud"
-	config_set "debian.scripts" "debian"
-	config_set "debian.description" "Debian Bookworm + cloud-init"
-
-	config_set "debianx.image" "images:debian/bookworm/cloud"
-	config_set "debianx.scripts" "debian"
-	config_set "debianx.description" "Debian Bookworm cloud-init + x"
-	config_set "debianx.profiles" "container,idmap,xdevs"
-	config_set "debianx.cloud-init" "debianx"
-
-	#fedora defaults
-	config_set "fedora.image" "images:fedora/39/cloud"
-	config_set "fedora.scripts" "fedora"
-	config_set "fedora.description" "Fedora 39 + cloud-init"
-	config_set "fedora.cloud-init" "fedora"
-
-	config_set "fedorax.image" "images:fedora/39/cloud"
-	config_set "fedorax.scripts" "fedora"
-	config_set "fedorax.description" "Fedora 39 cloud-init + x"
-	config_set "fedorax.profiles" "container,idmap,xdevs"
-	config_set "fedorax.cloud-init" "fedorax"
-
-	# nix defaults
-
-	config_set "nix.image" "images:ubuntu/jammy/cloud"
-	config_set "nix.description" "Ubuntu cloud-init + Nix"
-	config_set "nix.scripts" "nix"
 	# todo: flag or JIT set this
 	# xhost +
+}
+
+# src/lib/doctor.sh
+has() {
+    local found=0
+    thing=$1
+    if command -v $thing >/dev/null 2>&1; then
+        found=1
+    fi
+    echo $found
+}
+
+has_container_engine() {
+
+    printf "$(blue $'\t'- Container Engine)"
+
+    has_docker=$(has docker)
+    has_podman=$(has podman)
+    if [ $has_docker -eq 1 ] || [ $has_podman -eq 1 ]; then
+        echo "$(green ...found)"
+    else
+        echo "$(red ...not installed)"
+        printf "$(red $'\t\t'Podman or Docker is required$'\n')"
+    fi
+}
+
+has_distrobox() {
+    printf "$(blue $'\t'- Distrobox)"
+
+    has_distrobox=$(has distrobox)
+
+    if [ $has_distrobox -eq 1 ]; then
+        echo "$(green ...found)"
+    else
+        echo "$(red ...not installed)"
+        printf "$(red $'\t\t'Distrobox is required$'\n')"
+
+    fi
+}
+
+has_incus() {
+
+    printf "$(blue $'\t'- Incus client)"
+
+    has_incus=$(has incus)
+
+    if [ $has_incus -eq 1 ]; then
+        echo "$(green ...found)"
+    else
+        echo "$(red ...not found)"
+        printf "$(red $'\t\t' Incus client is required$'\n')"
+
+    fi
 }
 
 # src/lib/incus.sh
@@ -677,126 +685,78 @@ dangling_images() {
 
 # src/lib/ini.sh
 ini_load() {
-	declare -gA ini
+  declare -gA ini
 
-	local ini_file="$1"
+  local ini_file="$1"
 
-	local section=""
-	local key=""
-	local value=""
-	local section_regex="^\[(.+)\]"
-	local key_regex="^([^ =]+) *= *(.*) *$"
-	local comment_regex="^;"
+  local section=""
+  local key=""
+  local value=""
+  local section_regex="^\[(.+)\]"
+  local key_regex="^([^ =]+) *= *(.*) *$"
+  local comment_regex="^;"
 
-	while IFS= read -r line; do
-		if [[ $line =~ $comment_regex ]]; then
-			continue
-		elif [[ $line =~ $section_regex ]]; then
-			section="${BASH_REMATCH[1]}."
-		elif [[ $line =~ $key_regex ]]; then
-			key="${BASH_REMATCH[1]}"
-			value="${BASH_REMATCH[2]}"
-			[[ $value == *\$* ]] && eval "value=\"$value\""
-			ini["${section}${key}"]="$value"
-		fi
-	done <"$ini_file"
+  while IFS= read -r line; do
+    if [[ $line =~ $comment_regex ]]; then
+      continue
+    elif [[ $line =~ $section_regex ]]; then
+      section="${BASH_REMATCH[1]}."
+    elif [[ $line =~ $key_regex ]]; then
+      key="${BASH_REMATCH[1]}"
+      value="${BASH_REMATCH[2]}"
+      [[ $value == *\$* ]] && eval "value=\"$value\""
+      ini["${section}${key}"]="$value"
+    fi
+  done <"$ini_file"
 }
 
 ini_save() {
-	declare -gA ini
+  declare -gA ini
 
-	local ini_file="$1"
+  local ini_file="$1"
 
-	local current_section=""
-	local has_free_keys=false
+  local current_section=""
+  local has_free_keys=false
 
-	rm -f "$ini_file"
+  rm -f "$ini_file"
 
-	for key in $(ini_keys); do
-		[[ $key == *.* ]] && continue
-		has_free_keys=true
-		value="${ini[$key]}"
-		echo "$key = $value" >>"$ini_file"
-	done
+  for key in $(ini_keys); do
+    [[ $key == *.* ]] && continue
+    has_free_keys=true
+    value="${ini[$key]}"
+    echo "$key = $value" >>"$ini_file"
+  done
 
-	[[ "${has_free_keys}" == "true" ]] && echo >>"$ini_file"
+  [[ "${has_free_keys}" == "true" ]] && echo >>"$ini_file"
 
-	for key in $(ini_keys); do
-		[[ $key == *.* ]] || continue
-		value="${ini[$key]}"
-		IFS="." read -r section_name key_name <<<"$key"
+  for key in $(ini_keys); do
+    [[ $key == *.* ]] || continue
+    value="${ini[$key]}"
+    IFS="." read -r section_name key_name <<<"$key"
 
-		if [[ "$current_section" != "$section_name" ]]; then
-			[[ $current_section ]] && echo >>"$ini_file"
-			echo "[$section_name]" >>"$ini_file"
-			current_section="$section_name"
-		fi
+    if [[ "$current_section" != "$section_name" ]]; then
+      [[ $current_section ]] && echo >>"$ini_file"
+      echo "[$section_name]" >>"$ini_file"
+      current_section="$section_name"
+    fi
 
-		echo "$key_name = $value" >>"$ini_file"
-	done
+    echo "$key_name = $value" >>"$ini_file"
+  done
 }
 
 ini_show() {
-	declare -gA ini
+  declare -gA ini
 
-	for key in $(ini_keys); do
-		echo "$key = ${ini[$key]}"
-	done
+  for key in $(ini_keys); do
+    echo "$key = ${ini[$key]}"
+  done
 }
 
 ini_keys() {
-	declare -gA ini
+  declare -gA ini
 
-	local keys=("${!ini[@]}")
-	for a in "${keys[@]}"; do echo "$a"; done | sort
-}
-
-# src/lib/personalize.sh
-personalize() {
-
-	cfgdir=$(dirname "${CONFIG_FILE}")
-
-	cloud_path="${cfgdir}/cloud-init"
-
-	for file in $cloud_path/* $cloud_path/**/*; do
-
-		# if it's not a directory
-		if ! [ -d "$file" ]; then
-			personalize_file "${file}"
-		fi
-	done
-
-	profile_path="${cfgdir}/profiles"
-
-	for file in $profile_path/* $profile_path/**/*; do
-
-		# if it's not a directory
-		if ! [ -d "$file" ]; then
-			personalize_file "${file}"
-		fi
-	done
-}
-
-personalize_file() {
-	file=$1
-	fullname=$(getent passwd "$USER" | cut -d ':' -f 5)
-	sed -i "s/BLINCUSUSER/$USER/g" "$file"
-	sed -i "s/BLINCUSFULLNAME/$fullname/g" "$file"
-
-	# if we're running on WSL we need to remove the gecos line from the config
-	# https://wsl.dev/wslblincus/
-	if grep -qE "(Microsoft|WSL)" /proc/version &>/dev/null; then
-		sed -i 's/gecos/#gecos/g' "$file"
-	fi
-
-	# I don't know a better way to get the first file
-	for i in "$HOME"/.ssh/id*.pub; do
-		[ -f "$i" ] || break
-		contents=$(cat "$i")
-		sed -i "s|SSHKEY|$contents|g" "$file"
-		break
-
-	done
+  local keys=("${!ini[@]}")
+  for a in "${keys[@]}"; do echo "$a"; done | sort
 }
 
 # src/lib/prefix.sh
@@ -886,6 +846,45 @@ cloud() {
 	echo "${cloudinit}"
 }
 
+get_profile() {
+	local image=$1
+	local isx11=0
+	local iswayland=0
+	local xsocket="0"
+	local waylandsocket="0"
+	local prefix=""
+	local base="shifting"
+	local profile=""
+
+	# alpine is special
+	if [[ $image =~ "alpine" ]]; then
+		prefix="alpine"
+	fi
+	if [[ -v WAYLAND_DISPLAY ]]; then
+		iswayland=1
+		if [[ $WAYLAND_DISPLAY =~ "1" ]]; then
+			waylandsocket="1"
+		fi
+	else
+		isx11=1
+		if [[ $DISPLAY =~ "1" ]]; then
+			xsocket="1"
+		fi
+	fi
+
+	# check for wayland, use it if it is there
+	if [[ iswayland -eq 1 ]]; then
+		base+="wayland"
+		base+="${waylandsocket}"
+	else
+		base+="x"
+		base+="${xsocket}"
+	fi
+
+	echo "${prefix}${base}"
+
+}
+
 # src/lib/sanity.sh
 sanity() {
 	local errors
@@ -966,36 +965,36 @@ uuid() {
 
 # src/lib/validations/validate_dir_exists.sh
 validate_dir_exists() {
-	[[ -d "$1" ]] || echo "must be an existing directory"
+  [[ -d "$1" ]] || echo "must be an existing directory"
 }
 
 # src/lib/validations/validate_file_exists.sh
 validate_file_exists() {
-	[[ -f "$1" ]] || echo "must be an existing file"
+  [[ -f "$1" ]] || echo "must be an existing file"
 }
 
 # src/lib/validations/validate_integer.sh
 validate_integer() {
-	[[ "$1" =~ ^[0-9]+$ ]] || echo "must be an integer"
+  [[ "$1" =~ ^[0-9]+$ ]] || echo "must be an integer"
 }
 
 # src/lib/validations/validate_not_empty.sh
 validate_not_empty() {
-	[[ -z "$1" ]] && echo "must not be empty"
+  [[ -z "$1" ]] && echo "must not be empty"
 }
 
 # src/lib/yaml.sh
 yaml_load() {
-	local prefix=$2
-	local s='[[:space:]]*' w='[a-zA-Z0-9_]*'
-	local fs
+  local prefix=$2
+  local s='[[:space:]]*' w='[a-zA-Z0-9_]*'
+  local fs
 
-	fs=$(echo @ | tr @ '\034')
+  fs=$(echo @ | tr @ '\034')
 
-	sed -ne "s|^\($s\):|\1|" \
-		-e "s|^\($s\)\($w\)$s:${s}[\"']\(.*\)[\"']$s\$|\1$fs\2$fs\3|p" \
-		-e "s|^\($s\)\($w\)$s:$s\(.*\)$s\$|\1$fs\2$fs\3|p" "$1" |
-		awk -F"$fs" '{
+  sed -ne "s|^\($s\):|\1|" \
+    -e "s|^\($s\)\($w\)$s:${s}[\"']\(.*\)[\"']$s\$|\1$fs\2$fs\3|p" \
+    -e "s|^\($s\)\($w\)$s:$s\(.*\)$s\$|\1$fs\2$fs\3|p" "$1" |
+    awk -F"$fs" '{
       indent = length($1)/2;
       vname[indent] = $2;
       for (i in vname) {if (i > indent) {delete vname[i]}}
@@ -1010,941 +1009,933 @@ yaml_load() {
 
 # :command.function
 blincus_config_list_command() {
-	# src/config_list_command.sh
-	for key in $(config_keys); do
-		echo "$key: $(config_get "$key")"
-	done
+  # src/config_list_command.sh
+  for key in $(config_keys); do
+  	echo "$key: $(config_get "$key")"
+  done
+
+}
+
+# :command.function
+blincus_setup_doctor_command() {
+  # src/setup_doctor_command.sh
+  echo "$(blue Checking System...)"
+
+  has_container_engine
+  has_distrobox
+  has_incus
 
 }
 
 # :command.function
 blincus_launch_command() {
-	# src/launch_command.sh
-	nomount=${args[--no - mount]}
-	cfgdir=$(dirname "${CONFIG_FILE}")
-	name=${args[name]}
-	template=${args[--template]}
-	vm=${args[--vm]}
-	vmflag=""
-	sizeflag=""
-	workspace=${args[--workspace]}
-	resolvedworkspace=""
+  # src/launch_command.sh
+  nomount=${args[--no - mount]}
+  cfgdir=$(dirname "${CONFIG_FILE}")
+  name=${args[name]}
+  blueprint=${args[--blueprint]}
+  vm=${args[--vm]}
+  vmflag=""
+  sizeflag=""
+  workspace=${args[--workspace]}
+  resolvedworkspace=""
 
-	if [[ ! -z "${workspace}" ]]; then
-		resolvedworkspace=$(readlink -f "${workspace}")
-	fi
+  if [[ ! -z "${workspace}" ]]; then
+  	resolvedworkspace=$(readlink -f "${workspace}")
+  fi
 
-	# set vm flag and size if specified
-	if [[ ! -z "${vm}" ]]; then
-		vmflag="--vm"
-		sizeflag="--type t3.${vm}"
-	fi
+  # set vm flag and size if specified
+  if [[ ! -z "${vm}" ]]; then
+  	vmflag="--vm"
+  	sizeflag="--type t3.${vm}"
+  fi
 
-	profilelist=$(config_get "$template".profiles)
-	if [ -z "$profilelist" ]; then
-		if [[ ! -z "${vm}" ]]; then
-			profilelist=$(config_get default_vm_profiles)
-		else
-			profilelist=$(config_get default_container_profiles)
-		fi
-	fi
+  # profilelist=$(config_get "$blueprint".profiles)
+  # if [ -z "$profilelist" ]; then
+  # 	if [[ ! -z "${vm}" ]]; then
+  # 		profilelist=$(config_get default_vm_profiles)
+  # 	else
+  # 		profilelist=$(config_get default_container_profiles)
+  # 	fi
+  # fi
 
-	# todo: extract this out if I can return an array properly
-	OLD_IFS=$IFS
-	IFS=,
-	read line <<<$profilelist
-	profiles=($line)
-	IFS=${OLD_IFS}
+  profilelist=$(get_profile)
 
-	image=$(image $template $vmflag)
-	scripts=$(scripts $template $vmflag)
-	cloudinit=$(cloud $template $vmflag)
-	mounts=$(home_mounts $template $vmflag)
+  # todo: extract this out if I can return an array properly
+  OLD_IFS=$IFS
+  IFS=,
+  read line <<<$profilelist
+  profiles=($line)
+  IFS=${OLD_IFS}
 
-	echo "Using $(blue ${template}) template"
-	incus init --quiet $vmflag $sizeflag "${image}" "${args[name]}"
+  image=$(image $blueprint$vmflag)
+  scripts=$(scripts $blueprint$vmflag)
+  cloudinit=$(cloud $blueprint$vmflag)
+  mounts=$(home_mounts $blueprint$vmflag)
 
-	for each in "${profiles[@]}"; do
-		exists=$(blincus_profile_exists "${each##*( )}")
-		if [[ $exists -eq 0 ]]; then
-			echo "$(red_bold Profile "${each##*( )}" is missing!)"
-			exit 1
-		fi
-	done
+  echo "Using $(blue ${blueprint}) blueprint"
+  incus init --quiet $vmflag $sizeflag "${image}" "${args[name]}"
 
-	# Add profiles specified by template
-	for each in "${profiles[@]}"; do
-		incus profile --quiet add "${args[name]}" "${each##*( )}"
-	done
+  for each in "${profiles[@]}"; do
+  	exists=$(blincus_profile_exists "${each##*( )}")
+  	if [[ $exists -eq 0 ]]; then
+  		echo "$(red_bold Profile "${each##*( )}" is missing!)"
+  		exit 1
+  	fi
+  done
 
-	# add cloud-init profile
-	# TODO : skip if "none"
+  # Add profiles specified by blueprint
+  for each in "${profiles[@]}"; do
+  	incus profile --quiet add "${args[name]}" "${each##*( )}"
+  done
 
-	if [ ! "$cloudinit" = "none" ]; then
-		echo "Using $(blue $cloudinit) cloud-init profile"
+  # add cloud-init profile
+  # TODO : skip if "none"
 
-		# ensure profile exists. do this all at once earlier? -- before init to save pain
-		exists=$(blincus_profile_exists $cloudinit)
-		if [[ $exists -eq 0 ]]; then
-			echo "$(red_bold Profile "${cloudinit}" is missing!)"
-			exit 1
-		fi
+  # if [ ! "$cloudinit" = "none" ]; then
+  # 	echo "Using $(blue $cloudinit) cloud-init profile"
 
-		incus profile --quiet add "${args[name]}" "${cloudinit}"
-	fi
+  # 	# ensure profile exists. do this all at once earlier? -- before init to save pain
+  # 	exists=$(blincus_profile_exists $cloudinit)
+  # 	if [[ $exists -eq 0 ]]; then
+  # 		echo "$(red_bold Profile "${cloudinit}" is missing!)"
+  # 		exit 1
+  # 	fi
 
-	if [[ "${vm}" ]]; then
-		incus config --quiet device add "${args[name]}" cloud disk source=cloud-init:config
-	fi
+  # 	incus profile --quiet add "${args[name]}" "${cloudinit}"
+  # fi
 
-	echo "$(yellow_bold Starting instance $name)"
-	TMPFILE=$(mktemp)
-	echo " * Blincus instance: $(red $name)" >$TMPFILE
-	echo " * Template: $(red $template)" >>$TMPFILE
-	echo " * Image: $(red $image)" >>$TMPFILE
-	echo " * Host Mounts: $(red Host) <-> $(blue Instance)" >>$TMPFILE
+  if [[ "${vm}" ]]; then
+  	incus config --quiet device add "${args[name]}" cloud disk source=cloud-init:config
+  fi
 
-	# TODO - don't mount if scriptdir doesn't exist
-	scripts=$(config_get "$template".scripts)
-	if [ -z "$scripts" ]; then
-		scripts=$(config_get default_scripts)
-	fi
+  echo "$(yellow_bold Starting instance $name)"
+  TMPFILE=$(mktemp)
+  echo " * Blincus instance: $(red $name)" >$TMPFILE
+  echo " * Template: $(red $blueprint)" >>$TMPFILE
+  echo " * Image: $(red $image)" >>$TMPFILE
+  echo " * Host Mounts: $(red Host) <-> $(blue Instance)" >>$TMPFILE
 
-	scriptdir="${cfgdir}/scripts/${scripts}"
-	# mount scripts
-	if [ -d "$scriptdir" ]; then
-		echo "$(yellow Mounting scripts from $HOME/.blincus/scripts)"
-		#incus file push -r -p "${scriptdir}"/* "$name"/opt/scripts
-		incus config --quiet device add "${name}" scriptdir disk source="${scriptdir}" path=/opt/scripts
-		echo "   - $(red ${scriptdir}) <-> $(blue /opt/scripts)" >>$TMPFILE
+  # # TODO - don't mount if scriptdir doesn't exist
+  # scripts=$(config_get "$blueprint".scripts)
+  # if [ -z "$scripts" ]; then
+  # 	scripts=$(config_get default_scripts)
+  # fi
 
-	fi
+  # scriptdir="${cfgdir}/scripts/${scripts}"
+  # # mount scripts
+  # if [ -d "$scriptdir" ]; then
+  # 	echo "$(yellow Mounting scripts from $HOME/.blincus/scripts)"
+  # 	#incus file push -r -p "${scriptdir}"/* "$name"/opt/scripts
+  # 	incus config --quiet device add "${name}" scriptdir disk source="${scriptdir}" path=/opt/scripts
+  # 	echo "   - $(red ${scriptdir}) <-> $(blue /opt/scripts)" >>$TMPFILE
 
-	# now start it
-	incus start --quiet "${args[name]}"
+  # fi
 
-	if [[ "${vm}" ]]; then
-		echo "$(yellow Waiting for instance start...)"
-		sleeptime=$(config_get "vm_sleep" 30)
-		sleep $sleeptime
-	fi
-	echo "$(yellow Waiting for cloud init...)"
+  # now start it
+  incus start --quiet "${args[name]}"
 
-	# wait for cloud-init to create the user
-	# otherwise the home mount will prevent /etc/skel from being applied
-	incus exec "${args[name]}" -- bash -c "command -v cloud-init && cloud-init status --wait || echo No cloud-init"
+  if [[ "${vm}" ]]; then
+  	echo "$(yellow Waiting for instance start...)"
+  	sleeptime=$(config_get "vm_sleep" 30)
+  	sleep $sleeptime
+  fi
+  echo "$(yellow Waiting for cloud init...)"
 
-	MOTDPROFILE=$(mktemp)
-	echo "cat /etc/blincus" >$MOTDPROFILE
+  # wait for cloud-init to create the user
+  # otherwise the home mount will prevent /etc/skel from being applied
+  incus exec "${args[name]}" -- bash -c "command -v cloud-init && cloud-init status --wait || echo No cloud-init"
 
-	incus file push $MOTDPROFILE "$name"/etc/profile.d/02-blincus.sh
-	guid=$(uuid)
-	echo "Blincus ID: $(yellow $guid)"
-	incus config set "$name" user.blincusuid=$guid
+  MOTDPROFILE=$(mktemp)
+  echo "cat /etc/blincus" >$MOTDPROFILE
 
-	# mount $HOME at $HOME/host
+  incus file push $MOTDPROFILE "$name"/etc/profile.d/02-blincus.sh
+  guid=$(uuid)
+  echo "Blincus ID: $(yellow $guid)"
+  incus config set "$name" user.blincusuid=$guid
 
-	if [[ ! $nomount ]]; then
-		echo "$(yellow Mounting home directory at ~/host)"
-		incus config --quiet device add "${args[name]}" myhomedir disk source="$HOME" path=/home/"${USER}"/host/
-		echo "   - $(red $HOME) <-> $(blue /home/${USER}/host/)" >>$TMPFILE
+  # mount $HOME at $HOME/host
 
-	fi
+  if [[ ! $nomount ]]; then
+  	echo "$(yellow Mounting home directory at ~/host)"
+  	incus config --quiet device add "${args[name]}" myhomedir disk source="$HOME" path=/home/"${USER}"/host/
+  	echo "   - $(red $HOME) <-> $(blue /home/${USER}/host/)" >>$TMPFILE
 
-	if [[ ! -z "${workspace}" ]]; then
-		echo "$(yellow Mounting workspace directory)"
-		dirname=$(basename "$resolvedworkspace")
-		incus config --quiet device add "${args[name]}" workspace disk source="${resolvedworkspace}" path=/workspace/"${dirname}"
-		echo "   - $(red $resolvedworkspace) <-> $(blue /workspace)" >>$TMPFILE
-	fi
+  fi
 
-	OLD_IFS=$IFS
-	IFS=,
-	read line <<<$mounts
-	mountlist=($line)
-	IFS=${OLD_IFS}
+  if [[ ! -z "${workspace}" ]]; then
+  	echo "$(yellow Mounting workspace directory)"
+  	dirname=$(basename "$resolvedworkspace")
+  	incus config --quiet device add "${args[name]}" workspace disk source="${resolvedworkspace}" path=/workspace/"${dirname}"
+  	echo "   - $(red $resolvedworkspace) <-> $(blue /workspace)" >>$TMPFILE
+  fi
 
-	for each in "${mountlist[@]}"; do
-		if [ ! "${each}" = "none" ]; then
-			echo "$(yellow Mounting directory ${each} at ~/${each})"
-			incus config --quiet device add "${args[name]}" "${each##*( )}"mount disk source="$HOME"/"${each##*( )}" path=/home/"${USER}"/"${each##*( )}"
-			echo "   - $(red ${each##*( )}) <-> $(blue /home/${USER}/${each##*( )})" >>$TMPFILE
-		fi
-	done
+  OLD_IFS=$IFS
+  IFS=,
+  read line <<<$mounts
+  mountlist=($line)
+  IFS=${OLD_IFS}
 
-	# finish motd
-	echo " " >>$TMPFILE
-	incus file push $TMPFILE "$name"/etc/blincus
+  for each in "${mountlist[@]}"; do
+  	if [ ! "${each}" = "none" ]; then
+  		echo "$(yellow Mounting directory ${each} at ~/${each})"
+  		incus config --quiet device add "${args[name]}" "${each##*( )}"mount disk source="$HOME"/"${each##*( )}" path=/home/"${USER}"/"${each##*( )}"
+  		echo "   - $(red ${each##*( )}) <-> $(blue /home/${USER}/${each##*( )})" >>$TMPFILE
+  	fi
+  done
 
-	if [[ ! -z "${DISPLAY}" ]]; then
-		echo "$(yellow Allowing X sharing:)"
-		xhost +
-	fi
-	echo "$(green_bold Instance $name ready)"
-	echo "Run $(magenta_bold blincus shell $name) to enter"
+  # finish motd
+  echo " " >>$TMPFILE
+  incus file push $TMPFILE "$name"/etc/blincus
+
+  if [[ ! -z "${DISPLAY}" ]]; then
+  	echo "$(yellow Allowing X sharing:)"
+  	xhost +
+  fi
+  echo "$(green_bold Instance $name ready)"
+  echo "Run $(magenta_bold blincus shell $name) to enter"
 
 }
 
 # :command.function
 blincus_shell_command() {
-	# src/shell_command.sh
-	root=${args[--root]}
-	nologin=${args[--no - login]}
-	container=${args[name]}
-	shelluser=${USER}
-	loginflag="--login"
+  # src/shell_command.sh
+  root=${args[--root]}
+  nologin=${args[--no - login]}
+  container=${args[name]}
+  #shelluser=${USER}
+  loginflag="--login"
 
-	if [[ $root ]]; then
-		shelluser="root"
-	fi
-	if [[ $nologin ]]; then
-		loginflag=""
-	fi
+  shelluser=$(incus exec "$container" -- awk -F ':' '$3==1000 {print $1}'  /etc/passwd)
 
-	incus exec "$container" -- su ${loginflag} ${shelluser}
+  if [[ $root ]]; then
+  	shelluser="root"
+  fi
+  if [[ $nologin ]]; then
+  	loginflag=""
+  fi
+  incus exec "$container" -- su ${loginflag} ${shelluser}
 
 }
 
 # :command.function
-blincus_template_list_command() {
-	# src/template_list_command.sh
-	comp=${args[--completions]}
+blincus_blueprint_list_command() {
+  # src/blueprint_list_command.sh
+  comp=${args[--completions]}
 
-	cfgdir=$(dirname "${CONFIG_FILE}")
+  cfgdir=$(dirname "${CONFIG_FILE}")
 
-	template_path="${cfgdir}/templates"
+  template_path="${cfgdir}/templates"
 
-	tmplts=$(cat "${cfgdir}"/config.ini | grep "^\[" | awk -F'[][]' '{print $2}')
-	for t in ${tmplts}; do
-		echo "$(blue $t):"
-		desc=$(config_get "${t}.description")
-		if [ -z "$desc" ]; then
-			desc="[no description]"
-		fi
-		echo "$desc"
-		imagename=$(config_get "$t".image)
-		if [ -z "$imagename" ]; then
-			imagename="(default)"
-		fi
-		echo "Image: ${imagename}"
-		echo ""
-	done
-	#config_keys
-}
-
-# :command.function
-blincus_template_restore_command() {
-	# src/template_restore_command.sh
-	cfgdir=$(dirname "${CONFIG_FILE}")
-
-	profile_path="${cfgdir}/profiles"
-	init_path="${cfgdir}/cloud-init"
-	baseDir="$(prefix)/share/blincus"
-	templateDir="${baseDir}/templates"
-	profileDir="${baseDir}/profiles"
-	initDir="${baseDir}/cloud-init"
-
-	echo ""
-	echo "$(red To restore original files, copy from the installer directory to the user directory)"
-	echo ""
-	echo "$(green Installer base directory:) $baseDir"
-	echo "$(green User base directory:) $cfgdir"
-
-	echo ""
-	echo "$(blue Installer profile directory:) $profileDir"
-	echo "$(blue User profile directory:) $profile_path"
-	echo ""
-	echo "$(blue Installer cloud-init directory:) $initDir"
-	echo "$(blue User cloud-init directory:) $init_path"
-	echo ""
-}
-
-# :command.function
-blincus_personalize_command() {
-	# src/personalize_command.sh
-	echo ""
-	echo "$(blue Personalizing...)"
-	personalize
-	echo "$(green Personalization complete.)"
+  tmplts=$(cat "${cfgdir}"/config.ini | grep "^\[" | awk -F'[][]' '{print $2}')
+  for t in ${tmplts}; do
+  	echo "$(blue $t):"
+  	desc=$(config_get "${t}.description")
+  	if [ -z "$desc" ]; then
+  		desc="[no description]"
+  	fi
+  	echo "Description: ${desc}"
+  	imagename=$(config_get "$t".image)
+  	if [ -z "$imagename" ]; then
+  		imagename="(default)"
+  	fi
+  	echo "Image: ${imagename}"
+  	echo ""
+  done
+  #config_keys
 
 }
 
 # :command.parse_requirements
 parse_requirements() {
-	# :command.fixed_flags_filter
-	while [[ $# -gt 0 ]]; do
-		case "${1:-}" in
-		--version | -v)
-			version_command
-			exit
-			;;
+  # :command.fixed_flags_filter
+  while [[ $# -gt 0 ]]; do
+    case "${1:-}" in
+      --version | -v)
+        version_command
+        exit
+        ;;
 
-		--help | -h)
-			long_usage=yes
-			blincus_usage
-			exit
-			;;
+      --help | -h)
+        long_usage=yes
+        blincus_usage
+        exit
+        ;;
 
-		*)
-			break
-			;;
+      *)
+        break
+        ;;
 
-		esac
-	done
+    esac
+  done
 
-	# :command.environment_variables_filter
-	# :command.environment_variables_default
-	export CONFIG_FILE="${CONFIG_FILE:-$HOME/.config/blincus/config.ini}"
+  # :command.environment_variables_filter
+  # :command.environment_variables_default
+  export CONFIG_FILE="${CONFIG_FILE:-$HOME/.config/blincus/config.ini}"
 
-	env_var_names+=("CONFIG_FILE")
+  env_var_names+=("CONFIG_FILE")
 
-	# :command.dependencies_filter
-	if command -v incus >/dev/null 2>&1; then
-		deps['incus']="$(command -v incus | head -n1)"
-	else
-		printf "missing dependency: incus\n" >&2
-		printf "%s\n" "incus is required to use blincus." >&2
-		exit 1
-	fi
+  # :command.dependencies_filter
+  if command -v incus >/dev/null 2>&1; then
+    deps['incus']="$(command -v incus | head -n1)"
+  else
+    printf "missing dependency: incus\n" >&2
+    printf "%s\n" "incus is required to use blincus." >&2
+    exit 1
+  fi
 
-	# :command.command_filter
-	action=${1:-}
+  # :command.command_filter
+  action=${1:-}
 
-	case $action in
-	-*) ;;
+  case $action in
+    -*) ;;
 
-	config)
-		action="config"
-		shift
-		blincus_config_parse_requirements "$@"
-		shift $#
-		;;
+    config)
+      action="config"
+      shift
+      blincus_config_parse_requirements "$@"
+      shift $#
+      ;;
 
-	launch | l)
-		action="launch"
-		shift
-		blincus_launch_parse_requirements "$@"
-		shift $#
-		;;
+    setup)
+      action="setup"
+      shift
+      blincus_setup_parse_requirements "$@"
+      shift $#
+      ;;
 
-	shell | s)
-		action="shell"
-		shift
-		blincus_shell_parse_requirements "$@"
-		shift $#
-		;;
+    launch | l)
+      action="launch"
+      shift
+      blincus_launch_parse_requirements "$@"
+      shift $#
+      ;;
 
-	template)
-		action="template"
-		shift
-		blincus_template_parse_requirements "$@"
-		shift $#
-		;;
+    shell | s)
+      action="shell"
+      shift
+      blincus_shell_parse_requirements "$@"
+      shift $#
+      ;;
 
-	personalize | p)
-		action="personalize"
-		shift
-		blincus_personalize_parse_requirements "$@"
-		shift $#
-		;;
+    blueprint)
+      action="blueprint"
+      shift
+      blincus_blueprint_parse_requirements "$@"
+      shift $#
+      ;;
 
-	# :command.command_fallback
-	"")
-		blincus_usage >&2
-		exit 1
-		;;
+    # :command.command_fallback
+    "")
+      blincus_usage >&2
+      exit 1
+      ;;
 
-	*)
-		if [[ -x "$(command -v "incus")" ]]; then
-			exec incus "$@"
-		else
-			printf "invalid command: %s\n" "$action" >&2
-			exit 1
-		fi
-		;;
+    *)
+      if [[ -x "$(command -v "incus")" ]]; then
+        exec incus "$@"
+      else
+        printf "invalid command: %s\n" "$action" >&2
+        exit 1
+      fi
+      ;;
 
-	esac
+  esac
 
-	# :command.parse_requirements_while
-	while [[ $# -gt 0 ]]; do
-		key="$1"
-		case "$key" in
+  # :command.parse_requirements_while
+  while [[ $# -gt 0 ]]; do
+    key="$1"
+    case "$key" in
 
-		-?*)
-			printf "invalid option: %s\n" "$key" >&2
-			exit 1
-			;;
+      -?*)
+        printf "invalid option: %s\n" "$key" >&2
+        exit 1
+        ;;
 
-		*)
-			# :command.parse_requirements_case
-			# :command.parse_requirements_case_simple
-			printf "invalid argument: %s\n" "$key" >&2
-			exit 1
+      *)
+        # :command.parse_requirements_case
+        # :command.parse_requirements_case_simple
+        printf "invalid argument: %s\n" "$key" >&2
+        exit 1
 
-			;;
+        ;;
 
-		esac
-	done
+    esac
+  done
 
 }
 
 # :command.parse_requirements
 blincus_config_parse_requirements() {
-	# :command.fixed_flags_filter
-	while [[ $# -gt 0 ]]; do
-		case "${1:-}" in
-		--help | -h)
-			long_usage=yes
-			blincus_config_usage
-			exit
-			;;
+  # :command.fixed_flags_filter
+  while [[ $# -gt 0 ]]; do
+    case "${1:-}" in
+      --help | -h)
+        long_usage=yes
+        blincus_config_usage
+        exit
+        ;;
 
-		*)
-			break
-			;;
+      *)
+        break
+        ;;
 
-		esac
-	done
+    esac
+  done
 
-	# :command.command_filter
-	action=${1:-}
+  # :command.command_filter
+  action=${1:-}
 
-	case $action in
-	-*) ;;
+  case $action in
+    -*) ;;
 
-	list | l)
-		action="list"
-		shift
-		blincus_config_list_parse_requirements "$@"
-		shift $#
-		;;
+    list | l)
+      action="list"
+      shift
+      blincus_config_list_parse_requirements "$@"
+      shift $#
+      ;;
 
-	# :command.command_fallback
-	"")
-		blincus_config_usage >&2
-		exit 1
-		;;
+    # :command.command_fallback
+    "")
+      blincus_config_usage >&2
+      exit 1
+      ;;
 
-	*)
-		printf "invalid command: %s\n" "$action" >&2
-		exit 1
-		;;
+    *)
+      printf "invalid command: %s\n" "$action" >&2
+      exit 1
+      ;;
 
-	esac
+  esac
 
-	# :command.parse_requirements_while
-	while [[ $# -gt 0 ]]; do
-		key="$1"
-		case "$key" in
+  # :command.parse_requirements_while
+  while [[ $# -gt 0 ]]; do
+    key="$1"
+    case "$key" in
 
-		-?*)
-			printf "invalid option: %s\n" "$key" >&2
-			exit 1
-			;;
+      -?*)
+        printf "invalid option: %s\n" "$key" >&2
+        exit 1
+        ;;
 
-		*)
-			# :command.parse_requirements_case
-			# :command.parse_requirements_case_simple
-			printf "invalid argument: %s\n" "$key" >&2
-			exit 1
+      *)
+        # :command.parse_requirements_case
+        # :command.parse_requirements_case_simple
+        printf "invalid argument: %s\n" "$key" >&2
+        exit 1
 
-			;;
+        ;;
 
-		esac
-	done
+    esac
+  done
 
 }
 
 # :command.parse_requirements
 blincus_config_list_parse_requirements() {
-	# :command.fixed_flags_filter
-	while [[ $# -gt 0 ]]; do
-		case "${1:-}" in
-		--help | -h)
-			long_usage=yes
-			blincus_config_list_usage
-			exit
-			;;
+  # :command.fixed_flags_filter
+  while [[ $# -gt 0 ]]; do
+    case "${1:-}" in
+      --help | -h)
+        long_usage=yes
+        blincus_config_list_usage
+        exit
+        ;;
 
-		*)
-			break
-			;;
+      *)
+        break
+        ;;
 
-		esac
-	done
+    esac
+  done
 
-	# :command.command_filter
-	action="config list"
+  # :command.command_filter
+  action="config list"
 
-	# :command.parse_requirements_while
-	while [[ $# -gt 0 ]]; do
-		key="$1"
-		case "$key" in
+  # :command.parse_requirements_while
+  while [[ $# -gt 0 ]]; do
+    key="$1"
+    case "$key" in
 
-		-?*)
-			printf "invalid option: %s\n" "$key" >&2
-			exit 1
-			;;
+      -?*)
+        printf "invalid option: %s\n" "$key" >&2
+        exit 1
+        ;;
 
-		*)
-			# :command.parse_requirements_case
-			# :command.parse_requirements_case_simple
-			printf "invalid argument: %s\n" "$key" >&2
-			exit 1
+      *)
+        # :command.parse_requirements_case
+        # :command.parse_requirements_case_simple
+        printf "invalid argument: %s\n" "$key" >&2
+        exit 1
 
-			;;
+        ;;
 
-		esac
-	done
+    esac
+  done
+
+}
+
+# :command.parse_requirements
+blincus_setup_parse_requirements() {
+  # :command.fixed_flags_filter
+  while [[ $# -gt 0 ]]; do
+    case "${1:-}" in
+      --help | -h)
+        long_usage=yes
+        blincus_setup_usage
+        exit
+        ;;
+
+      *)
+        break
+        ;;
+
+    esac
+  done
+
+  # :command.command_filter
+  action=${1:-}
+
+  case $action in
+    -*) ;;
+
+    doctor | d)
+      action="doctor"
+      shift
+      blincus_setup_doctor_parse_requirements "$@"
+      shift $#
+      ;;
+
+    # :command.command_fallback
+    "")
+      blincus_setup_usage >&2
+      exit 1
+      ;;
+
+    *)
+      printf "invalid command: %s\n" "$action" >&2
+      exit 1
+      ;;
+
+  esac
+
+  # :command.parse_requirements_while
+  while [[ $# -gt 0 ]]; do
+    key="$1"
+    case "$key" in
+
+      -?*)
+        printf "invalid option: %s\n" "$key" >&2
+        exit 1
+        ;;
+
+      *)
+        # :command.parse_requirements_case
+        # :command.parse_requirements_case_simple
+        printf "invalid argument: %s\n" "$key" >&2
+        exit 1
+
+        ;;
+
+    esac
+  done
+
+}
+
+# :command.parse_requirements
+blincus_setup_doctor_parse_requirements() {
+  # :command.fixed_flags_filter
+  while [[ $# -gt 0 ]]; do
+    case "${1:-}" in
+      --help | -h)
+        long_usage=yes
+        blincus_setup_doctor_usage
+        exit
+        ;;
+
+      *)
+        break
+        ;;
+
+    esac
+  done
+
+  # :command.command_filter
+  action="setup doctor"
+
+  # :command.parse_requirements_while
+  while [[ $# -gt 0 ]]; do
+    key="$1"
+    case "$key" in
+
+      -?*)
+        printf "invalid option: %s\n" "$key" >&2
+        exit 1
+        ;;
+
+      *)
+        # :command.parse_requirements_case
+        # :command.parse_requirements_case_simple
+        printf "invalid argument: %s\n" "$key" >&2
+        exit 1
+
+        ;;
+
+    esac
+  done
 
 }
 
 # :command.parse_requirements
 blincus_launch_parse_requirements() {
-	# :command.fixed_flags_filter
-	while [[ $# -gt 0 ]]; do
-		case "${1:-}" in
-		--help | -h)
-			long_usage=yes
-			blincus_launch_usage
-			exit
-			;;
+  # :command.fixed_flags_filter
+  while [[ $# -gt 0 ]]; do
+    case "${1:-}" in
+      --help | -h)
+        long_usage=yes
+        blincus_launch_usage
+        exit
+        ;;
 
-		*)
-			break
-			;;
+      *)
+        break
+        ;;
 
-		esac
-	done
+    esac
+  done
 
-	# :command.command_filter
-	action="launch"
+  # :command.command_filter
+  action="launch"
 
-	# :command.parse_requirements_while
-	while [[ $# -gt 0 ]]; do
-		key="$1"
-		case "$key" in
-		# :flag.case
-		--template | -t)
+  # :command.parse_requirements_while
+  while [[ $# -gt 0 ]]; do
+    key="$1"
+    case "$key" in
+      # :flag.case
+      --blueprint | -b)
 
-			# :flag.case_arg
-			if [[ -n ${2+x} ]]; then
-				args['--template']="$2"
-				shift
-				shift
-			else
-				printf "%s\n" "--template requires an argument: --template, -t TEMPLATE" >&2
-				exit 1
-			fi
-			;;
+        # :flag.case_arg
+        if [[ -n ${2+x} ]]; then
+          args['--blueprint']="$2"
+          shift
+          shift
+        else
+          printf "%s\n" "--blueprint requires an argument: --blueprint, -b BLUEPRINT" >&2
+          exit 1
+        fi
+        ;;
 
-		# :flag.case
-		--vm | -v)
+      # :flag.case
+      --vm | -v)
 
-			# :flag.case_arg
-			if [[ -n ${2+x} ]]; then
-				args['--vm']="$2"
-				shift
-				shift
-			else
-				printf "%s\n" "--vm requires an argument: --vm, -v SIZE" >&2
-				exit 1
-			fi
-			;;
+        # :flag.case_arg
+        if [[ -n ${2+x} ]]; then
+          args['--vm']="$2"
+          shift
+          shift
+        else
+          printf "%s\n" "--vm requires an argument: --vm, -v SIZE" >&2
+          exit 1
+        fi
+        ;;
 
-		# :flag.case
-		--workspace | -w)
-			# :flag.conflicts
-			if [[ -n "${args['--vm']:-}" ]]; then
-				printf "conflicting options: %s cannot be used with %s\n" "$key" "--vm" >&2
-				exit 1
-			fi
+      # :flag.case
+      --workspace | -w)
+        # :flag.conflicts
+        if [[ -n "${args['--vm']:-}" ]]; then
+          printf "conflicting options: %s cannot be used with %s\n" "$key" "--vm" >&2
+          exit 1
+        fi
 
-			# :flag.case_arg
-			if [[ -n ${2+x} ]]; then
-				args['--workspace']="$2"
-				shift
-				shift
-			else
-				printf "%s\n" "--workspace requires an argument: --workspace, -w DIRECTORY" >&2
-				exit 1
-			fi
-			;;
+        # :flag.case_arg
+        if [[ -n ${2+x} ]]; then
+          args['--workspace']="$2"
+          shift
+          shift
+        else
+          printf "%s\n" "--workspace requires an argument: --workspace, -w DIRECTORY" >&2
+          exit 1
+        fi
+        ;;
 
-		-?*)
-			printf "invalid option: %s\n" "$key" >&2
-			exit 1
-			;;
+      -?*)
+        printf "invalid option: %s\n" "$key" >&2
+        exit 1
+        ;;
 
-		*)
-			# :command.parse_requirements_case
-			# :command.parse_requirements_case_simple
-			# :argument.case
-			if [[ -z ${args['name']+x} ]]; then
-				args['name']=$1
-				shift
-			else
-				printf "invalid argument: %s\n" "$key" >&2
-				exit 1
-			fi
+      *)
+        # :command.parse_requirements_case
+        # :command.parse_requirements_case_simple
+        # :argument.case
+        if [[ -z ${args['name']+x} ]]; then
+          args['name']=$1
+          shift
+        else
+          printf "invalid argument: %s\n" "$key" >&2
+          exit 1
+        fi
 
-			;;
+        ;;
 
-		esac
-	done
+    esac
+  done
 
-	# :command.required_args_filter
-	if [[ -z ${args['name']+x} ]]; then
-		printf "missing required argument: NAME\nusage: blincus launch NAME [OPTIONS]\n" >&2
-		exit 1
-	fi
+  # :command.required_args_filter
+  if [[ -z ${args['name']+x} ]]; then
+    printf "missing required argument: NAME\nusage: blincus launch NAME [OPTIONS]\n" >&2
+    exit 1
+  fi
 
-	# :command.required_flags_filter
-	if [[ -z ${args['--template']+x} ]]; then
-		printf "missing required flag: --template, -t TEMPLATE\n" >&2
-		exit 1
-	fi
+  # :command.required_flags_filter
+  if [[ -z ${args['--blueprint']+x} ]]; then
+    printf "missing required flag: --blueprint, -b BLUEPRINT\n" >&2
+    exit 1
+  fi
 
-	# :command.whitelist_filter
-	if [[ ${args['--vm']:-} ]] && [[ ! ${args['--vm']:-} =~ ^(nano|micro|small|medium|large|xlarge|2xlarge)$ ]]; then
-		printf "%s\n" "--vm must be one of: nano, micro, small, medium, large, xlarge, 2xlarge" >&2
-		exit 1
-	fi
+  # :command.whitelist_filter
+  if [[ ${args['--vm']:-} ]] && [[ ! ${args['--vm']:-} =~ ^(nano|micro|small|medium|large|xlarge|2xlarge)$ ]]; then
+    printf "%s\n" "--vm must be one of: nano, micro, small, medium, large, xlarge, 2xlarge" >&2
+    exit 1
+  fi
 
 }
 
 # :command.parse_requirements
 blincus_shell_parse_requirements() {
-	# :command.fixed_flags_filter
-	while [[ $# -gt 0 ]]; do
-		case "${1:-}" in
-		--help | -h)
-			long_usage=yes
-			blincus_shell_usage
-			exit
-			;;
+  # :command.fixed_flags_filter
+  while [[ $# -gt 0 ]]; do
+    case "${1:-}" in
+      --help | -h)
+        long_usage=yes
+        blincus_shell_usage
+        exit
+        ;;
 
-		*)
-			break
-			;;
+      *)
+        break
+        ;;
 
-		esac
-	done
+    esac
+  done
 
-	# :command.command_filter
-	action="shell"
+  # :command.command_filter
+  action="shell"
 
-	# :command.parse_requirements_while
-	while [[ $# -gt 0 ]]; do
-		key="$1"
-		case "$key" in
-		# :flag.case
-		--root | -r)
+  # :command.parse_requirements_while
+  while [[ $# -gt 0 ]]; do
+    key="$1"
+    case "$key" in
+      # :flag.case
+      --root | -r)
 
-			# :flag.case_no_arg
-			args['--root']=1
-			shift
-			;;
+        # :flag.case_no_arg
+        args['--root']=1
+        shift
+        ;;
 
-		# :flag.case
-		--no-login | -n)
+      # :flag.case
+      --no-login | -n)
 
-			# :flag.case_no_arg
-			args['--no-login']=1
-			shift
-			;;
+        # :flag.case_no_arg
+        args['--no-login']=1
+        shift
+        ;;
 
-		-?*)
-			printf "invalid option: %s\n" "$key" >&2
-			exit 1
-			;;
+      -?*)
+        printf "invalid option: %s\n" "$key" >&2
+        exit 1
+        ;;
 
-		*)
-			# :command.parse_requirements_case
-			# :command.parse_requirements_case_simple
-			# :argument.case
-			if [[ -z ${args['name']+x} ]]; then
-				args['name']=$1
-				shift
-			else
-				printf "invalid argument: %s\n" "$key" >&2
-				exit 1
-			fi
+      *)
+        # :command.parse_requirements_case
+        # :command.parse_requirements_case_simple
+        # :argument.case
+        if [[ -z ${args['name']+x} ]]; then
+          args['name']=$1
+          shift
+        else
+          printf "invalid argument: %s\n" "$key" >&2
+          exit 1
+        fi
 
-			;;
+        ;;
 
-		esac
-	done
+    esac
+  done
 
-	# :command.required_args_filter
-	if [[ -z ${args['name']+x} ]]; then
-		printf "missing required argument: NAME\nusage: blincus shell NAME [OPTIONS]\n" >&2
-		exit 1
-	fi
-
-}
-
-# :command.parse_requirements
-blincus_template_parse_requirements() {
-	# :command.fixed_flags_filter
-	while [[ $# -gt 0 ]]; do
-		case "${1:-}" in
-		--help | -h)
-			long_usage=yes
-			blincus_template_usage
-			exit
-			;;
-
-		*)
-			break
-			;;
-
-		esac
-	done
-
-	# :command.command_filter
-	action=${1:-}
-
-	case $action in
-	-*) ;;
-
-	list | l)
-		action="list"
-		shift
-		blincus_template_list_parse_requirements "$@"
-		shift $#
-		;;
-
-	restore | r)
-		action="restore"
-		shift
-		blincus_template_restore_parse_requirements "$@"
-		shift $#
-		;;
-
-	# :command.command_fallback
-	"")
-		blincus_template_usage >&2
-		exit 1
-		;;
-
-	*)
-		printf "invalid command: %s\n" "$action" >&2
-		exit 1
-		;;
-
-	esac
-
-	# :command.parse_requirements_while
-	while [[ $# -gt 0 ]]; do
-		key="$1"
-		case "$key" in
-
-		-?*)
-			printf "invalid option: %s\n" "$key" >&2
-			exit 1
-			;;
-
-		*)
-			# :command.parse_requirements_case
-			# :command.parse_requirements_case_simple
-			printf "invalid argument: %s\n" "$key" >&2
-			exit 1
-
-			;;
-
-		esac
-	done
+  # :command.required_args_filter
+  if [[ -z ${args['name']+x} ]]; then
+    printf "missing required argument: NAME\nusage: blincus shell NAME [OPTIONS]\n" >&2
+    exit 1
+  fi
 
 }
 
 # :command.parse_requirements
-blincus_template_list_parse_requirements() {
-	# :command.fixed_flags_filter
-	while [[ $# -gt 0 ]]; do
-		case "${1:-}" in
-		--help | -h)
-			long_usage=yes
-			blincus_template_list_usage
-			exit
-			;;
+blincus_blueprint_parse_requirements() {
+  # :command.fixed_flags_filter
+  while [[ $# -gt 0 ]]; do
+    case "${1:-}" in
+      --help | -h)
+        long_usage=yes
+        blincus_blueprint_usage
+        exit
+        ;;
 
-		*)
-			break
-			;;
+      *)
+        break
+        ;;
 
-		esac
-	done
+    esac
+  done
 
-	# :command.command_filter
-	action="template list"
+  # :command.command_filter
+  action=${1:-}
 
-	# :command.parse_requirements_while
-	while [[ $# -gt 0 ]]; do
-		key="$1"
-		case "$key" in
-		# :flag.case
-		--completions | -c)
+  case $action in
+    -*) ;;
 
-			# :flag.case_no_arg
-			args['--completions']=1
-			shift
-			;;
+    list | l)
+      action="list"
+      shift
+      blincus_blueprint_list_parse_requirements "$@"
+      shift $#
+      ;;
 
-		-?*)
-			printf "invalid option: %s\n" "$key" >&2
-			exit 1
-			;;
+    # :command.command_fallback
+    "")
+      blincus_blueprint_usage >&2
+      exit 1
+      ;;
 
-		*)
-			# :command.parse_requirements_case
-			# :command.parse_requirements_case_simple
-			printf "invalid argument: %s\n" "$key" >&2
-			exit 1
+    *)
+      printf "invalid command: %s\n" "$action" >&2
+      exit 1
+      ;;
 
-			;;
+  esac
 
-		esac
-	done
+  # :command.parse_requirements_while
+  while [[ $# -gt 0 ]]; do
+    key="$1"
+    case "$key" in
 
-}
+      -?*)
+        printf "invalid option: %s\n" "$key" >&2
+        exit 1
+        ;;
 
-# :command.parse_requirements
-blincus_template_restore_parse_requirements() {
-	# :command.fixed_flags_filter
-	while [[ $# -gt 0 ]]; do
-		case "${1:-}" in
-		--help | -h)
-			long_usage=yes
-			blincus_template_restore_usage
-			exit
-			;;
+      *)
+        # :command.parse_requirements_case
+        # :command.parse_requirements_case_simple
+        printf "invalid argument: %s\n" "$key" >&2
+        exit 1
 
-		*)
-			break
-			;;
+        ;;
 
-		esac
-	done
-
-	# :command.command_filter
-	action="template restore"
-
-	# :command.parse_requirements_while
-	while [[ $# -gt 0 ]]; do
-		key="$1"
-		case "$key" in
-
-		-?*)
-			printf "invalid option: %s\n" "$key" >&2
-			exit 1
-			;;
-
-		*)
-			# :command.parse_requirements_case
-			# :command.parse_requirements_case_simple
-			printf "invalid argument: %s\n" "$key" >&2
-			exit 1
-
-			;;
-
-		esac
-	done
+    esac
+  done
 
 }
 
 # :command.parse_requirements
-blincus_personalize_parse_requirements() {
-	# :command.fixed_flags_filter
-	while [[ $# -gt 0 ]]; do
-		case "${1:-}" in
-		--help | -h)
-			long_usage=yes
-			blincus_personalize_usage
-			exit
-			;;
+blincus_blueprint_list_parse_requirements() {
+  # :command.fixed_flags_filter
+  while [[ $# -gt 0 ]]; do
+    case "${1:-}" in
+      --help | -h)
+        long_usage=yes
+        blincus_blueprint_list_usage
+        exit
+        ;;
 
-		*)
-			break
-			;;
+      *)
+        break
+        ;;
 
-		esac
-	done
+    esac
+  done
 
-	# :command.command_filter
-	action="personalize"
+  # :command.command_filter
+  action="blueprint list"
 
-	# :command.parse_requirements_while
-	while [[ $# -gt 0 ]]; do
-		key="$1"
-		case "$key" in
+  # :command.parse_requirements_while
+  while [[ $# -gt 0 ]]; do
+    key="$1"
+    case "$key" in
+      # :flag.case
+      --completions | -c)
 
-		-?*)
-			printf "invalid option: %s\n" "$key" >&2
-			exit 1
-			;;
+        # :flag.case_no_arg
+        args['--completions']=1
+        shift
+        ;;
 
-		*)
-			# :command.parse_requirements_case
-			# :command.parse_requirements_case_simple
-			printf "invalid argument: %s\n" "$key" >&2
-			exit 1
+      -?*)
+        printf "invalid option: %s\n" "$key" >&2
+        exit 1
+        ;;
 
-			;;
+      *)
+        # :command.parse_requirements_case
+        # :command.parse_requirements_case_simple
+        printf "invalid argument: %s\n" "$key" >&2
+        exit 1
 
-		esac
-	done
+        ;;
+
+    esac
+  done
 
 }
 
 # :command.initialize
 initialize() {
-	version="0.4.0"
-	long_usage=''
-	set -e
+  version="0.4.0"
+  long_usage=''
+  set -e
 
-	# :command.environment_variables_default
-	export CONFIG_FILE="${CONFIG_FILE:-$HOME/.config/blincus/config.ini}"
+  # :command.environment_variables_default
+  export CONFIG_FILE="${CONFIG_FILE:-$HOME/.config/blincus/config.ini}"
 
-	# src/initialize.sh
-	cfgdir=$(dirname "${CONFIG_FILE}")
-	[[ -d "$cfgdir" ]] || mkdir -p "$cfgdir"
-	if ! test -f "${CONFIG_FILE:-}"; then
-		echo "$(yellow_bold Config file does not exist. Creating it with defaults.)"
-		echo "$(yellow_bold Disabling XAuth controls.)"
-		write_defaults
-		echo "--> Config file created at ${CONFIG_FILE}."
-	fi
+  # src/initialize.sh
+  cfgdir=$(dirname "${CONFIG_FILE}")
+  [[ -d "$cfgdir" ]] || mkdir -p "$cfgdir"
+  if ! test -f "${CONFIG_FILE:-}"; then
+  	echo "$(yellow_bold Config file does not exist. Creating it with defaults.)"
+  	write_defaults
+  	echo "--> Config file created at ${CONFIG_FILE}."
+  fi
 
-	if [ "$BLINCUS_SKIP_SANITY" != 1 ]; then
-		sanity
-	fi
+  if [ "$BLINCUS_SKIP_SANITY" != 1 ]; then
+  	sanity
+  fi
 
-	#personalize
-	profiles
+  profiles
 
 }
 
 # :command.run
 run() {
-	declare -A args=()
-	declare -A deps=()
-	declare -a other_args=()
-	declare -a env_var_names=()
-	declare -a input=()
-	normalize_input "$@"
-	parse_requirements "${input[@]}"
+  declare -A args=()
+  declare -A deps=()
+  declare -a other_args=()
+  declare -a env_var_names=()
+  declare -a input=()
+  normalize_input "$@"
+  parse_requirements "${input[@]}"
 
-	case "$action" in
-	"config") blincus_config_command ;;
-	"config list") blincus_config_list_command ;;
-	"launch") blincus_launch_command ;;
-	"shell") blincus_shell_command ;;
-	"template") blincus_template_command ;;
-	"template list") blincus_template_list_command ;;
-	"template restore") blincus_template_restore_command ;;
-	"personalize") blincus_personalize_command ;;
-	esac
+  case "$action" in
+    "config") blincus_config_command ;;
+    "config list") blincus_config_list_command ;;
+    "setup") blincus_setup_command ;;
+    "setup doctor") blincus_setup_doctor_command ;;
+    "launch") blincus_launch_command ;;
+    "shell") blincus_shell_command ;;
+    "blueprint") blincus_blueprint_command ;;
+    "blueprint list") blincus_blueprint_list_command ;;
+  esac
 }
 
 initialize

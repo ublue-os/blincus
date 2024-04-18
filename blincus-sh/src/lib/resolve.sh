@@ -73,3 +73,42 @@ cloud() {
 	fi
 	echo "${cloudinit}"
 }
+
+get_profile() {
+	local image=$1
+	local isx11=0
+	local iswayland=0
+	local xsocket="0"
+	local waylandsocket="0"
+	local prefix=""
+	local base="shifting"
+	local profile=""
+
+	# alpine is special
+	if [[ $image =~ "alpine" ]]; then
+		prefix="alpine"
+	fi
+	if [[ -v WAYLAND_DISPLAY ]]; then
+		iswayland=1
+		if [[ $WAYLAND_DISPLAY =~ "1" ]]; then
+			waylandsocket="1"
+		fi
+	else
+		isx11=1
+		if [[ $DISPLAY =~ "1" ]]; then
+			xsocket="1"
+		fi
+	fi
+
+	# check for wayland, use it if it is there
+	if [[ iswayland -eq 1 ]]; then
+		base+="wayland"
+		base+="${waylandsocket}"
+	else
+		base+="x"
+		base+="${xsocket}"
+	fi
+
+	echo "${prefix}${base}"
+
+}

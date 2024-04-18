@@ -33,6 +33,3 @@ Add blincus to your `flake.nix`:
 
 ```
 
-## Reminders / Notes
-- [ ] todo add check for genisoimage/mkisofs
-sudo ln -s /usr/bin/genisoimage mkisofs

@@ -58,10 +58,6 @@ if [ -z "${prefix}" ]; then
 	fi
 fi
 dest_path="${prefix}/bin"
-template_dest_path="${prefix}/share/blincus/templates"
-template_config_dest_path="${HOME}/.config/blincus/templates"
-init_dest_path="${prefix}/share/blincus/cloud-init"
-init_config_dest_path="${HOME}/.config/blincus/cloud-init"
 profile_dest_path="${prefix}/share/blincus/profiles"
 profile_config_dest_path="${HOME}/.config/blincus/profiles"
 script_dest_path="${prefix}/share/blincus"
@@ -115,24 +111,6 @@ if [ -e "${curr_dir}/blincus" ]; then
 			mkdir -p "${script_config_dest_path}"
 			cp -R scripts "${script_config_dest_path}"
 		fi
-	fi
-
-	if [ -e "cloud-init" ]; then
-		mkdir -p "${init_dest_path}"
-		for file in cloud-init/*; do
-			install -D -m 0644 -t "${init_dest_path}" "${file}"
-		done
-		if [ -d $init_config_dest_path ]; then
-			printf >&2 "\033[0m Refusing to overwrite user cloud-init files at \033[1;31m%s\n\033[0m" "${init_config_dest_path}"
-			printf >&2 "\033[0m\033[1;31m   Updated cloud-init files available at %s\n\033[0m" "${init_dest_path}"
-
-		else
-			mkdir -p "${init_config_dest_path}"
-			for file in cloud-init/*; do
-				install -D -m 0644 -t "${init_config_dest_path}" "${file}"
-			done
-		fi
-
 	fi
 
 	if [ -e "profiles" ]; then
@@ -232,24 +210,6 @@ else
 			mkdir -p "${profile_config_dest_path}"
 			for file in "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')"/profiles/*; do
 				install -D -m 0644 -t "${profile_config_dest_path}" "${file}"
-			done
-		fi
-
-	fi
-	if [ -e "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')/cloud-init/" ]; then
-		mkdir -p "${init_dest_path}"
-		for file in "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')"/cloud-init/*; do
-			install -D -m 0644 -t "${init_dest_path}" "${file}"
-		done
-
-		if [ -d $init_config_dest_path ]; then
-			printf >&2 "\033[0m Refusing to overwrite cloud-init files at \033[1;31m%s\n\033[0m" "${init_config_dest_path}"
-			printf >&2 "\033[0m\033[1;31m   Updated cloud-init files available at %s\n\033[0m" "${init_dest_path}"
-
-		else
-			mkdir -p "${init_config_dest_path}"
-			for file in "blincus-$(echo "${release_name}" | sed 's/.tar.gz//g')"/cloud-init/*; do
-				install -D -m 0644 -t "${init_config_dest_path}" "${file}"
 			done
 		fi
 

@@ -1,9 +1,9 @@
 nomount=${args[--no - mount]}
 cfgdir=$(dirname "${CONFIG_FILE}")
 name=${args[name]}
-template=${args[--template]}
-vm=${args[--vm]}
-vmflag=""
+blueprint=${args[--blueprint]}
+# vm=${args[--vm]}
+# vmflag=""
 sizeflag=""
 workspace=${args[--workspace]}
 resolvedworkspace=""
@@ -13,19 +13,21 @@ if [[ ! -z "${workspace}" ]]; then
 fi
 
 # set vm flag and size if specified
-if [[ ! -z "${vm}" ]]; then
-	vmflag="--vm"
-	sizeflag="--type t3.${vm}"
-fi
+# if [[ ! -z "${vm}" ]]; then
+# 	vmflag="--vm"
+# 	sizeflag="--type t3.${vm}"
+# fi
 
-profilelist=$(config_get "$template".profiles)
-if [ -z "$profilelist" ]; then
-	if [[ ! -z "${vm}" ]]; then
-		profilelist=$(config_get default_vm_profiles)
-	else
-		profilelist=$(config_get default_container_profiles)
-	fi
-fi
+# profilelist=$(config_get "$blueprint".profiles)
+# if [ -z "$profilelist" ]; then
+# 	if [[ ! -z "${vm}" ]]; then
+# 		profilelist=$(config_get default_vm_profiles)
+# 	else
+# 		profilelist=$(config_get default_container_profiles)
+# 	fi
+# fi
+
+profilelist=$(get_profile)
 
 # todo: extract this out if I can return an array properly
 OLD_IFS=$IFS
@@ -34,13 +36,13 @@ read line <<<$profilelist
 profiles=($line)
 IFS=${OLD_IFS}
 
-image=$(image $template $vmflag)
-scripts=$(scripts $template $vmflag)
-cloudinit=$(cloud $template $vmflag)
-mounts=$(home_mounts $template $vmflag)
+image=$(image $blueprint$vmflag)
+scripts=$(scripts $blueprint$vmflag)
+cloudinit=$(cloud $blueprint$vmflag)
+mounts=$(home_mounts $blueprint$vmflag)
 
-echo "Using $(blue ${template}) template"
-incus init --quiet $vmflag $sizeflag "${image}" "${args[name]}"
+echo "Using $(blue ${blueprint}) blueprint"
+incus init --quiet "${image}" "${args[name]}"
 
 for each in "${profiles[@]}"; do
 	exists=$(blincus_profile_exists "${each##*( )}")
@@ -50,7 +52,7 @@ for each in "${profiles[@]}"; do
 	fi
 done
 
-# Add profiles specified by template
+# Add profiles specified by blueprint
 for each in "${profiles[@]}"; do
 	incus profile --quiet add "${args[name]}" "${each##*( )}"
 done
@@ -58,60 +60,60 @@ done
 # add cloud-init profile
 # TODO : skip if "none"
 
-if [ ! "$cloudinit" = "none" ]; then
-	echo "Using $(blue $cloudinit) cloud-init profile"
+# if [ ! "$cloudinit" = "none" ]; then
+# 	echo "Using $(blue $cloudinit) cloud-init profile"
 
-	# ensure profile exists. do this all at once earlier? -- before init to save pain
-	exists=$(blincus_profile_exists $cloudinit)
-	if [[ $exists -eq 0 ]]; then
-		echo "$(red_bold Profile "${cloudinit}" is missing!)"
-		exit 1
-	fi
+# 	# ensure profile exists. do this all at once earlier? -- before init to save pain
+# 	exists=$(blincus_profile_exists $cloudinit)
+# 	if [[ $exists -eq 0 ]]; then
+# 		echo "$(red_bold Profile "${cloudinit}" is missing!)"
+# 		exit 1
+# 	fi
 
-	incus profile --quiet add "${args[name]}" "${cloudinit}"
-fi
+# 	incus profile --quiet add "${args[name]}" "${cloudinit}"
+# fi
 
-if [[ "${vm}" ]]; then
-	incus config --quiet device add "${args[name]}" cloud disk source=cloud-init:config
-fi
+# if [[ "${vm}" ]]; then
+# 	incus config --quiet device add "${args[name]}" cloud disk source=cloud-init:config
+# fi
 
 echo "$(yellow_bold Starting instance $name)"
 ## MOTD
 TMPFILE=$(mktemp)
 echo " * Blincus instance: $(red $name)" >$TMPFILE
-echo " * Template: $(red $template)" >>$TMPFILE
+echo " * Template: $(red $blueprint)" >>$TMPFILE
 echo " * Image: $(red $image)" >>$TMPFILE
 echo " * Host Mounts: $(red Host) <-> $(blue Instance)" >>$TMPFILE
 
-# TODO - don't mount if scriptdir doesn't exist
-scripts=$(config_get "$template".scripts)
-if [ -z "$scripts" ]; then
-	scripts=$(config_get default_scripts)
-fi
+# # TODO - don't mount if scriptdir doesn't exist
+# scripts=$(config_get "$blueprint".scripts)
+# if [ -z "$scripts" ]; then
+# 	scripts=$(config_get default_scripts)
+# fi
 
-scriptdir="${cfgdir}/scripts/${scripts}"
-# mount scripts
-if [ -d "$scriptdir" ]; then
-	echo "$(yellow Mounting scripts from $HOME/.blincus/scripts)"
-	#incus file push -r -p "${scriptdir}"/* "$name"/opt/scripts
-	incus config --quiet device add "${name}" scriptdir disk source="${scriptdir}" path=/opt/scripts
-	echo "   - $(red ${scriptdir}) <-> $(blue /opt/scripts)" >>$TMPFILE
+# scriptdir="${cfgdir}/scripts/${scripts}"
+# # mount scripts
+# if [ -d "$scriptdir" ]; then
+# 	echo "$(yellow Mounting scripts from $HOME/.blincus/scripts)"
+# 	#incus file push -r -p "${scriptdir}"/* "$name"/opt/scripts
+# 	incus config --quiet device add "${name}" scriptdir disk source="${scriptdir}" path=/opt/scripts
+# 	echo "   - $(red ${scriptdir}) <-> $(blue /opt/scripts)" >>$TMPFILE
 
-fi
+# fi
 
 # now start it
 incus start --quiet "${args[name]}"
 
-if [[ "${vm}" ]]; then
-	echo "$(yellow Waiting for instance start...)"
-	sleeptime=$(config_get "vm_sleep" 30)
-	sleep $sleeptime
-fi
+# if [[ "${vm}" ]]; then
+# 	echo "$(yellow Waiting for instance start...)"
+# 	sleeptime=$(config_get "vm_sleep" 30)
+# 	sleep $sleeptime
+# fi
 echo "$(yellow Waiting for cloud init...)"
 
 # wait for cloud-init to create the user
 # otherwise the home mount will prevent /etc/skel from being applied
-incus exec "${args[name]}" -- bash -c "command -v cloud-init && cloud-init status --wait || echo No cloud-init"
+incus exec "${args[name]}" -- command -v cloud-init && cloud-init status --wait
 
 MOTDPROFILE=$(mktemp)
 echo "cat /etc/blincus" >$MOTDPROFILE

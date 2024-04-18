@@ -10,8 +10,8 @@
 ##
 ## Show all the key=value pairs from your config file
 config_show() {
-	config_load
-	ini_show
+  config_load
+  ini_show
 }
 
 ## Get a single value from the config file:
@@ -27,11 +27,11 @@ config_show() {
 ##   theme="$(config_get interface.theme)"
 ##
 config_get() {
-	local key="${1-}"
-	local default_value="${2-}"
+  local key="${1-}"
+  local default_value="${2-}"
 
-	config_load
-	echo "${ini["$key"]:-$default_value}"
+  config_load
+  echo "${ini["$key"]:-$default_value}"
 }
 
 ## Create/update a key=value pair:
@@ -39,13 +39,13 @@ config_get() {
 ##   config_set cloud.provider aws
 ##
 config_set() {
-	local key="${1-}"
-	shift
-	local value="$*"
+  local key="${1-}"
+  shift
+  local value="$*"
 
-	config_load
-	ini["$key"]="$value"
-	config_save
+  config_load
+  ini["$key"]="$value"
+  config_save
 }
 
 ## Delete a key=value pair:
@@ -53,11 +53,11 @@ config_set() {
 ##   config_del login.email
 ##
 config_del() {
-	local key="${1-}"
+  local key="${1-}"
 
-	config_load
-	unset "ini[$key]"
-	config_save
+  config_load
+  unset "ini[$key]"
+  config_save
 }
 
 ## Get an array of all keys:
@@ -67,8 +67,8 @@ config_del() {
 ##   done
 ##
 config_keys() {
-	config_load
-	ini_keys
+  config_load
+  ini_keys
 }
 
 ## Check if a key exists:
@@ -78,30 +78,30 @@ config_keys() {
 ##   fi
 ##
 config_has_key() {
-	[[ $(config_get "$1") ]]
+  [[ $(config_get "$1") ]]
 }
 
 ## Force-load from file
 ## This should normally not be called, unless you suspect that the INI file
 ## was modified by external means during the run of your script.
 config_reload() {
-	declare -g config_loaded=false
-	config_load
+  declare -g config_loaded=false
+  config_load
 }
 
 ## Load an INI file (unless loaded) and populate the associative array
 ## NOTE: Normally there is no need to call this function, it is called as needed
 config_load() {
-	[[ "${config_loaded-}" == "true" ]] && return
+  [[ "${config_loaded-}" == "true" ]] && return
 
-	declare -g CONFIG_FILE=${CONFIG_FILE:=config.ini}
-	declare -g config_loaded=true
-	[[ -f "$CONFIG_FILE" ]] || touch "$CONFIG_FILE"
-	ini_load "$CONFIG_FILE"
+  declare -g CONFIG_FILE=${CONFIG_FILE:=config.ini}
+  declare -g config_loaded=true
+  [[ -f "$CONFIG_FILE" ]] || touch "$CONFIG_FILE"
+  ini_load "$CONFIG_FILE"
 }
 
 ## Save the associative array back to a file
 ## NOTE: Normally there is no need to call this function, it is called as needed
 config_save() {
-	ini_save "$CONFIG_FILE"
+  ini_save "$CONFIG_FILE"
 }

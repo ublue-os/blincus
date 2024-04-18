@@ -1,5 +1,5 @@
 name: blincus
-help: |
+help: |-
   Manage development containers with Incus
   
   Wraps the `incus` command, so commands not implemented 
@@ -19,7 +19,7 @@ environment_variables:
 
 commands:
 - import: src/config.yml
+- import: src/setup.yml
 - import: src/launch.yml
 - import: src/shell.yml
-- import: src/template.yml
-- import: src/personalize.yml
+- import: src/blueprint.yml

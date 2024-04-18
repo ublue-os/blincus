@@ -1,0 +1,9 @@
+name: setup
+help: Configure host for Blincus and Incus
+footer: |
+  View documentation online at https://blincus.dev
+
+commands:
+- name: doctor
+  alias: d
+  help: Check current setup for problems

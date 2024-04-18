@@ -8,8 +8,7 @@ description: |
 # blincus launch
 
 Launch a new instance  
-Use `blincus template list` to see a list of available templates.  
-
+Use `blincus blueprint list` to see a list of available blueprints.
 
 | Attributes       | &nbsp;
 |------------------|-------------
@@ -24,23 +23,23 @@ blincus launch NAME [OPTIONS]
 ## Examples
 
 ```bash
-blincus launch -t ubuntu mydevctr
+blincus launch -b ubuntu mydevctr
 ```
 
 ```bash
-blincus launch -t ubuntux mydevctr
+blincus launch -b ubuntux mydevctr
 ```
 
 ```bash
-blincus launch -t fedora mydevmachine
+blincus launch -b fedora mydevmachine
 ```
 
 ```bash
-blincus launch -t ubuntu -w /var/home/me/projects/blincus blincusdev
+blincus launch -b ubuntu -w /var/home/me/projects/blincus blincusdev
 ```
 
 ```bash
-blincus launch --vm large -t ubuntu myfatvm
+blincus launch --vm large -b ubuntu myfatvm
 ```
 
 ## Arguments
@@ -55,10 +54,10 @@ Instance name
 
 ## Options
 
-#### *--template, -t TEMPLATE*
+#### *--blueprint, -b BLUEPRINT*
 
-Blincus template name   
-Use `blincus template list` to see available templates,  
+Blincus blueprint name   
+Use `blincus blueprint list` to see available blueprints,  
 or view ~/.config/blincus/config.ini  
 
 
