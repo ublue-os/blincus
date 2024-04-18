@@ -1034,8 +1034,8 @@ blincus_launch_command() {
   cfgdir=$(dirname "${CONFIG_FILE}")
   name=${args[name]}
   blueprint=${args[--blueprint]}
-  vm=${args[--vm]}
-  vmflag=""
+  # vm=${args[--vm]}
+  # vmflag=""
   sizeflag=""
   workspace=${args[--workspace]}
   resolvedworkspace=""
@@ -1045,10 +1045,10 @@ blincus_launch_command() {
   fi
 
   # set vm flag and size if specified
-  if [[ ! -z "${vm}" ]]; then
-  	vmflag="--vm"
-  	sizeflag="--type t3.${vm}"
-  fi
+  # if [[ ! -z "${vm}" ]]; then
+  # 	vmflag="--vm"
+  # 	sizeflag="--type t3.${vm}"
+  # fi
 
   # profilelist=$(config_get "$blueprint".profiles)
   # if [ -z "$profilelist" ]; then
@@ -1074,7 +1074,7 @@ blincus_launch_command() {
   mounts=$(home_mounts $blueprint$vmflag)
 
   echo "Using $(blue ${blueprint}) blueprint"
-  incus init --quiet $vmflag $sizeflag "${image}" "${args[name]}"
+  incus init --quiet "${image}" "${args[name]}"
 
   for each in "${profiles[@]}"; do
   	exists=$(blincus_profile_exists "${each##*( )}")
@@ -1105,9 +1105,9 @@ blincus_launch_command() {
   # 	incus profile --quiet add "${args[name]}" "${cloudinit}"
   # fi
 
-  if [[ "${vm}" ]]; then
-  	incus config --quiet device add "${args[name]}" cloud disk source=cloud-init:config
-  fi
+  # if [[ "${vm}" ]]; then
+  # 	incus config --quiet device add "${args[name]}" cloud disk source=cloud-init:config
+  # fi
 
   echo "$(yellow_bold Starting instance $name)"
   TMPFILE=$(mktemp)
@@ -1135,16 +1135,16 @@ blincus_launch_command() {
   # now start it
   incus start --quiet "${args[name]}"
 
-  if [[ "${vm}" ]]; then
-  	echo "$(yellow Waiting for instance start...)"
-  	sleeptime=$(config_get "vm_sleep" 30)
-  	sleep $sleeptime
-  fi
+  # if [[ "${vm}" ]]; then
+  # 	echo "$(yellow Waiting for instance start...)"
+  # 	sleeptime=$(config_get "vm_sleep" 30)
+  # 	sleep $sleeptime
+  # fi
   echo "$(yellow Waiting for cloud init...)"
 
   # wait for cloud-init to create the user
   # otherwise the home mount will prevent /etc/skel from being applied
-  incus exec "${args[name]}" -- bash -c "command -v cloud-init && cloud-init status --wait || echo No cloud-init"
+  incus exec "${args[name]}" -- command -v cloud-init && cloud-init status --wait
 
   MOTDPROFILE=$(mktemp)
   echo "cat /etc/blincus" >$MOTDPROFILE

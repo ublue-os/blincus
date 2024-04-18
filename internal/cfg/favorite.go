@@ -11,10 +11,10 @@ import (
 	"gopkg.in/ini.v1"
 )
 
-const appName = "BlincusUI" //TODO blincus
+const appName = "blincus" //TODO blincus
 
 // const configName = "favorites.json"
-const configIniName = "favorites.ini" //TODO config.ini
+const configIniName = "config.ini" //TODO config.ini
 
 var lock sync.Mutex
 

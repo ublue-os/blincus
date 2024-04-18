@@ -1,7 +1,7 @@
 name: blincus
 help: |-
   Manage development containers with Incus
-  
+
   Wraps the `incus` command, so commands not implemented 
   in blincus will pass through to `incus`.
 version: 0.4.0
@@ -13,13 +13,13 @@ dependencies:
     command: [incus]
     help: incus is required to use blincus.
 environment_variables:
-- name: config_file
-  help: Location of blincus config.ini
-  default: $HOME/.config/blincus/config.ini
+  - name: config_file
+    help: Location of blincus config.ini
+    default: $HOME/.config/blincus/config.ini
 
 commands:
-- import: src/config.yml
-- import: src/setup.yml
-- import: src/launch.yml
-- import: src/shell.yml
-- import: src/blueprint.yml
+  - import: src/config.yml
+  - import: src/setup.yml
+  - import: src/launch.yml
+  - import: src/shell.yml
+  - import: src/blueprint.yml
