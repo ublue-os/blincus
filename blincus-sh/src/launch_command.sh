@@ -161,5 +161,8 @@ if [[ ! -z "${DISPLAY}" ]]; then
 	echo "$(yellow Allowing X sharing:)"
 	xhost +
 fi
+# now restart it
+incus restart --quiet "${args[name]}"
+
 echo "$(green_bold Instance $name ready)"
 echo "Run $(magenta_bold blincus shell $name) to enter"

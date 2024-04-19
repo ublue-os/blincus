@@ -117,6 +117,19 @@ func (s *State) WatchIncus() {
 			s.UpdateInstances(updatedInstances)
 
 		}
+		if ev.Action == "instance-restarted" {
+			slog.Info("updating instance", slog.String("action", "restart"), slog.String("name", ev.Name))
+			updatedInstances := slices.DeleteFunc(s.Instances.Value(), func(i api.InstanceFull) bool {
+				return i.Name == ev.Name
+			})
+			i, _, err := s.client.Instance(context.Background(), ev.Name)
+			if err != nil {
+				log.Println("json error", err.Error())
+			}
+			updatedInstances = append(updatedInstances, *i)
+			s.UpdateInstances(updatedInstances)
+
+		}
 		if ev.Action == "instance-stopped" {
 			slog.Info("updating instance", slog.String("action", "stop"), slog.String("name", ev.Name))
 			updatedInstances := slices.DeleteFunc(s.Instances.Value(), func(i api.InstanceFull) bool {
