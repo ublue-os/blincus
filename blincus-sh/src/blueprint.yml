@@ -1,0 +1,19 @@
+name: blueprint
+help: |-
+  Manage Blincus blueprints
+
+  Blueprints are pre-configured favorites that you can use quickly
+footer: |
+  View documentation online at https://blincus.dev
+
+commands:
+- name: list
+  alias: l
+  help: List all blueprints
+
+  flags:
+  - long: --completions
+    short: -c
+    help: output as list for completions
+
+

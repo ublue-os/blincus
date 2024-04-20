@@ -1,0 +1,19 @@
+{
+    "files.watcherExclude": {
+        "**/.git/objects/**": true,
+        "**/.git/subtree-cache/**": true,
+        "**/node_modules/*/**": true,
+        "**/.hg/store/**": true,
+        "_build": true,
+        ".flatpak": true,
+        "**/.flatpak/**": true,
+        "**/.flatpak/*/**": true,
+        "**/flatpak-builder/*/**": true,
+        "build": true,
+        "builddir": true,
+        "/.flatpak-builder": true,
+        "/build-dir": true,
+        ".flatpak/**": true,
+        "_build/**": true
+    }
+}

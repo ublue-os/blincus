@@ -1,0 +1,61 @@
+config:
+  raw.idmap: |-
+    uid 1000 1000
+    gid 1000 1000
+  security.nesting: "true"
+  user.user-data: |
+    #cloud-config
+    package_update: true
+    package_upgrade: true
+    package_reboot_if_required: true
+    packages:
+      - pulseaudio-utils
+    write_files:
+    - path: /usr/local/bin/mystartup.sh
+      permissions: 0755
+      content: |
+        #!/bin/sh
+        uid=$(id -u)
+        run_dir=/run/user/$uid
+        mkdir -p $run_dir && chmod 700 $run_dir && chown $uid:$uid $run_dir
+        ln -sf /mnt/.container_wayland_socket $run_dir/wayland-0
+        mkdir -p $run_dir/pulse && chmod 700 $run_dir/pulse && chown $uid:$uid $run_dir/pulse
+        ln -sf /mnt/.container_pulseaudio_socket $run_dir/pulse/native
+        tmp_dir=/tmp/.X11-unix
+        mkdir -p $tmp_dir
+        ln -sf /mnt/.container_x11_socket $tmp_dir/X0
+    - path: /usr/local/etc/mystartup.service
+      content: |
+        [Unit]
+        After=local-fs.target
+        [Service]
+        Type=oneshot
+        ExecStart=/usr/local/bin/mystartup.sh
+        [Install]
+        WantedBy=default.target
+    runcmd:
+    - mkdir -p /home/ubuntu/.config/systemd/user/default.target.wants
+    - ln -s /usr/local/etc/mystartup.service /home/ubuntu/.config/systemd/user/default.target.wants/mystartup.service
+    - ln -s /usr/local/etc/mystartup.service /home/ubuntu/.config/systemd/user/mystartup.service
+    - chown -R ubuntu:ubuntu /home/ubuntu
+    - echo 'export WAYLAND_DISPLAY=wayland-0' >> /home/ubuntu/.profile
+    - echo 'export XDG_SESSION_TYPE=wayland' >> /home/ubuntu/.profile
+    - echo 'export QT_QPA_PLATFORM=wayland' >> /home/ubuntu/.profile
+    - echo 'export DISPLAY=:1' >> /home/ubuntu/.profile
+description: GUI Wayland and X11 profile with pulseaudio
+devices:
+  gpu:
+    type: gpu
+    gid: 44
+  wayland_socket:
+    source: /run/user/1000/wayland-0
+    path: /mnt/.container_wayland_socket
+    type: disk
+  x11_socket:
+    source: /tmp/.X11-unix/X1
+    path: /mnt/.container_x11_socket
+    type: disk
+  pulseaudio_socket:
+    source: /run/user/1000/pulse/native
+    path: /mnt/.container_pulseaudio_socket
+    type: disk

@@ -1,12 +1,12 @@
 ---
 title: blincus config
 description: | 
-  Manage blincus config
+  Manage Blincus config
 ---
 
 # blincus config
 
-Manage blincus config
+Manage Blincus config
 
 ## Usage
 
