@@ -1,0 +1,27 @@
+
+generate: 
+    # generate the bash scripts
+    docker run --rm -it --user $(id -u):$(id -g) --volume "$PWD:/app" dannyben/bashly generate --upgrade
+    # generate the cli documentation
+    docker run --rm -it --user $(id -u):$(id -g) --volume "$PWD:/app" dannyben/bashly render templates/markdown site/src/content/docs/cli
+    # remove old cli documentation
+    rm -rf ../site/src/content/docs/cli
+    # copy generated documentation to site directory
+    mv site/src/content/docs/cli ../site/src/content/docs/
+    # remove throwaway docs directory generated above
+    rm -rf site/
+    # copy bash completions
+    cp completions.bash completions/blincus
+
+format:
+    docker run --rm -u "$(id -u):$(id -g)" -v "$PWD:/mnt" -w /mnt mvdan/shfmt:v3 -w .
+
+install: generate
+    ./install
+
+
+uninstall:
+    ./uninstall
+
+#alias:
+#   alias bashly='docker run --rm -it --user $(id -u):$(id -g) --volume "$PWD:/app" dannyben/bashly'
