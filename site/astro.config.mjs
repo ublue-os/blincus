@@ -41,7 +41,8 @@ export default defineConfig({
 						{ label: 'Getting Started', link: '/guides/getting-started/' },
 						{ label: 'Installing Blincus', link: '/guides/installing/' },
 						{ label: 'Your First Instance', link: '/guides/first-instance/' },
-						{ label: 'Customizing Blincus', link: '/guides/customizing/' },
+						{ label: 'Customizing Blincus with cloud-init', link: '/guides/customizing-cloudinit/' },
+						{ label: 'Customizing Blincus without cloud-init', link: '/guides/customizing-nocloudinit/' },
 						{ label: 'Tips & Tricks', link: '/guides/tips-tricks/' },
 					],
 				},
@@ -59,5 +60,5 @@ export default defineConfig({
 
 			],
 		}),
-	],
+	]
 });
