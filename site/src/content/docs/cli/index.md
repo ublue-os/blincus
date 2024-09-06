@@ -10,8 +10,7 @@ description: |
 Manage development containers with Incus  
   
 Wraps the `incus` command, so commands not implemented   
-in blincus will pass through to `incus`.  
-
+in blincus will pass through to `incus`.
 
 | Attributes       | &nbsp;
 |------------------|-------------
@@ -42,10 +41,10 @@ Location of blincus config.ini
 
 ## Commands
 
-- [blincus config](/cli/blincus/config) - Manage blincus config
+- [blincus config](/cli/blincus/config) - Manage Blincus config
+- [blincus setup](/cli/blincus/setup) - Configure host for Blincus and Incus
 - [blincus launch](/cli/blincus/launch) - Launch a new instance
 - [blincus shell](/cli/blincus/shell) - Open a shell in an instance
-- [blincus template](/cli/blincus/template) - Manage blincus templates
-- [blincus personalize](/cli/blincus/personalize) - Personalize included templates
+- [blincus blueprint](/cli/blincus/blueprint) - Manage Blincus blueprints
 
 
