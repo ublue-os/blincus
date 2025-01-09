@@ -1,9 +1,0 @@
-name: config
-help: Manage blincus config
-footer: |
-  View documentation online at https://blincus.dev
-
-commands:
-- name: list
-  alias: l
-  help: Show configuration values from ~/.config/blincus/config.ini
