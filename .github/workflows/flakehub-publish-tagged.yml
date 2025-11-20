@@ -16,7 +16,7 @@ jobs:
       id-token: "write"
       contents: "read"
     steps:
-      - uses: "actions/checkout@v4"
+      - uses: "actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3" # v6
         with:
           ref: "${{ (inputs.tag != null) && format('refs/tags/{0}', inputs.tag) || '' }}"
       - uses: "DeterminateSystems/nix-installer-action@main"
