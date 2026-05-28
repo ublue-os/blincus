@@ -19,8 +19,8 @@ jobs:
       - uses: "actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8" # v6
         with:
           ref: "${{ (inputs.tag != null) && format('refs/tags/{0}', inputs.tag) || '' }}"
-      - uses: "DeterminateSystems/nix-installer-action@main"
-      - uses: "DeterminateSystems/flakehub-push@main"
+      - uses: "DeterminateSystems/nix-installer-action@1d87d45818068401a10cf16bdc5f00b24994a83f" # main
+      - uses: "DeterminateSystems/flakehub-push@161575b3c75e61afcb1d1b1981eae891e4432790" # main
         with:
           visibility: "public"
           name: "ublue-os/blincus"
