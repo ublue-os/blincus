@@ -27,7 +27,7 @@ and `blincus ls` all just work from inside the project.
 ## Commands
 
 | Command | What it does |
-|---|---|
+| --- | --- |
 | `blincus enter [-i IMAGE]` | Create or enter the container for `$PWD` |
 | `blincus ls` | List blincus containers and their project dirs |
 | `blincus rm [NAME]` | Delete a container (default: the one for `$PWD`) |
@@ -67,6 +67,12 @@ image=images:debian/trixie/cloud
 Any cloud-init-enabled image works (`incus image list images: cloud`).
 Override per-container with `blincus enter -i images:fedora/42/cloud`.
 
+The config file path can be overridden with the `BLINCUS_CONFIG` environment
+variable.
+
+GPU passthrough (`gid=44` on the `gpu` device) assumes Debian-family images,
+where gid 44 is the `video` group; other distros may need a different gid.
+
 ## How the forwarding works
 
 Host sockets can't be mounted directly onto `/tmp` or `/run/user` in the
@@ -78,6 +84,8 @@ uid to the container user, and X11 access is granted with
 
 Delete the `blincus` profile (`incus profile delete blincus`) after changing
 display setups; it's recreated from the live environment on the next launch.
+Deleting it requires removing any blincus-managed containers first — `incus
+profile delete` fails while the profile is still in use.
 
 ## License
 

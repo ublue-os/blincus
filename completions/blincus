@@ -9,7 +9,7 @@ _blincus() {
 	rm)
 		local names
 		names=$(incus ls --format json 2>/dev/null |
-			jq -r '.[] | select(.config."user.blincus.project") | .name')
+			jq -r '.[] | select(.config."user.blincus.project") | .name' 2>/dev/null)
 		mapfile -t COMPREPLY < <(compgen -W "$names" -- "$cur")
 		;;
 	enter)

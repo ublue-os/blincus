@@ -47,7 +47,7 @@ load_config() {
 		echo "image=$DEFAULT_IMAGE" >"$CONFIG_FILE"
 		echo "Created config at $CONFIG_FILE"
 	fi
-	IMAGE=$(awk -F= '$1 == "image" {print $2}' "$CONFIG_FILE")
+	IMAGE=$(awk -F= '$1 == "image" {sub(/^image=/, ""); print; exit}' "$CONFIG_FILE")
 	IMAGE=${IMAGE:-$DEFAULT_IMAGE}
 }
 
@@ -81,6 +81,7 @@ ensure_profile() {
 	incus profile show "$PROFILE" >/dev/null 2>&1 && return 0
 	echo "Creating Incus profile '$PROFILE'..."
 	incus profile create "$PROFILE" >/dev/null
+	trap 'incus profile delete "$PROFILE" >/dev/null 2>&1' ERR
 	incus profile set "$PROFILE" security.nesting=true
 	incus profile set "$PROFILE" raw.idmap="both $(id -u) 1000"
 	incus profile device add "$PROFILE" gpu gpu gid=44 >/dev/null
@@ -96,6 +97,7 @@ ensure_profile() {
 		incus profile device add "$PROFILE" audio disk \
 			source="$XDG_RUNTIME_DIR/pulse/native" path=/mnt/.blincus/pulse-native >/dev/null
 	fi
+	trap - ERR
 }
 
 # Emit cloud-init user-data for this host user. No files on disk, no templating.
@@ -109,9 +111,9 @@ generate_user_data() {
 	cat <<EOF
 #cloud-config
 users:
-  - name: $USER
+  - name: "$USER"
     uid: 1000
-    gecos: $fullname
+    gecos: "$fullname"
     shell: /bin/bash
     groups: [adm, video, sudo]
     sudo: ALL=(ALL) NOPASSWD:ALL
@@ -176,7 +178,7 @@ create_container() {
 	ensure_profile
 	echo "Creating container '$name' from $image..."
 	incus launch "$image" "$name" -p default -p "$PROFILE" \
-		--config user.user-data="$(generate_user_data)" \
+		--config cloud-init.user-data="$(generate_user_data)" \
 		--config user.blincus.project="$project" </dev/null
 	echo "Waiting for cloud-init..."
 	if ! incus exec "$name" -- cloud-init status --wait >/dev/null </dev/null; then
@@ -206,6 +208,7 @@ cmd_enter() {
 
 	local project name mountdir
 	project=$(pwd -P)
+	[[ $project == / ]] && die "refusing to run in /"
 	name=$(find_by_project "$project")
 
 	if [[ -z $name ]]; then
@@ -218,6 +221,8 @@ cmd_enter() {
 			name="$name-$(echo -n "$project" | sha256sum | cut -c1-4)"
 		fi
 		create_container "$name" "$project" "${image_override:-$IMAGE}"
+	elif [[ -n $image_override ]]; then
+		echo "note: container '$name' already exists; ignoring --image"
 	fi
 
 	if [[ $(container_status "$name") != "Running" ]]; then
@@ -227,8 +232,10 @@ cmd_enter() {
 
 	grant_x11
 	mountdir=$(basename "$project")
+	local qdir
+	printf -v qdir '%q' "$mountdir"
 	exec incus exec "$name" -- su -l "$USER" -c \
-		"cd \"\$HOME/$mountdir\" 2>/dev/null || cd; exec bash"
+		"cd \"\$HOME\"/$qdir 2>/dev/null || cd; exec bash"
 }
 
 cmd_ls() {
@@ -252,7 +259,7 @@ cmd_rm() {
 			die "'$name' is not managed by blincus"
 	fi
 	local answer
-	read -r -p "Delete container '$name'? [y/N] " answer
+	read -r -p "Delete container '$name'? [y/N] " answer || answer=""
 	[[ $answer == [yY] ]] || {
 		echo "aborted"
 		exit 0
