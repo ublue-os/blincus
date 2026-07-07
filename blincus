@@ -234,7 +234,7 @@ cmd_enter() {
 	mountdir=$(basename "$project")
 	local qdir
 	printf -v qdir '%q' "$mountdir"
-	exec incus exec "$name" -- su -l "$USER" -c \
+	exec incus exec "$name" -- su --pty -l "$USER" -c \
 		"cd \"\$HOME\"/$qdir 2>/dev/null || cd; exec bash"
 }
 
