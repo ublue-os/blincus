@@ -60,8 +60,10 @@ project_name() {
 
 # Print the name of the container bound to a project path, if any.
 find_by_project() {
-	incus ls --format json | jq -r --arg p "$1" \
-		'.[] | select(.config."user.blincus.project" == $p) | .name' | head -1
+	local json
+	json=$(incus ls --format json) || die "failed to query incus (is the daemon running?)"
+	jq -r --arg p "$1" \
+		'.[] | select(.config."user.blincus.project" == $p) | .name' <<<"$json" | head -1
 }
 
 container_exists() {
@@ -69,7 +71,9 @@ container_exists() {
 }
 
 container_status() {
-	incus ls --format json | jq -r --arg n "$1" '.[] | select(.name == $n) | .status'
+	local json
+	json=$(incus ls --format json) || die "failed to query incus (is the daemon running?)"
+	jq -r --arg n "$1" '.[] | select(.name == $n) | .status' <<<"$json"
 }
 
 # Create the shared host-side profile from the live environment (idempotent).
@@ -228,11 +232,13 @@ cmd_enter() {
 }
 
 cmd_ls() {
-	incus ls --format json | jq -r '
+	local json
+	json=$(incus ls --format json) || die "failed to query incus (is the daemon running?)"
+	jq -r '
 		["NAME", "STATUS", "PROJECT"],
 		(.[] | select(.config."user.blincus.project") |
 			[.name, .status, .config."user.blincus.project"])
-		| @tsv' | column -t -s "$(printf '\t')"
+		| @tsv' <<<"$json" | column -t -s "$(printf '\t')"
 }
 
 cmd_rm() {
