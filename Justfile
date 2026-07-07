@@ -1,30 +1,14 @@
-
-generate: 
-    docker run --rm -it --user $(id -u):$(id -g) --volume "$PWD:/app" dannyben/bashly generate --upgrade
-    docker run --rm -it --user $(id -u):$(id -g) --volume "$PWD:/app" dannyben/bashly render templates/markdown site/src/content/docs/cli
-    cp ./completions.bash completions/blincus
+lint:
+    podman run --rm -v "$PWD:/mnt" -w /mnt docker://koalaman/shellcheck:stable blincus install uninstall
 
 format:
-    docker run --rm -u "$(id -u):$(id -g)" -v "$PWD:/mnt" -w /mnt mvdan/shfmt:v3 -w .
+    podman run --rm -v "$PWD:/mnt" -w /mnt docker://mvdan/shfmt:v3 -w blincus install uninstall
 
-install: generate
+install:
     ./install
-
-build: generate
-    docker build -t bketelsen/blincus:latest .
-    docker push bketelsen/blincus:latest
-
-docbox: generate
-    distrobox enter bluefin-cli
-
-docs: 
-    cd site && npm run dev
 
 uninstall:
     ./uninstall
-
-bashly +COMMANDS:
-    docker run --rm -it --user $(id -u):$(id -g) --volume "$PWD:/app" dannyben/bashly {{COMMANDS}}
 
 wipe:
     ./empty-incus.sh
