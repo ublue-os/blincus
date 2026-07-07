@@ -38,6 +38,17 @@ and `blincus ls` all just work from inside the project.
   initialized (`incus admin init`)
 - `jq`
 - `xhost` (for X11 apps; part of `x11-xserver-utils` on Debian)
+- `root`'s `/etc/subuid` and `/etc/subgid` must include your host uid. Incus
+  runs unprivileged containers as root through a subordinate id range that,
+  by default, does not overlap real user uids, but blincus's `raw.idmap`
+  maps your host uid straight into the container (see below) — which
+  `newuidmap`/`newgidmap` only allow if that uid is explicitly listed for
+  `root`. If `blincus enter` fails with `newuidmap: ... not allowed`, add a
+  line for your uid to both files, e.g. for uid 1000:
+
+  ```console
+  $ echo "root:1000:1" | sudo tee -a /etc/subuid /etc/subgid
+  ```
 
 ## Install
 
