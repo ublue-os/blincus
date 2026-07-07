@@ -177,9 +177,9 @@ create_container() {
 	echo "Creating container '$name' from $image..."
 	incus launch "$image" "$name" -p default -p "$PROFILE" \
 		--config user.user-data="$(generate_user_data)" \
-		--config user.blincus.project="$project"
+		--config user.blincus.project="$project" </dev/null
 	echo "Waiting for cloud-init..."
-	if ! incus exec "$name" -- cloud-init status --wait >/dev/null; then
+	if ! incus exec "$name" -- cloud-init status --wait >/dev/null </dev/null; then
 		echo "error: cloud-init failed in '$name'." >&2
 		echo "  inspect: incus exec $name -- cloud-init status --long" >&2
 		echo "  retry:   blincus rm $name && blincus enter" >&2
